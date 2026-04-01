@@ -1,1 +1,131 @@
+/* GLOBAL */
+body{
+font-family:'Segoe UI', sans-serif;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+}
 
+/* MAIN CONTAINER */
+.container{
+background:white;
+padding:30px;
+max-width:900px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* HEADINGS */
+h2{
+text-align:center;
+color:#333;
+}
+
+h3{
+text-align:center;
+margin-bottom:15px;
+}
+
+/* INPUT FIELDS */
+input{
+padding:10px;
+width:250px;
+border-radius:6px;
+border:1px solid #ccc;
+margin:8px;
+}
+
+/* BUTTONS */
+button{
+background:#ff9900;
+color:white;
+border:none;
+padding:10px 20px;
+font-size:16px;
+border-radius:5px;
+cursor:pointer;
+margin:8px;
+transition:0.3s;
+}
+
+button:hover{
+background:#e68900;
+}
+
+/* HIDDEN SECTIONS */
+.hidden{
+display:none;
+}
+
+/* SECTION SPACING */
+.section{
+margin-top:20px;
+text-align:center;
+}
+
+/* TIMER */
+#timer{
+color:#ff5722;
+font-weight:bold;
+}
+
+/* QUESTION BLOCK */
+.question-block{
+margin-bottom:20px;
+padding:20px;
+background:#f9fafc;
+border-radius:8px;
+}
+
+/* OPTIONS */
+.option{
+display:block;
+margin:5px 0;
+}
+
+/* NAVIGATION BUTTONS */
+.nav-btn{
+width:40px;
+height:40px;
+margin:4px;
+border:none;
+border-radius:8px;
+background:#e0e0e0;
+cursor:pointer;
+font-weight:bold;
+transition:0.2s;
+}
+
+.nav-btn:hover{
+background:#ff9900;
+color:white;
+}
+
+/* NAVIGATOR */
+#navigator{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:20px;
+}
+
+/* RESULT SECTION */
+.result{
+text-align:center;
+}
+
+/* WRONG ANSWERS */
+.wrong-block{
+background:#fff3f3;
+padding:15px;
+margin-bottom:15px;
+border-left:5px solid #d32f2f;
+border-radius:6px;
+}
+
+/* SCORE */
+.score{
+font-size:24px;
+margin-bottom:20px;
+}
