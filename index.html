@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test Platform</title>
+<meta charset="UTF-8">
 
+<style>
+
+body{
+font-family:'Segoe UI', sans-serif;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+}
+
+.container{
+background:white;
+padding:30px;
+max-width:700px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+h2{
+color:#333;
+margin-bottom:20px;
+}
+
+input{
+padding:10px;
+width:250px;
+border-radius:6px;
+border:1px solid #ccc;
+margin:8px;
+}
+
+button{
+background:#ff9900;
+color:white;
+border:none;
+padding:10px 20px;
+font-size:16px;
+border-radius:5px;
+cursor:pointer;
+margin:8px;
+transition:0.3s;
+}
+
+button:hover{
+background:#e68900;
+}
+
+.hidden{
+display:none;
+}
+
+.section{
+margin-top:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>DevOps Test Platform</h2>
+
+<!-- STEP 1: USER INPUT -->
+<div id="userForm" class="section">
+<input type="text" id="name" placeholder="Enter Name">
+<input type="text" id="surname" placeholder="Enter Surname">
+<br>
+<button onclick="goToSelection()">Next</button>
+</div>
+
+<!-- STEP 2: TEST SELECTION -->
+<div id="testSelection" class="section hidden">
+<h3>Select Test</h3>
+
+<button onclick="selectTest('aws')">AWS Test</button>
+<button onclick="selectTest('linux')">Linux Test</button>
+<button onclick="selectTest('devops')">DevOps Test</button>
+
+</div>
+
+<!-- STEP 3: DEVOPS OPTIONS -->
+<div id="devopsOptions" class="section hidden">
+<h3>Select DevOps Tool</h3>
+
+<button onclick="selectDevops('git')">Git</button>
+<button onclick="selectDevops('docker')">Docker</button>
+<button onclick="selectDevops('kubernetes')">Kubernetes</button>
+<button onclick="selectDevops('terraform')">Terraform</button>
+<button onclick="selectDevops('jenkins')">Jenkins</button>
+<button onclick="selectDevops('all')">All DevOps</button>
+
+</div>
+
+<!-- STEP 4: START -->
+<div id="startSection" class="section hidden">
+<h3 id="selectedTestText"></h3>
+<button onclick="startTest()">Start Test</button>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
