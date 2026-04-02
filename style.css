@@ -27,7 +27,7 @@ text-align:center;
 margin-bottom:15px;
 }
 
-/* INPUT FIELDS */
+/* INPUT */
 input{
 padding:10px;
 width:250px;
@@ -36,7 +36,7 @@ border:1px solid #ccc;
 margin:8px;
 }
 
-/* BUTTONS */
+/* BUTTON */
 button{
 background:#ff9900;
 color:white;
@@ -46,22 +46,6 @@ font-size:16px;
 border-radius:5px;
 cursor:pointer;
 margin:8px;
-transition:0.3s;
-}
-
-button:hover{
-background:#e68900;
-}
-
-/* HIDDEN SECTIONS */
-.hidden{
-display:none;
-}
-
-/* SECTION SPACING */
-.section{
-margin-top:20px;
-
 }
 
 /* TIMER */
@@ -74,8 +58,12 @@ color:white;
 padding:10px 15px;
 border-radius:8px;
 font-weight:bold;
-box-shadow:0 3px 10px rgba(0,0,0,0.2);
 z-index:1000;
+}
+
+/* QUIZ FORCE LEFT ALIGN */
+#quiz{
+text-align:left !important;
 }
 
 /* QUESTION BLOCK */
@@ -84,16 +72,28 @@ margin-bottom:20px;
 padding:20px;
 background:#f9fafc;
 border-radius:8px;
-text-align:left; /* 🔥 FIX */
+text-align:left !important;
 }
 
-.option{
-display:block;
-margin:5px 0;
-text-align:left; /* 🔥 FIX */
+/* QUESTION TEXT */
+.question-block h4{
+text-align:left !important;
+margin-bottom:10px;
 }
 
-/* NAVIGATION BUTTONS */
+/* OPTIONS */
+.question-block label{
+display:block !important;
+text-align:left !important;
+margin:8px 0;
+}
+
+/* RADIO */
+.question-block input{
+margin-right:8px;
+}
+
+/* NAV BUTTON */
 .nav-btn{
 width:45px;
 height:45px;
@@ -103,19 +103,12 @@ border-radius:8px;
 background:#e0e0e0;
 cursor:pointer;
 font-weight:bold;
-transition:0.2s;
-display:flex;               /* 🔥 FIX */
-align-items:center;         /* center vertically */
-justify-content:center;     /* center horizontally */
-font-size:14px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-.nav-btn:hover{
-background:#ff9900;
-color:white;
-}
-
-/* NAVIGATOR */
+/* NAV CONTAINER */
 #navigator{
 display:flex;
 flex-wrap:wrap;
@@ -123,41 +116,20 @@ justify-content:center;
 margin-bottom:20px;
 }
 
-/* RESULT SECTION */
+/* RESULT */
 .result{
 text-align:center;
 }
 
-/* WRONG ANSWERS */
 .wrong-block{
 background:#fff3f3;
 padding:15px;
 margin-bottom:15px;
-border-left:5px solid #d32f2f;
+border-left:5px solid red;
 border-radius:6px;
 }
 
-/* SCORE */
 .score{
 font-size:24px;
 margin-bottom:20px;
-}
-/* FIX QUESTION ALIGNMENT */
-.question-block h3{
-text-align:left !important;
-}
-
-/* FIX OPTIONS ALIGNMENT */
-.question-block label{
-text-align:left !important;
-display:block;
-}
-.option{
-display:block;
-text-align:left !important;
-}
-
-.option span{
-display:inline-block;
-margin-left:5px;
 }
