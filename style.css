@@ -65,9 +65,17 @@ text-align:center;
 }
 
 /* TIMER */
-#timer{
-color:#ff5722;
+#timerBox{
+position:fixed;
+top:10px;
+right:20px;
+background:#ff9900;
+color:white;
+padding:10px 15px;
+border-radius:8px;
 font-weight:bold;
+box-shadow:0 3px 10px rgba(0,0,0,0.2);
+z-index:1000;
 }
 
 /* QUESTION BLOCK */
@@ -76,18 +84,19 @@ margin-bottom:20px;
 padding:20px;
 background:#f9fafc;
 border-radius:8px;
+text-align:left; /* 🔥 FIX */
 }
 
-/* OPTIONS */
 .option{
 display:block;
 margin:5px 0;
+text-align:left; /* 🔥 FIX */
 }
 
 /* NAVIGATION BUTTONS */
 .nav-btn{
-width:40px;
-height:40px;
+width:45px;
+height:45px;
 margin:4px;
 border:none;
 border-radius:8px;
@@ -95,6 +104,10 @@ background:#e0e0e0;
 cursor:pointer;
 font-weight:bold;
 transition:0.2s;
+display:flex;               /* 🔥 FIX */
+align-items:center;         /* center vertically */
+justify-content:center;     /* center horizontally */
+font-size:14px;
 }
 
 .nav-btn:hover{
