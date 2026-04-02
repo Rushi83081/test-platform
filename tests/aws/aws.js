@@ -73,9 +73,9 @@ html += `
 <label class="option">
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
 ${option}
-</label>
+</label><br>`;
 });
-
+  
 html += "</div>";
 quiz.innerHTML += html;
 });
