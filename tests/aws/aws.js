@@ -70,10 +70,10 @@ let html = `<div class="question-block">
 
 q.options.forEach((option,i)=>{
 html += `
-<label>
+<label class="option">
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
 ${option}
-</label><br>`;
+</label>
 });
 
 html += "</div>";
