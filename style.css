@@ -152,3 +152,12 @@ text-align:left !important;
 text-align:left !important;
 display:block;
 }
+.option{
+display:block;
+text-align:left !important;
+}
+
+.option span{
+display:inline-block;
+margin-left:5px;
+}
