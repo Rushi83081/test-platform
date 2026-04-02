@@ -72,7 +72,7 @@ q.options.forEach((option,i)=>{
 html += `
 <label class="option">
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
-${option}
+<span>${option}</span>
 </label><br>`;
 });
   
