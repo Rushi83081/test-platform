@@ -27,8 +27,8 @@ text-align:center;
 margin-bottom:15px;
 }
 
-/* INPUT */
-input{
+/* INPUT FIELDS (ONLY TEXT INPUTS) */
+input[type="text"]{
 padding:10px;
 width:250px;
 border-radius:6px;
@@ -36,7 +36,13 @@ border:1px solid #ccc;
 margin:8px;
 }
 
-/* BUTTON */
+/* RADIO BUTTON FIX */
+input[type="radio"]{
+width:auto;
+margin-right:8px;
+}
+
+/* BUTTONS */
 button{
 background:#ff9900;
 color:white;
@@ -46,9 +52,24 @@ font-size:16px;
 border-radius:5px;
 cursor:pointer;
 margin:8px;
+transition:0.3s;
 }
 
-/* TIMER */
+button:hover{
+background:#e68900;
+}
+
+/* HIDDEN SECTIONS */
+.hidden{
+display:none;
+}
+
+/* SECTION */
+.section{
+margin-top:20px;
+}
+
+/* TIMER (FIXED CORNER) */
 #timerBox{
 position:fixed;
 top:10px;
@@ -58,12 +79,13 @@ color:white;
 padding:10px 15px;
 border-radius:8px;
 font-weight:bold;
+box-shadow:0 3px 10px rgba(0,0,0,0.2);
 z-index:1000;
 }
 
-/* QUIZ FORCE LEFT ALIGN */
+/* FORCE QUIZ LEFT ALIGN */
 #quiz{
-text-align:left !important;
+text-align:left;
 }
 
 /* QUESTION BLOCK */
@@ -72,28 +94,23 @@ margin-bottom:20px;
 padding:20px;
 background:#f9fafc;
 border-radius:8px;
-text-align:left !important;
+text-align:left;
 }
 
 /* QUESTION TEXT */
 .question-block h4{
-text-align:left !important;
+text-align:left;
 margin-bottom:10px;
 }
 
 /* OPTIONS */
 .question-block label{
-display:block !important;
-text-align:left !important;
+display:block;
+text-align:left;
 margin:8px 0;
 }
 
-/* RADIO */
-.question-block input{
-margin-right:8px;
-}
-
-/* NAV BUTTON */
+/* NAVIGATION BUTTONS */
 .nav-btn{
 width:45px;
 height:45px;
@@ -106,9 +123,15 @@ font-weight:bold;
 display:flex;
 align-items:center;
 justify-content:center;
+font-size:14px;
 }
 
-/* NAV CONTAINER */
+.nav-btn:hover{
+background:#ff9900;
+color:white;
+}
+
+/* NAVIGATOR */
 #navigator{
 display:flex;
 flex-wrap:wrap;
@@ -125,7 +148,7 @@ text-align:center;
 background:#fff3f3;
 padding:15px;
 margin-bottom:15px;
-border-left:5px solid red;
+border-left:5px solid #d32f2f;
 border-radius:6px;
 }
 
