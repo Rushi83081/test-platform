@@ -1,4 +1,4 @@
-let time = 3600; // 60 min
+let time = 3600;
 let timer;
 
 const quiz = document.getElementById("quiz");
@@ -17,13 +17,8 @@ minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
 
 time--;
 
-// WARNINGS
-if(time === 600){
-alert("⚠️ 10 minutes left!");
-}
-if(time === 300){
-alert("⚠️ 5 minutes left!");
-}
+if(time === 600) alert("⚠️ 10 minutes left!");
+if(time === 300) alert("⚠️ 5 minutes left!");
 
 if(time < 0){
 clearInterval(timer);
@@ -33,10 +28,9 @@ submitQuiz();
 },1000);
 }
 
-// RANDOMIZE QUESTIONS
+// RANDOMIZE
 questions.sort(() => Math.random() - 0.5);
 
-// RANDOMIZE OPTIONS
 questions.forEach(q => {
 let correct = q.options[q.answer];
 q.options.sort(() => Math.random() - 0.5);
@@ -47,7 +41,6 @@ q.answer = q.options.indexOf(correct);
 function createNavigator(){
 questions.forEach((q,index)=>{
 let btn = document.createElement("button");
-
 btn.innerText = index + 1;
 btn.className = "nav-btn";
 
@@ -65,23 +58,25 @@ navigatorDiv.appendChild(btn);
 // LOAD QUIZ
 function loadQuiz(){
 questions.forEach((q,index)=>{
+
 let html = `<div class="question-block">
-<h3>${index+1}. ${q.question}</h3>`;
+<h4>${index+1}. ${q.question}</h4>`;
 
 q.options.forEach((option,i)=>{
 html += `
-<label class="option">
+<label>
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
-<span>${option}</span>
-</label><br>`;
+${option}
+</label>`;
 });
-  
+
 html += "</div>";
+
 quiz.innerHTML += html;
 });
 }
 
-// MARK ANSWERED
+// MARK ANSWER
 function markAnswered(index){
 navigatorDiv.children[index].style.background = "#ffcc80";
 }
@@ -95,7 +90,6 @@ let score = 0;
 let resultHTML = "";
 let btns = navigatorDiv.children;
 
-// HIDE QUIZ
 document.getElementById("quizSection").style.display = "none";
 
 questions.forEach((q,index)=>{
@@ -103,14 +97,10 @@ questions.forEach((q,index)=>{
 let selected = document.querySelector(`input[name="q${index}"]:checked`);
 let userAnswer = selected ? parseInt(selected.value) : null;
 
-let correctAnswer = q.options[q.answer];
-
 if(userAnswer === q.answer){
-
 score++;
 btns[index].style.background = "green";
 btns[index].style.color = "white";
-
 }else{
 
 btns[index].style.background = "red";
@@ -122,28 +112,23 @@ resultHTML += `
 <div class="wrong-block">
 <h4>Question ${index+1}</h4>
 <p><b>${q.question}</b></p>
-<p style="color:red">Your Answer: ${userText}</p>
-<p style="color:green">Correct Answer: ${correctAnswer}</p>
+<p style="color:red">Your: ${userText}</p>
+<p style="color:green">Correct: ${q.options[q.answer]}</p>
 </div>`;
 }
 
 });
 
-// GET USER DATA
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
-// SHOW RESULT
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
-<h2 class="score">Your Score: ${score} / ${questions.length}</h2>
-<h3>Wrong Answers</h3>
+<h2 class="score">Score: ${score}/${questions.length}</h2>
 ${resultHTML}
 `;
 
 resultDiv.scrollIntoView({behavior:"smooth"});
-
-// 👉 OPTIONAL: Google Form integration here
 }
 
 // INIT
