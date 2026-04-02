@@ -142,3 +142,13 @@ border-radius:6px;
 font-size:24px;
 margin-bottom:20px;
 }
+/* FIX QUESTION ALIGNMENT */
+.question-block h3{
+text-align:left !important;
+}
+
+/* FIX OPTIONS ALIGNMENT */
+.question-block label{
+text-align:left !important;
+display:block;
+}
