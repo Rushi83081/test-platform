@@ -1,4 +1,4 @@
-let time = 1500; // 25 minutes
+let time = 1500;
 let timer;
 
 const quiz = document.getElementById("quiz");
@@ -29,23 +29,14 @@ submitQuiz();
 },1000);
 }
 
-// ✅ PROPER SHUFFLE
-function shuffleArray(array){
-for(let i = array.length - 1; i > 0; i--){
-let j = Math.floor(Math.random() * (i + 1));
-[array[i], array[j]] = [array[j], array[i]];
-}
-}
-
-function randomizeQuestions(){
-shuffleArray(questions);
+// ✅ SAME RANDOM STYLE AS LINUX (IMPORTANT)
+questions.sort(() => Math.random() - 0.5);
 
 questions.forEach(q => {
 let correct = q.options[q.answer];
-shuffleArray(q.options);
+q.options.sort(() => Math.random() - 0.5);
 q.answer = q.options.indexOf(correct);
 });
-}
 
 // NAVIGATOR
 function createNavigator(){
@@ -65,7 +56,7 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ (✅ FIXED UI HERE)
+// LOAD QUIZ (🔥 EXACT STRUCTURE FIX)
 function loadQuiz(){
 questions.forEach((q,index)=>{
 
@@ -74,10 +65,11 @@ let html = `<div class="question-block">
 
 q.options.forEach((option,i)=>{
 html += `
-<label style="display:block; margin:8px 0;">
+<label>
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
- ${option}
-</label>`;
+${option}
+</label>
+`;
 });
 
 html += "</div>";
@@ -142,7 +134,6 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
 // INIT
-randomizeQuestions();  // shuffle
 startTimer();
 createNavigator();
 loadQuiz();
