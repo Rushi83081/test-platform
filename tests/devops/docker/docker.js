@@ -1,5 +1,4 @@
-
-let time = 1500; // 25 minutes
+let time = 1800; // 30 minutes
 let timer;
 
 const quiz = document.getElementById("quiz");
@@ -19,7 +18,7 @@ document.getElementById("timer").innerText =
 
 time--;
 
-if(time === 900) alert("⚠️ 10 minutes left!");
+if(time === 600) alert("⚠️ 10 minutes left!");
 if(time === 300) alert("⚠️ 5 minutes left!");
 
 if(time < 0){
@@ -30,14 +29,24 @@ submitQuiz();
 },1000);
 }
 
-// RANDOMIZE (same as linux)
-questions.sort(() => Math.random() - 0.5);
+// ✅ PROPER SHUFFLE (Fisher-Yates)
+function shuffleArray(array){
+for(let i = array.length - 1; i > 0; i--){
+let j = Math.floor(Math.random() * (i + 1));
+[array[i], array[j]] = [array[j], array[i]];
+}
+}
+
+// ✅ RANDOMIZE QUESTIONS + OPTIONS
+function randomizeQuestions(){
+shuffleArray(questions);
 
 questions.forEach(q => {
 let correct = q.options[q.answer];
-q.options.sort(() => Math.random() - 0.5);
+shuffleArray(q.options);
 q.answer = q.options.indexOf(correct);
 });
+}
 
 // NAVIGATOR
 function createNavigator(){
@@ -57,7 +66,7 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ (🔥 FIXED VERSION)
+// LOAD QUIZ
 function loadQuiz(){
 
 let html = "";
@@ -80,7 +89,6 @@ html += "</div>";
 
 });
 
-// 🔥 IMPORTANT: assign ONCE (not +=)
 quiz.innerHTML = html;
 }
 
@@ -140,6 +148,7 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
 // INIT
+randomizeQuestions(); // 🔥 IMPORTANT
 startTimer();
 createNavigator();
 loadQuiz();
