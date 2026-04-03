@@ -4,261 +4,261 @@ const questions = [
 
 {
 question: "What is Docker?",
-options: ["Container platform", "Operating system", "Database tool", "Network tool"],
+options: ["Containers", "Hypervisor", "Database", "Kernel"],
 answer: 0
 },
 {
-question: "What is a container?",
-options: ["Lightweight environment", "Virtual machine", "Storage device", "Operating system"],
+question: "Container vs VM key difference?",
+options: ["Lightweight", "Hardware", "BIOS", "Firmware"],
 answer: 0
 },
 {
-question: "Docker uses which architecture?",
-options: ["Client server model", "Peer to peer", "Standalone system", "Monolithic system"],
+question: "Docker uses which kernel feature?",
+options: ["Namespaces", "Threads", "Sockets", "Signals"],
 answer: 0
 },
 {
-question: "What is docker.io?",
-options: ["Cloud image registry", "Local engine", "CLI tool", "Operating system"],
+question: "docker.io is?",
+options: ["Registry", "Engine", "CLI", "Kernel"],
 answer: 0
 },
 {
-question: "Container is based on?",
-options: ["Kernel namespaces", "BIOS system", "Hypervisor", "Firmware"],
+question: "Image is?",
+options: ["Template", "Process", "Storage", "Network"],
 answer: 0
 },
 
 /* ===== MEDIUM (10) ===== */
 
 {
-question: "docker run command does?",
-options: ["Run container from image", "Build image", "Delete container", "Push image"],
+question: "What happens when you run docker run nginx?",
+options: ["Pull image and start container", "Only build image locally", "Delete existing containers", "Push image to registry"],
 answer: 0
 },
 {
-question: "docker build command does?",
-options: ["Build image from Dockerfile", "Run container", "Delete image", "Push image"],
+question: "Why is docker build used?",
+options: ["Create image from Dockerfile", "Run container from image", "Remove unused images", "Upload image to registry"],
 answer: 0
 },
 {
-question: "docker ps shows?",
-options: ["Running containers list", "Images list", "Volumes", "Networks"],
+question: "docker exec is mainly used for?",
+options: ["Execute command inside running container", "Create new container instance", "Push image to registry server", "Stop running container process"],
 answer: 0
 },
 {
-question: "docker exec is used for?",
-options: ["Run command inside container", "Delete container", "Build image", "Push image"],
+question: "docker logs helps in?",
+options: ["Viewing container runtime output logs", "Building image layers stepwise", "Monitoring host level CPU usage", "Deleting unused container logs"],
 answer: 0
 },
 {
-question: "docker logs command does?",
-options: ["View container logs", "Delete logs", "Push logs", "Build logs"],
+question: "docker rm removes?",
+options: ["Stopped container permanently", "Running container instantly", "Docker image from registry", "Volume attached to container"],
 answer: 0
 },
 {
-question: "docker stop does?",
-options: ["Stop running container", "Delete container", "Build image", "Push image"],
+question: "docker stop vs kill difference?",
+options: ["Stop sends signal kill forces immediately", "Both behave exactly same always", "Kill stops gracefully stop force kills", "Stop deletes container kill removes image"],
 answer: 0
 },
 {
-question: "docker start does?",
-options: ["Start stopped container", "Run new container", "Delete container", "Push image"],
+question: "docker ps -a shows?",
+options: ["All containers including stopped ones", "Only running containers list", "Only images available locally", "Only volumes attached containers"],
 answer: 0
 },
 {
-question: "docker rm does?",
-options: ["Remove container permanently", "Run container", "Build image", "Push image"],
+question: "docker pull command used for?",
+options: ["Download image from remote registry", "Upload local image to registry", "Delete image from local storage", "Run container from image"],
 answer: 0
 },
 {
-question: "docker pull means?",
-options: ["Download image from registry", "Upload image", "Delete image", "Run container"],
+question: "docker push requires?",
+options: ["Authenticated access to registry", "Running container locally", "Volume mounted to container", "Host network configuration enabled"],
 answer: 0
 },
 {
-question: "docker push means?",
-options: ["Upload image to registry", "Download image", "Delete image", "Run container"],
+question: "docker start works on?",
+options: ["Previously stopped container instance", "New container from image", "Running container process", "Image stored in registry"],
 answer: 0
 },
 
 /* ===== HARD (15) ===== */
 
 {
-question: "CMD vs ENTRYPOINT difference?",
-options: ["ENTRYPOINT fixed CMD override allowed", "Same behavior", "CMD fixed only", "ENTRYPOINT ignored"],
+question: "Why use ENTRYPOINT instead of CMD?",
+options: ["Ensures fixed executable always runs", "Allows runtime override of command", "Reduces image size significantly", "Improves container network performance"],
 answer: 0
 },
 {
-question: "COPY vs ADD difference?",
-options: ["ADD supports URL extraction", "Same commands", "COPY downloads files", "ADD local only"],
+question: "CMD instruction is used for?",
+options: ["Default command when container starts", "Mandatory instruction for Dockerfile", "Building image layer dependencies", "Exposing container network ports"],
 answer: 0
 },
 {
-question: "What are Docker layers?",
-options: ["Read only image layers", "Network layers", "Storage volumes", "Logs"],
+question: "COPY vs ADD key difference?",
+options: ["ADD supports remote URLs and auto extraction", "COPY works with remote URLs only", "ADD cannot copy local files", "COPY extracts compressed files automatically"],
 answer: 0
 },
 {
-question: "What is Dockerfile?",
-options: ["Script to build image", "Config file", "Log file", "Volume file"],
+question: "Why minimize Docker image layers?",
+options: ["Reduce image size and build time", "Improve container network speed", "Increase CPU utilization efficiency", "Enable better volume mounting performance"],
 answer: 0
 },
 {
-question: "What is Docker volume?",
-options: ["Persistent data storage", "Network storage", "Image layer", "Temporary storage"],
+question: "What is Docker volume used for?",
+options: ["Persist data independent of container lifecycle", "Improve container network performance", "Store image layers permanently", "Cache container build instructions"],
 answer: 0
 },
 {
-question: "Volume helps in?",
-options: ["Persist data after restart", "Delete data", "Run container", "Build image"],
+question: "Bind mount differs from volume how?",
+options: ["Uses host path directly inside container", "Creates managed storage inside Docker engine", "Only works with Dockerfile instructions", "Cannot persist data after restart"],
 answer: 0
 },
 {
-question: "Docker networking provides?",
-options: ["Container communication network", "Storage", "Logging", "Monitoring"],
+question: "Docker bridge network provides?",
+options: ["Isolated communication between containers", "Direct access to host network stack", "Persistent storage across containers", "External routing between clusters"],
 answer: 0
 },
 {
-question: "Bridge network is?",
-options: ["Default container network", "External network", "Host network", "Overlay"],
+question: "Why use docker-compose?",
+options: ["Manage multi container applications together", "Build images faster using cache layers", "Run single container efficiently", "Store logs in centralized system"],
 answer: 0
 },
 {
-question: "Port mapping means?",
-options: ["Link container port to host", "Storage mapping", "Network delete", "Volume mapping"],
+question: "What happens in multi-stage build?",
+options: ["Only required artifacts copied to final image", "All layers merged into single layer", "Images built faster without cache", "Container runs multiple processes simultaneously"],
 answer: 0
 },
 {
-question: "Docker ensures portability by?",
-options: ["Packaging app with dependencies", "Using OS", "Using BIOS", "Using hardware"],
+question: "Docker networking host mode does?",
+options: ["Container shares host network stack directly", "Creates isolated network for containers", "Uses overlay network across hosts", "Maps container ports dynamically"],
 answer: 0
 },
 {
-question: "Docker isolation uses?",
-options: ["Namespaces and cgroups", "VM only", "BIOS", "Firmware"],
+question: "Why containerization improves portability?",
+options: ["Packages application with all dependencies together", "Uses same hardware configuration everywhere", "Relies on host OS kernel always", "Avoids using runtime environments"],
 answer: 0
 },
 {
-question: "Reduce image size best way?",
-options: ["Use multi stage builds", "Add more layers", "Large base image", "Ignore optimization"],
+question: "What is overlay network used for?",
+options: ["Connect containers across multiple hosts", "Connect only local containers together", "Persist data between container restarts", "Reduce image build size automatically"],
 answer: 0
 },
 {
-question: "docker-compose used for?",
-options: ["Multi container management", "Single container", "Delete containers", "Build images"],
+question: "Docker uses cgroups for?",
+options: ["Resource limiting and isolation control", "Managing container file system layers", "Handling network routing internally", "Monitoring container logs continuously"],
 answer: 0
 },
 {
-question: "Microservices architecture means?",
-options: ["Loosely coupled services", "Single large app", "Monolithic design", "Standalone system"],
+question: "What causes large Docker image size?",
+options: ["Unnecessary packages in image layers", "Using bridge network instead of host", "Running multiple containers together", "Using docker-compose configuration"],
 answer: 0
 },
 {
-question: "Docker used in microservices because?",
-options: ["Easy deploy and scale services", "Reduce storage", "Delete services", "Reduce CPU"],
+question: "Why microservices benefit from Docker?",
+options: ["Each service runs independently in container", "All services share same runtime process", "Monolithic deployment becomes easier", "Reduces need of network communication"],
 answer: 0
 },
 
 /* ===== SCENARIO (20) ===== */
 
 {
-question: "Container stops immediately after start?",
-options: ["No foreground process running", "No internet", "Volume missing", "Network issue"],
+question: "Container exits immediately after start, what likely cause?",
+options: ["No foreground process defined in container", "Image not present in local system", "Volume not mounted correctly", "Network configuration missing"],
 answer: 0
 },
 {
-question: "App not accessible from browser?",
-options: ["Port mapping not configured", "Image missing", "Volume issue", "Restart needed"],
+question: "Application not reachable on browser after docker run?",
+options: ["Port not mapped between host and container", "Container image missing locally", "Volume not created properly", "Docker daemon not restarted"],
 answer: 0
 },
 {
-question: "Data lost after container restart?",
-options: ["Volume not used for storage", "Network issue", "Image deleted", "Container stopped"],
+question: "Data lost after restarting container, best solution?",
+options: ["Use volume to persist container data", "Restart container with same image", "Rebuild image from Dockerfile", "Use docker logs to recover data"],
 answer: 0
 },
 {
-question: "Need multiple containers together?",
-options: ["Use docker compose tool", "Use docker run", "Use docker ps", "Use docker rm"],
+question: "Need to debug running container, what should you do?",
+options: ["Use docker exec to access shell", "Restart container multiple times", "Rebuild image from scratch", "Check only docker ps output"],
 answer: 0
 },
 {
-question: "Same environment dev and prod?",
-options: ["Use container based deployment", "Use VM only", "Use OS config", "Manual setup"],
+question: "Multiple containers need to communicate, solution?",
+options: ["Connect containers using same Docker network", "Use separate networks for isolation", "Restart containers together", "Mount same volume to all"],
 answer: 0
 },
 {
-question: "Image size too large?",
-options: ["Use multi stage build", "Add layers", "Use large base", "Ignore issue"],
+question: "Application config changes frequently, best approach?",
+options: ["Use bind mount to update config dynamically", "Rebuild image every time config changes", "Store config inside image permanently", "Use docker logs for config changes"],
 answer: 0
 },
 {
-question: "Container cannot connect another container?",
-options: ["Check docker network configuration", "Restart container", "Delete image", "Build again"],
+question: "Container consuming high memory, what to do?",
+options: ["Set memory limits using docker run flags", "Restart container frequently", "Delete container logs regularly", "Use docker-compose always"],
 answer: 0
 },
 {
-question: "Need persistent database storage?",
-options: ["Use docker volume mount", "Restart container", "Use image", "Delete container"],
+question: "Need same app behavior in dev and prod?",
+options: ["Use same Docker image across environments", "Use different OS configurations", "Change container runtime settings", "Rebuild image in each environment"],
 answer: 0
 },
 {
-question: "Application crashes after deploy?",
-options: ["Check container logs output", "Delete image", "Restart system", "Ignore logs"],
+question: "Image build taking too long repeatedly?",
+options: ["Optimize Dockerfile using layer caching properly", "Delete all images before build", "Restart Docker daemon frequently", "Disable cache completely always"],
 answer: 0
 },
 {
-question: "Need to run command inside container?",
-options: ["Use docker exec command", "Use docker build", "Use docker push", "Use docker stop"],
+question: "Container cannot connect external API?",
+options: ["Check network and DNS configuration inside container", "Rebuild image with smaller size", "Restart Docker service on host", "Remove all unused containers"],
 answer: 0
 },
 {
-question: "Container uses wrong config file?",
-options: ["Mount correct config using volume", "Restart container", "Delete image", "Reboot system"],
+question: "Need to run multiple services together?",
+options: ["Use docker-compose to manage services together", "Run containers manually each time", "Use only docker run command", "Restart all services manually"],
 answer: 0
 },
 {
-question: "Need to debug running container?",
-options: ["Use docker exec shell access", "Delete container", "Push image", "Restart system"],
+question: "Logs growing too large in container?",
+options: ["Configure log rotation and size limits", "Delete container after each run", "Disable logging completely", "Restart container daily"],
 answer: 0
 },
 {
-question: "Port conflict between containers?",
-options: ["Change host port mapping", "Delete container", "Use volume", "Restart OS"],
+question: "Container fails due to missing dependency?",
+options: ["Add dependency in Dockerfile and rebuild image", "Restart container multiple times", "Use docker logs only", "Delete container and ignore issue"],
 answer: 0
 },
 {
-question: "Image build taking long time?",
-options: ["Optimize Dockerfile layer caching", "Add layers", "Restart system", "Ignore"],
+question: "Port conflict when running multiple containers?",
+options: ["Use different host ports for each container", "Stop all running containers always", "Delete conflicting images", "Restart Docker daemon"],
 answer: 0
 },
 {
-question: "Need automatic restart on failure?",
-options: ["Use restart policy in docker", "Manual restart", "Delete container", "Ignore"],
+question: "Need secure secrets inside container?",
+options: ["Use Docker secrets or environment variables securely", "Store secrets directly in image", "Hardcode secrets in application code", "Write secrets in container logs"],
 answer: 0
 },
 {
-question: "Multiple services scaling needed?",
-options: ["Use container orchestration tools", "Use single container", "Restart service", "Ignore"],
+question: "Container not starting after build?",
+options: ["Check CMD or ENTRYPOINT configuration", "Delete all images and rebuild", "Restart Docker service", "Check only network settings"],
 answer: 0
 },
 {
-question: "Container memory usage high?",
-options: ["Limit resources using docker flags", "Delete container", "Ignore usage", "Restart OS"],
+question: "Need to scale multiple instances quickly?",
+options: ["Use orchestration tools like Kubernetes or Swarm", "Run containers manually each time", "Restart same container multiple times", "Use docker exec repeatedly"],
 answer: 0
 },
 {
-question: "Need secure secrets handling?",
-options: ["Use docker secrets management", "Store in image", "Hardcode values", "Ignore security"],
+question: "Image pulling fails from registry?",
+options: ["Check authentication and network connectivity", "Restart container locally", "Delete all local images", "Rebuild Dockerfile again"],
 answer: 0
 },
 {
-question: "Container logs too large?",
-options: ["Configure log rotation settings", "Delete container", "Restart system", "Ignore logs"],
+question: "Need zero downtime deployment?",
+options: ["Use rolling updates with multiple containers", "Stop old container then start new", "Restart container manually", "Use single container always"],
 answer: 0
 },
 {
-question: "Need container to talk external service?",
-options: ["Configure proper network access", "Delete container", "Restart OS", "Ignore"],
+question: "Container performance inconsistent across hosts?",
+options: ["Ensure consistent resource limits and environment", "Restart Docker daemon always", "Delete unused volumes frequently", "Use different base images each time"],
 answer: 0
 }
 
