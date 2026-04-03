@@ -1,3 +1,3 @@
 # test-platform
 
-https://github.com/Rushi83081/test-platform/
+https://rushi83081.github.io/test-platform/
