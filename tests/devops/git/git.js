@@ -58,19 +58,43 @@ navigatorDiv.appendChild(btn);
 
 // LOAD QUIZ (🔥 EXACT STRUCTURE FIX)
 function loadQuiz(){
+
 questions.forEach((q,index)=>{
 
-let html = `<div class="question-block">
-<h4>${index+1}. ${q.question}</h4>`;
+let qDiv = document.createElement("div");
+qDiv.className = "question-block";
+
+let title = document.createElement("h4");
+title.innerText = (index+1) + ". " + q.question;
+qDiv.appendChild(title);
 
 q.options.forEach((option,i)=>{
-html += `
-<label>
-<input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
-${option}
-</label>
-`;
+
+let label = document.createElement("label");
+
+let input = document.createElement("input");
+input.type = "radio";
+input.name = "q" + index;
+input.value = i;
+
+input.onchange = function(){
+markAnswered(index);
+};
+
+label.appendChild(input);
+
+// 🔥 IMPORTANT spacing fix
+label.appendChild(document.createTextNode(" " + option));
+
+qDiv.appendChild(label);
+
 });
+
+quiz.appendChild(qDiv);
+
+});
+
+}
 
 html += "</div>";
 
