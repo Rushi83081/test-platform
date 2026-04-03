@@ -1,4 +1,4 @@
-let time = 1500; // 25 minutes
+let time = 1500;
 let timer;
 
 const quiz = document.getElementById("quiz");
@@ -13,8 +13,7 @@ let minutes = Math.floor(time / 60);
 let seconds = time % 60;
 
 document.getElementById("timer").innerText =
-(minutes < 10 ? "0" + minutes : minutes) + ":" +
-(seconds < 10 ? "0" + seconds : seconds);
+minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
 
 time--;
 
@@ -29,23 +28,14 @@ submitQuiz();
 },1000);
 }
 
-// ✅ PROPER RANDOMIZE (BETTER THAN LINUX)
-function shuffleArray(array){
-for(let i = array.length - 1; i > 0; i--){
-let j = Math.floor(Math.random() * (i + 1));
-[array[i], array[j]] = [array[j], array[i]];
-}
-}
-
-function randomizeQuestions(){
-shuffleArray(questions);
+// RANDOMIZE
+questions.sort(() => Math.random() - 0.5);
 
 questions.forEach(q => {
 let correct = q.options[q.answer];
-shuffleArray(q.options);
+q.options.sort(() => Math.random() - 0.5);
 q.answer = q.options.indexOf(correct);
 });
-}
 
 // NAVIGATOR
 function createNavigator(){
@@ -142,7 +132,6 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
 // INIT
-randomizeQuestions();  // 🔥 only improvement
 startTimer();
 createNavigator();
 loadQuiz();
