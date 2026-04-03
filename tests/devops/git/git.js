@@ -18,7 +18,7 @@ function startTimer(){
 
     time--;
 
-    if(time === 600) alert("⚠️ 10 minutes left!");
+    if(time === 900) alert("⚠️ 10 minutes left!");
     if(time === 300) alert("⚠️ 5 minutes left!");
 
     if(time < 0){
