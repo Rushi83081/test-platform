@@ -1,4 +1,4 @@
-let time = 1500;
+let time = 1500; // 25 minutes
 let timer;
 
 const quiz = document.getElementById("quiz");
@@ -29,7 +29,7 @@ submitQuiz();
 },1000);
 }
 
-// ✅ SAME RANDOM STYLE AS LINUX (IMPORTANT)
+// RANDOMIZE (same as linux)
 questions.sort(() => Math.random() - 0.5);
 
 questions.forEach(q => {
@@ -56,50 +56,31 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ (🔥 EXACT STRUCTURE FIX)
+// LOAD QUIZ (🔥 FIXED VERSION)
 function loadQuiz(){
+
+let html = "";
 
 questions.forEach((q,index)=>{
 
-let qDiv = document.createElement("div");
-qDiv.className = "question-block";
-
-let title = document.createElement("h4");
-title.innerText = (index+1) + ". " + q.question;
-qDiv.appendChild(title);
+html += `<div class="question-block">
+<h4>${index+1}. ${q.question}</h4>`;
 
 q.options.forEach((option,i)=>{
-
-let label = document.createElement("label");
-
-let input = document.createElement("input");
-input.type = "radio";
-input.name = "q" + index;
-input.value = i;
-
-input.onchange = function(){
-markAnswered(index);
-};
-
-label.appendChild(input);
-
-// 🔥 IMPORTANT spacing fix
-label.appendChild(document.createTextNode(" " + option));
-
-qDiv.appendChild(label);
-
+html += `
+<label>
+<input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
+&nbsp;${option}
+</label>
+`;
 });
-
-quiz.appendChild(qDiv);
-
-});
-
-}
 
 html += "</div>";
 
-quiz.innerHTML += html;
 });
+
+// 🔥 IMPORTANT: assign ONCE (not +=)
+quiz.innerHTML = html;
 }
 
 // MARK ANSWER
