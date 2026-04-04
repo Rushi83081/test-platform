@@ -90,11 +90,6 @@ options: ["Extend functionality and integrate external tools", "Improve system p
 answer: 0
 },
 {
-question: "Which plugin integrates Jenkins with Git repository?",
-options: ["Git plugin for repository integration", "Docker plugin for container builds", "Pipeline plugin for scripting", "Email plugin for notifications"],
-answer: 0
-},
-{
 question: "What happens if required plugin is missing?",
 options: ["Feature depending on plugin will fail", "Jenkins server crashes immediately", "All jobs stop permanently", "Pipeline syntax changes automatically"],
 answer: 0
