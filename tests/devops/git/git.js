@@ -157,7 +157,7 @@ ${resultHTML}
 // =======================
 // ✅ ADD THIS LINE (VERY IMPORTANT)
 // =======================
-sendToGoogleSheet(score, "Linux");
+sendToGoogleSheet(score, "Git");
   
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
