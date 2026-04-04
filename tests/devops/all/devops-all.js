@@ -1,5 +1,5 @@
 
-let time = 3600; // 36 minutes
+let time = 3600; // 60 minutes
 let timer;
 
 const quiz = document.getElementById("quiz");
