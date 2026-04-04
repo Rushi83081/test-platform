@@ -8,11 +8,6 @@ options: ["Automate build test and deployment pipelines", "Manage container runt
 answer: 0
 },
 {
-question: "What does CI/CD represent in modern software delivery?",
-options: ["Continuous integration and continuous delivery process", "Container integration and container deployment system", "Centralized infrastructure configuration deployment", "Code integration and debugging pipeline"],
-answer: 0
-},
-{
 question: "What is stored inside the JENKINS_HOME directory?",
 options: ["Jobs configuration plugins and build history", "Only container images and logs data", "Only pipeline scripts and code", "Only system configuration files"],
 answer: 0
@@ -61,11 +56,6 @@ answer: 0
 {
 question: "Why are pipeline jobs preferred in modern CI/CD?",
 options: ["Provide version controlled and reusable workflows", "Require less configuration always", "Execute faster than freestyle jobs", "Only support manual triggers"],
-answer: 0
-},
-{
-question: "When is freestyle job still useful?",
-options: ["Simple tasks without complex pipeline logic", "Complex microservices deployment workflows", "Managing Kubernetes clusters", "Handling distributed pipelines"],
 answer: 0
 },
 
@@ -168,11 +158,6 @@ answer: 0
 {
 question: "What is the role of webhook in Jenkins integration?",
 options: ["Trigger build on external events automatically", "Store logs inside Jenkins system", "Run container inside pipeline", "Delete old builds automatically"],
-answer: 0
-},
-{
-question: "Which HTTP method is used by GitHub webhook?",
-options: ["POST request to Jenkins endpoint", "GET request to Jenkins server", "PUT request to repository", "DELETE request to pipeline"],
 answer: 0
 },
 
