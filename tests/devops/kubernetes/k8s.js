@@ -6,6 +6,25 @@ const quiz = document.getElementById("quiz");
 const navigatorDiv = document.getElementById("navigator");
 const resultDiv = document.getElementById("result");
 
+// =======================
+// ✅ ADD THIS FUNCTION (NEW)
+// =======================
+function sendToGoogleSheet(score, testName){
+
+let name = localStorage.getItem("name");
+let surname = localStorage.getItem("surname");
+
+fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    name: name,
+    surname: surname,
+    test: testName,
+    score: score
+  })
+});
+}
+
 // TIMER
 function startTimer(){
 timer = setInterval(function(){
@@ -145,6 +164,11 @@ resultDiv.innerHTML = `
 ${resultHTML}
 `;
 
+  // =======================
+// ✅ ADD THIS LINE (VERY IMPORTANT)
+// =======================
+sendToGoogleSheet(score, "Kubernetes");
+  
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
