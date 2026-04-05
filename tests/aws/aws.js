@@ -1,30 +1,30 @@
-let time = 3600;
+let time = 1800;
 let timer;
 
 const quiz = document.getElementById("quiz");
 const navigatorDiv = document.getElementById("navigator");
 const resultDiv = document.getElementById("result");
 
-// =======================
-// ✅ ADD THIS FUNCTION (NEW)
-// =======================
-function sendToGoogleSheet(score, testName){
 
-let name = localStorage.getItem("name");
-let surname = localStorage.getItem("surname");
+// =======================
+// RANDOMIZE (FIXED)
+// =======================
+function shuffleQuestions(){
 
-fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    name: name,
-    surname: surname,
-    test: testName,
-    score: score
-  })
+questions.sort(() => Math.random() - 0.5);
+
+questions.forEach(q => {
+let correct = q.options[q.answer];
+q.options.sort(() => Math.random() - 0.5);
+q.answer = q.options.indexOf(correct);
 });
+
 }
 
+
+// =======================
 // TIMER
+// =======================
 function startTimer(){
 timer = setInterval(function(){
 
@@ -32,7 +32,8 @@ let minutes = Math.floor(time / 60);
 let seconds = time % 60;
 
 document.getElementById("timer").innerText =
-minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+(minutes < 10 ? "0" + minutes : minutes) + ":" +
+(seconds < 10 ? "0" + seconds : seconds);
 
 time--;
 
@@ -47,16 +48,10 @@ submitQuiz();
 },1000);
 }
 
-// RANDOMIZE
-questions.sort(() => Math.random() - 0.5);
 
-questions.forEach(q => {
-let correct = q.options[q.answer];
-q.options.sort(() => Math.random() - 0.5);
-q.answer = q.options.indexOf(correct);
-});
-
+// =======================
 // NAVIGATOR
+// =======================
 function createNavigator(){
 questions.forEach((q,index)=>{
 let btn = document.createElement("button");
@@ -74,11 +69,17 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ
+
+// =======================
+// LOAD QUIZ (FIXED)
+// =======================
 function loadQuiz(){
+
+let html = "";
+
 questions.forEach((q,index)=>{
 
-let html = `<div class="question-block">
+html += `<div class="question-block">
 <h4>${index+1}. ${q.question}</h4>`;
 
 q.options.forEach((option,i)=>{
@@ -91,16 +92,23 @@ ${option}
 
 html += "</div>";
 
-quiz.innerHTML += html;
 });
+
+quiz.innerHTML = html;
 }
 
+
+// =======================
 // MARK ANSWER
+// =======================
 function markAnswered(index){
 navigatorDiv.children[index].style.background = "#ffcc80";
 }
 
-// SUBMIT
+
+// =======================
+// SUBMIT QUIZ
+// =======================
 function submitQuiz(){
 
 clearInterval(timer);
@@ -141,20 +149,33 @@ resultHTML += `
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
+
+// =======================
+// RESULT + REPORT BUTTON
+// =======================
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
 <h2 class="score">Score: ${score}/${questions.length}</h2>
+
+<button onclick="reportIssue('AWS')">🐞 Report Issue</button>
+
 ${resultHTML}
 `;
+
+
 // =======================
-// ✅ ADD THIS LINE (VERY IMPORTANT)
+// SEND DATA (FROM script.js)
 // =======================
 sendToGoogleSheet(score, "AWS");
 
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
-// INIT
+
+// =======================
+// INIT (IMPORTANT ORDER)
+// =======================
+shuffleQuestions();   // 🔥 MUST FIRST
 startTimer();
 createNavigator();
 loadQuiz();
