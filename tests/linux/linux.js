@@ -7,15 +7,30 @@ const resultDiv = document.getElementById("result");
 
 
 // =======================
-// RANDOMIZE (FIXED)
+// 🔥 TRUE SHUFFLE FUNCTION
+// =======================
+function shuffleArray(arr){
+for(let i = arr.length - 1; i > 0; i--){
+let j = Math.floor(Math.random() * (i + 1));
+[arr[i], arr[j]] = [arr[j], arr[i]];
+}
+}
+
+
+// =======================
+// 🔥 MIX + SHUFFLE QUESTIONS
 // =======================
 function shuffleQuestions(){
 
-questions.sort(() => Math.random() - 0.5);
+// Shuffle full questions list
+shuffleArray(questions);
 
+// Shuffle options for each question
 questions.forEach(q => {
 let correct = q.options[q.answer];
-q.options.sort(() => Math.random() - 0.5);
+
+shuffleArray(q.options);
+
 q.answer = q.options.indexOf(correct);
 });
 
@@ -71,7 +86,7 @@ navigatorDiv.appendChild(btn);
 
 
 // =======================
-// LOAD QUIZ (FIXED)
+// LOAD QUIZ
 // =======================
 function loadQuiz(){
 
@@ -164,7 +179,7 @@ ${resultHTML}
 
 
 // =======================
-// SEND DATA (FROM script.js)
+// SEND DATA
 // =======================
 sendToGoogleSheet(score, "Linux");
 
@@ -175,7 +190,7 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 // =======================
 // INIT (IMPORTANT ORDER)
 // =======================
-shuffleQuestions();   // 🔥 MUST FIRST
+shuffleQuestions();
 startTimer();
 createNavigator();
 loadQuiz();
