@@ -1,37 +1,30 @@
-
-let time = 1800; // 30 minutes
+let time = 1800;
 let timer;
 
 const quiz = document.getElementById("quiz");
 const navigatorDiv = document.getElementById("navigator");
 const resultDiv = document.getElementById("result");
 
+
 // =======================
-// ✅ ADD THIS FUNCTION (NEW)
+// RANDOMIZE (FIXED)
 // =======================
-function sendToGoogleSheet(score, testName){
+function shuffleQuestions(){
 
-let name = localStorage.getItem("name");
-let surname = localStorage.getItem("surname");
+questions.sort(() => Math.random() - 0.5);
 
-// ✅ validation
-if(!name || !surname){
-  alert("Name or surname missing!");
-  return;
-}
-
-fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    name: name,
-    surname: surname,
-    test: testName,
-    score: score
-  })
+questions.forEach(q => {
+let correct = q.options[q.answer];
+q.options.sort(() => Math.random() - 0.5);
+q.answer = q.options.indexOf(correct);
 });
+
 }
 
+
+// =======================
 // TIMER
+// =======================
 function startTimer(){
 timer = setInterval(function(){
 
@@ -55,26 +48,10 @@ submitQuiz();
 },1000);
 }
 
-// ✅ PROPER SHUFFLE (Fisher-Yates)
-function shuffleArray(array){
-for(let i = array.length - 1; i > 0; i--){
-let j = Math.floor(Math.random() * (i + 1));
-[array[i], array[j]] = [array[j], array[i]];
-}
-}
 
-// ✅ RANDOMIZE QUESTIONS + OPTIONS
-function randomizeQuestions(){
-shuffleArray(questions);
-
-questions.forEach(q => {
-let correct = q.options[q.answer];
-shuffleArray(q.options);
-q.answer = q.options.indexOf(correct);
-});
-}
-
+// =======================
 // NAVIGATOR
+// =======================
 function createNavigator(){
 questions.forEach((q,index)=>{
 let btn = document.createElement("button");
@@ -92,7 +69,10 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ
+
+// =======================
+// LOAD QUIZ (FIXED)
+// =======================
 function loadQuiz(){
 
 let html = "";
@@ -106,9 +86,8 @@ q.options.forEach((option,i)=>{
 html += `
 <label>
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
-&nbsp;${option}
-</label>
-`;
+${option}
+</label>`;
 });
 
 html += "</div>";
@@ -118,12 +97,18 @@ html += "</div>";
 quiz.innerHTML = html;
 }
 
+
+// =======================
 // MARK ANSWER
+// =======================
 function markAnswered(index){
 navigatorDiv.children[index].style.background = "#ffcc80";
 }
 
-// SUBMIT
+
+// =======================
+// SUBMIT QUIZ
+// =======================
 function submitQuiz(){
 
 clearInterval(timer);
@@ -164,24 +149,33 @@ resultHTML += `
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
+
+// =======================
+// RESULT + REPORT BUTTON
+// =======================
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
 <h2 class="score">Score: ${score}/${questions.length}</h2>
+
+<button onclick="reportIssue('Jenkins')">🐞 Report Issue</button>
+
 ${resultHTML}
 `;
 
-  // =======================
-// ✅ ADD THIS LINE (VERY IMPORTANT)
+
+// =======================
+// SEND DATA (FROM script.js)
 // =======================
 sendToGoogleSheet(score, "Jenkins");
 
-alert("✅ Score saved successfully!");
-  
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
-// INIT
-randomizeQuestions(); // 🔥 IMPORTANT
+
+// =======================
+// INIT (IMPORTANT ORDER)
+// =======================
+shuffleQuestions();   // 🔥 MUST FIRST
 startTimer();
 createNavigator();
 loadQuiz();
