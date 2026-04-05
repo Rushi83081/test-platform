@@ -1,30 +1,30 @@
-let time = 1500; // 25 minutes
+let time = 1500;
 let timer;
 
 const quiz = document.getElementById("quiz");
 const navigatorDiv = document.getElementById("navigator");
 const resultDiv = document.getElementById("result");
 
-// =======================
-// ✅ ADD THIS FUNCTION (NEW)
-// =======================
-function sendToGoogleSheet(score, testName){
 
-let name = localStorage.getItem("name");
-let surname = localStorage.getItem("surname");
+// =======================
+// RANDOMIZE (FIXED)
+// =======================
+function shuffleQuestions(){
 
-fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
-  method: "POST",
-  body: JSON.stringify({
-    name: name,
-    surname: surname,
-    test: testName,
-    score: score
-  })
+questions.sort(() => Math.random() - 0.5);
+
+questions.forEach(q => {
+let correct = q.options[q.answer];
+q.options.sort(() => Math.random() - 0.5);
+q.answer = q.options.indexOf(correct);
 });
+
 }
 
+
+// =======================
 // TIMER
+// =======================
 function startTimer(){
 timer = setInterval(function(){
 
@@ -37,7 +37,7 @@ document.getElementById("timer").innerText =
 
 time--;
 
-if(time === 900) alert("⚠️ 10 minutes left!");
+if(time === 600) alert("⚠️ 10 minutes left!");
 if(time === 300) alert("⚠️ 5 minutes left!");
 
 if(time < 0){
@@ -48,16 +48,10 @@ submitQuiz();
 },1000);
 }
 
-// RANDOMIZE (same as linux)
-questions.sort(() => Math.random() - 0.5);
 
-questions.forEach(q => {
-let correct = q.options[q.answer];
-q.options.sort(() => Math.random() - 0.5);
-q.answer = q.options.indexOf(correct);
-});
-
+// =======================
 // NAVIGATOR
+// =======================
 function createNavigator(){
 questions.forEach((q,index)=>{
 let btn = document.createElement("button");
@@ -75,7 +69,10 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ (🔥 FIXED VERSION)
+
+// =======================
+// LOAD QUIZ (FIXED)
+// =======================
 function loadQuiz(){
 
 let html = "";
@@ -89,25 +86,29 @@ q.options.forEach((option,i)=>{
 html += `
 <label>
 <input type="radio" name="q${index}" value="${i}" onchange="markAnswered(${index})">
-&nbsp;${option}
-</label>
-`;
+${option}
+</label>`;
 });
 
 html += "</div>";
 
 });
 
-// 🔥 IMPORTANT: assign ONCE (not +=)
 quiz.innerHTML = html;
 }
 
+
+// =======================
 // MARK ANSWER
+// =======================
 function markAnswered(index){
 navigatorDiv.children[index].style.background = "#ffcc80";
 }
 
-// SUBMIT
+
+// =======================
+// SUBMIT QUIZ
+// =======================
 function submitQuiz(){
 
 clearInterval(timer);
@@ -148,21 +149,33 @@ resultHTML += `
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
+
+// =======================
+// RESULT + REPORT BUTTON
+// =======================
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
 <h2 class="score">Score: ${score}/${questions.length}</h2>
+
+<button onclick="reportIssue('Git')">🐞 Report Issue</button>
+
 ${resultHTML}
 `;
 
+
 // =======================
-// ✅ ADD THIS LINE (VERY IMPORTANT)
+// SEND DATA (FROM script.js)
 // =======================
 sendToGoogleSheet(score, "Git");
-  
+
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
-// INIT
+
+// =======================
+// INIT (IMPORTANT ORDER)
+// =======================
+shuffleQuestions();   // 🔥 MUST FIRST
 startTimer();
 createNavigator();
 loadQuiz();
