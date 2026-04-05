@@ -29,7 +29,11 @@ submitQuiz();
 },1000);
 }
 
-// RANDOMIZE
+// =======================
+// RANDOMIZE (FIXED)
+// =======================
+function shuffleQuestions(){
+
 questions.sort(() => Math.random() - 0.5);
 
 questions.forEach(q => {
@@ -38,6 +42,7 @@ q.options.sort(() => Math.random() - 0.5);
 q.answer = q.options.indexOf(correct);
 });
 
+}
 // NAVIGATOR
 function createNavigator(){
 questions.forEach((q,index)=>{
