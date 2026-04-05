@@ -6,29 +6,6 @@ const navigatorDiv = document.getElementById("navigator");
 const resultDiv = document.getElementById("result");
 
 
-// TIMER
-function startTimer(){
-timer = setInterval(function(){
-
-let minutes = Math.floor(time / 60);
-let seconds = time % 60;
-
-document.getElementById("timer").innerText =
-minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-
-time--;
-
-if(time === 600) alert("⚠️ 10 minutes left!");
-if(time === 300) alert("⚠️ 5 minutes left!");
-
-if(time < 0){
-clearInterval(timer);
-submitQuiz();
-}
-
-},1000);
-}
-
 // =======================
 // RANDOMIZE (FIXED)
 // =======================
@@ -43,7 +20,38 @@ q.answer = q.options.indexOf(correct);
 });
 
 }
+
+
+// =======================
+// TIMER
+// =======================
+function startTimer(){
+timer = setInterval(function(){
+
+let minutes = Math.floor(time / 60);
+let seconds = time % 60;
+
+document.getElementById("timer").innerText =
+(minutes < 10 ? "0" + minutes : minutes) + ":" +
+(seconds < 10 ? "0" + seconds : seconds);
+
+time--;
+
+if(time === 600) alert("⚠️ 10 minutes left!");
+if(time === 300) alert("⚠️ 5 minutes left!");
+
+if(time < 0){
+clearInterval(timer);
+submitQuiz();
+}
+
+},1000);
+}
+
+
+// =======================
 // NAVIGATOR
+// =======================
 function createNavigator(){
 questions.forEach((q,index)=>{
 let btn = document.createElement("button");
@@ -61,11 +69,17 @@ navigatorDiv.appendChild(btn);
 });
 }
 
-// LOAD QUIZ
+
+// =======================
+// LOAD QUIZ (FIXED)
+// =======================
 function loadQuiz(){
+
+let html = "";
+
 questions.forEach((q,index)=>{
 
-let html = `<div class="question-block">
+html += `<div class="question-block">
 <h4>${index+1}. ${q.question}</h4>`;
 
 q.options.forEach((option,i)=>{
@@ -78,16 +92,23 @@ ${option}
 
 html += "</div>";
 
-quiz.innerHTML += html;
 });
+
+quiz.innerHTML = html;
 }
 
+
+// =======================
 // MARK ANSWER
+// =======================
 function markAnswered(index){
 navigatorDiv.children[index].style.background = "#ffcc80";
 }
 
-// SUBMIT
+
+// =======================
+// SUBMIT QUIZ
+// =======================
 function submitQuiz(){
 
 clearInterval(timer);
@@ -128,22 +149,33 @@ resultHTML += `
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
+
+// =======================
+// RESULT + REPORT BUTTON
+// =======================
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
 <h2 class="score">Score: ${score}/${questions.length}</h2>
+
+<button onclick="reportIssue('Linux')">🐞 Report Issue</button>
+
 ${resultHTML}
 `;
 
+
 // =======================
-// ✅ ADD THIS LINE (VERY IMPORTANT)
+// SEND DATA (FROM script.js)
 // =======================
 sendToGoogleSheet(score, "Linux");
 
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
-// INIT
-shuffleQuestions();
+
+// =======================
+// INIT (IMPORTANT ORDER)
+// =======================
+shuffleQuestions();   // 🔥 MUST FIRST
 startTimer();
 createNavigator();
 loadQuiz();
