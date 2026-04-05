@@ -143,6 +143,7 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 }
 
 // INIT
+shuffleQuestions();
 startTimer();
 createNavigator();
 loadQuiz();
