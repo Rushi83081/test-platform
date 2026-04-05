@@ -1,4 +1,6 @@
+// =======================
 // STEP 1: GO TO TEST SELECTION
+// =======================
 function goToSelection(){
 
 let name = document.getElementById("name").value;
@@ -18,7 +20,10 @@ document.getElementById("userForm").style.display = "none";
 document.getElementById("testSelection").classList.remove("hidden");
 }
 
+
+// =======================
 // STEP 2: SELECT MAIN TEST
+// =======================
 function selectTest(type){
 
 localStorage.setItem("testType", type);
@@ -35,7 +40,10 @@ showStart(type);
 }
 }
 
+
+// =======================
 // STEP 3: SELECT DEVOPS TOOL
+// =======================
 function selectDevops(tool){
 
 localStorage.setItem("devopsTool", tool);
@@ -47,7 +55,10 @@ document.getElementById("devopsOptions").classList.add("hidden");
 showStart("devops - " + tool);
 }
 
+
+// =======================
 // STEP 4: SHOW START BUTTON
+// =======================
 function showStart(text){
 
 document.getElementById("startSection").classList.remove("hidden");
@@ -56,7 +67,10 @@ document.getElementById("selectedTestText").innerText =
 "You selected: " + text.toUpperCase();
 }
 
+
+// =======================
 // STEP 5: START TEST (ROUTING)
+// =======================
 function startTest(){
 
 let type = localStorage.getItem("testType");
@@ -95,5 +109,56 @@ window.location.href = "tests/devops/all/devops-all.html";
 }
 
 }
+}
 
+
+// =======================
+// 🔥 SEND DATA TO GOOGLE SHEET
+// =======================
+function sendToGoogleSheet(score, testName){
+
+let name = localStorage.getItem("name");
+let surname = localStorage.getItem("surname");
+
+if(!name || !surname){
+alert("Name or surname missing!");
+return;
+}
+
+fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
+method: "POST",
+body: JSON.stringify({
+name: name,
+surname: surname,
+test: testName,
+score: score
+})
+});
+
+}
+
+
+// =======================
+// 🐞 REPORT ISSUE FUNCTION
+// =======================
+function reportIssue(testName){
+
+let name = localStorage.getItem("name");
+let surname = localStorage.getItem("surname");
+
+let issue = prompt("Describe the issue you found:");
+
+if(!issue) return;
+
+fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
+method: "POST",
+body: JSON.stringify({
+name: name,
+surname: surname,
+test: testName,
+score: "ISSUE: " + issue
+})
+});
+
+alert("✅ Issue reported. Thank you!");
 }
