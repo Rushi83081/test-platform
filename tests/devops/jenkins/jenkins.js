@@ -14,6 +14,12 @@ function sendToGoogleSheet(score, testName){
 let name = localStorage.getItem("name");
 let surname = localStorage.getItem("surname");
 
+// ✅ validation
+if(!name || !surname){
+  alert("Name or surname missing!");
+  return;
+}
+
 fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
   method: "POST",
   body: JSON.stringify({
@@ -168,6 +174,8 @@ ${resultHTML}
 // ✅ ADD THIS LINE (VERY IMPORTANT)
 // =======================
 sendToGoogleSheet(score, "Jenkins");
+
+alert("✅ Score saved successfully!");
   
 resultDiv.scrollIntoView({behavior:"smooth"});
 }
