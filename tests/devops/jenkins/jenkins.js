@@ -79,20 +79,33 @@ let html = "";
 
 questions.forEach((q,index)=>{
 
-if(q.question.includes("pipeline") || q.question.includes("{") || q.question.includes("stage")){
+let isCode = q.question.includes("\n") && q.question.includes("{");
 
-html += `<div class="question-block">
-<h4>${index+1}.</h4>
-<pre style="background:#1e1e1e;color:#00ff88;padding:12px;border-radius:8px;overflow:auto;font-size:14px;">
-${q.question}
+html += `<div class="question-block">`;
+
+
+// 👉 IF CODE QUESTION
+if(isCode){
+
+// Split heading and code
+let parts = q.question.split("\n");
+let heading = parts[0];          // Identify error:
+let code = parts.slice(1).join("\n");  // actual pipeline
+
+html += `<h4>${index+1}. ${heading}</h4>
+
+<pre style="background:#f4f6f8;color:#333;padding:12px;border-radius:8px;overflow:auto;font-size:14px;border:1px solid #ddd;">
+${code}
 </pre>`;
 
 } else {
 
-html += `<div class="question-block">
-<h4>${index+1}. ${q.question}</h4>`;
+// 👉 NORMAL QUESTION
+html += `<h4>${index+1}. ${q.question}</h4>`;
 
 }
+
+// OPTIONS
 q.options.forEach((option,i)=>{
 html += `
 <label>
@@ -101,6 +114,9 @@ ${option}
 </label>`;
 });
 
+html += "</div>";
+
+});
 html += "</div>";
 
 });
