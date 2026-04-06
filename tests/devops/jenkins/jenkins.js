@@ -81,8 +81,8 @@ questions.forEach((q,index)=>{
 
 html += `<div class="question-block">
 <h4>${index+1}.</h4>
-<pre style="background:#222;color:#0f0;padding:10px;border-radius:6px;overflow:auto;">${q.question}</pre>
-
+<pre style="background:#222;color:#0f0;padding:10px;border-radius:6px;overflow:auto;">${q.question}</pre>`;
+  
 q.options.forEach((option,i)=>{
 html += `
 <label>
