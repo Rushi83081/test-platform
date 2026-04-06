@@ -79,10 +79,20 @@ let html = "";
 
 questions.forEach((q,index)=>{
 
+if(q.question.includes("pipeline") || q.question.includes("{") || q.question.includes("stage")){
+
 html += `<div class="question-block">
 <h4>${index+1}.</h4>
-<pre style="background:#222;color:#0f0;padding:10px;border-radius:6px;overflow:auto;">${q.question}</pre>`;
-  
+<pre style="background:#1e1e1e;color:#00ff88;padding:12px;border-radius:8px;overflow:auto;font-size:14px;">
+${q.question}
+</pre>`;
+
+} else {
+
+html += `<div class="question-block">
+<h4>${index+1}. ${q.question}</h4>`;
+
+}
 q.options.forEach((option,i)=>{
 html += `
 <label>
