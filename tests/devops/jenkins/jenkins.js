@@ -79,18 +79,20 @@ let html = "";
 
 questions.forEach((q,index)=>{
 
-let isCode = q.question.includes("\n") && q.question.includes("{");
-
 html += `<div class="question-block">`;
 
 
-// 👉 IF CODE QUESTION
+// ✅ SAFE CHECK
+let questionText = q.question || "";
+let isCode = questionText.includes("\n") && questionText.includes("{");
+
+
+// 👉 CODE QUESTION
 if(isCode){
 
-// Split heading and code
-let parts = q.question.split("\n");
-let heading = parts[0];          // Identify error:
-let code = parts.slice(1).join("\n");  // actual pipeline
+let parts = questionText.split("\n");
+let heading = parts[0];
+let code = parts.slice(1).join("\n");
 
 html += `<h4>${index+1}. ${heading}</h4>
 
@@ -101,9 +103,10 @@ ${code}
 } else {
 
 // 👉 NORMAL QUESTION
-html += `<h4>${index+1}. ${q.question}</h4>`;
+html += `<h4>${index+1}. ${questionText}</h4>`;
 
 }
+
 
 // OPTIONS
 q.options.forEach((option,i)=>{
@@ -117,13 +120,9 @@ ${option}
 html += "</div>";
 
 });
-html += "</div>";
-
-});
 
 quiz.innerHTML = html;
 }
-
 
 // =======================
 // MARK ANSWER
