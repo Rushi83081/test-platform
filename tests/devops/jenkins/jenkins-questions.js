@@ -103,40 +103,98 @@ answer: 0
 /* ===== JENKINSFILE ERRORS (7) ===== */
 
 {
-question: "Identify error:\npipeline {\n agent any\n stages {\n stage('Build') {\n steps {\n echo Hello\n }\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        echo Hello
+      }
+    }
+  }
+}`,
 options: ["Missing quotes around string Hello", "Invalid stage syntax used", "Agent declaration missing", "Steps block incorrect"],
 answer: 0
 },
 {
-question: "Identify error:\nstage('Test') {\n echo \"Testing\"\n}",
+question: `Identify error:
+stage('Test') {
+  echo "Testing"
+}`,
 options: ["Missing steps block inside stage", "Invalid echo command used", "Agent block missing", "Pipeline block missing"],
 answer: 0
 },
 {
-question: "Identify error:\npipeline {\n stages {\n stage('Build') {\n steps {\n sh 'mvn clean install'\n }\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
+  }
+}`,
 options: ["Missing agent declaration at pipeline level", "Invalid shell command used", "Stage syntax incorrect", "Steps block missing"],
 answer: 0
 },
 {
-question: "Identify error:\npipeline {\n agent any\n stage('Build') {\n steps {\n echo \"Build\"\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  agent any
+  stage('Build') {
+    steps {
+      echo "Build"
+    }
+  }
+}`,
 options: ["Missing stages block wrapping stage", "Invalid agent declaration used", "Echo command incorrect", "Pipeline syntax invalid"],
 answer: 0
 },
 {
-question: "Identify error:\npipeline {\n agent any\n stages {\n stage('Deploy') {\n echo \"Deploying\"\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  agent any
+  stages {
+    stage('Deploy') {
+      echo "Deploying"
+    }
+  }
+}`,
 options: ["Missing steps block inside stage", "Invalid stage name used", "Agent block incorrect", "Pipeline structure invalid"],
 answer: 0
 },
 {
-question: "Identify error:\npipeline {\n agent any\n stages {\n stage('Build') {\n steps {\n sh mvn clean install\n }\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh mvn clean install
+      }
+    }
+  }
+}`,
 options: ["Missing quotes around shell command", "Invalid stage definition used", "Agent missing", "Steps block incorrect"],
 answer: 0
 },
 {
-question: "Identify error:\npipeline {\n agent any\n stages {\n stage('Test') {\n steps {\n sh 'pytest'\n }\n }\n }\n}",
+question: `Identify error:
+pipeline {
+  agent any
+  stages {
+    stage('Test') {
+      steps {
+        sh 'pytest'
+      }
+    }
+  }
+}`,
 options: ["No syntax error pipeline is correct", "Missing agent block", "Invalid stage syntax", "Steps block missing"],
 answer: 0
-},
+}
 
 /* ===== WEBHOOK (4) ===== */
 
