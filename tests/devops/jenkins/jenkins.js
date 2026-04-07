@@ -7,18 +7,27 @@ const resultDiv = document.getElementById("result");
 
 
 // =======================
-// RANDOMIZE (FIXED)
+// TRUE SHUFFLE FUNCTION
+// =======================
+function shuffleArray(arr){
+for(let i = arr.length - 1; i > 0; i--){
+let j = Math.floor(Math.random() * (i + 1));
+[arr[i], arr[j]] = [arr[j], arr[i]];
+}
+}
+
+
+// =======================
+// SHUFFLE QUESTIONS
 // =======================
 function shuffleQuestions(){
-
-questions.sort(() => Math.random() - 0.5);
+shuffleArray(questions);
 
 questions.forEach(q => {
 let correct = q.options[q.answer];
-q.options.sort(() => Math.random() - 0.5);
+shuffleArray(q.options);
 q.answer = q.options.indexOf(correct);
 });
-
 }
 
 
@@ -71,7 +80,7 @@ navigatorDiv.appendChild(btn);
 
 
 // =======================
-// LOAD QUIZ (FIXED)
+// LOAD QUIZ (WITH CODE SUPPORT)
 // =======================
 function loadQuiz(){
 
@@ -79,15 +88,12 @@ let html = "";
 
 questions.forEach((q,index)=>{
 
-html += `<div class="question-block">`;
-
-
-// ✅ SAFE CHECK
 let questionText = q.question || "";
 let isCode = questionText.includes("\n") && questionText.includes("{");
 
+html += `<div class="question-block">`;
 
-// 👉 CODE QUESTION
+// CODE QUESTION
 if(isCode){
 
 let parts = questionText.split("\n");
@@ -96,15 +102,25 @@ let code = parts.slice(1).join("\n");
 
 html += `<h4>${index+1}. ${heading}</h4>
 
-<pre style="background:#f4f6f8;color:#333;padding:12px;border-radius:8px;overflow:auto;font-size:14px;border:1px solid #ddd;">
-${code}
+<pre style="
+background:#eef2f7;
+color:#333;
+padding:14px;
+border-radius:8px;
+overflow:auto;
+font-size:14px;
+border:1px solid #ddd;
+font-family: monospace;
+white-space: pre;
+line-height:1.5;
+">
+${code.trim()}
 </pre>`;
 
 } else {
 
-// 👉 NORMAL QUESTION
+// NORMAL QUESTION
 html += `<h4>${index+1}. ${questionText}</h4>`;
-
 }
 
 
@@ -123,6 +139,7 @@ html += "</div>";
 
 quiz.innerHTML = html;
 }
+
 
 // =======================
 // MARK ANSWER
@@ -190,7 +207,7 @@ ${resultHTML}
 
 
 // =======================
-// SEND DATA (FROM script.js)
+// SEND DATA
 // =======================
 sendToGoogleSheet(score, "Jenkins");
 
@@ -199,9 +216,9 @@ resultDiv.scrollIntoView({behavior:"smooth"});
 
 
 // =======================
-// INIT (IMPORTANT ORDER)
+// INIT
 // =======================
-shuffleQuestions();   // 🔥 MUST FIRST
+shuffleQuestions();
 startTimer();
 createNavigator();
 loadQuiz();
