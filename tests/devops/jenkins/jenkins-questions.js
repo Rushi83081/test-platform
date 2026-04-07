@@ -194,7 +194,7 @@ pipeline {
 }`,
 options: ["No syntax error pipeline is correct", "Missing agent block", "Invalid stage syntax", "Steps block missing"],
 answer: 0
-}
+},
 
 /* ===== WEBHOOK (4) ===== */
 
