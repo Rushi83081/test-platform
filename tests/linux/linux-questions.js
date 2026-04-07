@@ -1,340 +1,172 @@
 const questions = [
 
-/* ===== BASIC (10) ===== */
+/* ===== BASIC + COMMAND MIX (10) ===== */
 
 {
-question: "Which command lists all files including hidden ones?",
-options: ["ls -l", "ls -a", "ls -R", "ls -h"],
-answer: 1
+question: "You want to check disk usage, memory usage, and block devices in one go. Which combination of commands is correct?",
+options: ["df free lsblk commands show disk memory and block devices", "ps top uptime commands show running processes and system load", "ping curl netstat commands are used for network connectivity", "chmod chown ls commands modify permissions and list files"],
+answer: 0
 },
 {
-question: "Which command changes directory to parent directory?",
-options: ["cd /", "cd ~", "cd ..", "cd -"],
-answer: 2
+question: "Your system is running slow. Which command helps you check real-time running processes and resource usage?",
+options: ["top command shows real-time CPU and memory usage", "ls command lists files in current directory", "pwd command shows current working directory", "df command shows disk usage only"],
+answer: 0
 },
 {
-question: "Which command shows current working directory?",
-options: ["dir", "pwd", "cwd", "where"],
-answer: 1
+question: "You want to read documentation of a command inside terminal. Which command should you use?",
+options: ["man command opens manual pages for any command", "cat command creates new files", "touch command edits files", "echo command prints output"],
+answer: 0
 },
 {
-question: "Which command copies directories recursively?",
-options: ["cp -v", "cp -r", "cp -d", "cp -a"],
-answer: 1
+question: "You want to download a file from internet using terminal. Which command is used?",
+options: ["wget command downloads file from given URL", "ps command shows process status", "chmod command changes permissions", "mv command moves files"],
+answer: 0
 },
 {
-question: "Which command removes directory with contents?",
-options: ["rmdir", "rm -r", "remove", "delete"],
-answer: 1
-},
-{
-question: "Which command displays file content?",
-options: ["more", "less", "cat", "view"],
-answer: 2
-},
-{
-question: "Which command searches inside files?",
-options: ["find", "locate", "grep", "search"],
-answer: 2
-},
-{
-question: "Which command shows manual pages?",
-options: ["help", "doc", "info", "man"],
-answer: 3
-},
-{
-question: "Which command creates empty file?",
-options: ["newfile", "touch", "create", "file"],
-answer: 1
-},
-{
-question: "Which command shows disk usage?",
-options: ["du -h", "ls -lh", "df -h", "top"],
-answer: 2
+question: "Which command displays information about block devices like disks and partitions?",
+options: ["lsblk command shows block devices and partitions", "df command shows filesystem usage", "free command shows memory usage", "top command shows processes"],
+answer: 0
 },
 
-/* ===== MEDIUM (10) ===== */
+/* ===== FILE & DIRECTORY (10) ===== */
 
 {
-question: "Which file stores user account details?",
-options: ["/etc/shadow", "/etc/passwd", "/etc/group", "/etc/users"],
-answer: 1
+question: "You want to create a file and overwrite its content using output of a command. Which operator is used?",
+options: ["Greater than symbol overwrites file content", "Double greater than symbol appends content", "Pipe symbol sends output to another command", "Ampersand symbol runs process in background"],
+answer: 0
 },
 {
-question: "Which file stores encrypted passwords?",
-options: ["/etc/passwd", "/etc/group", "/etc/shadow", "/etc/login"],
-answer: 2
+question: "You want to append output to an existing file without deleting previous content. Which operator is correct?",
+options: ["Double greater than symbol appends output to file", "Single greater than symbol deletes existing content", "Pipe symbol replaces content of file", "Less than symbol reads input from file"],
+answer: 0
 },
 {
-question: "Which command shows memory usage in human readable format?",
-options: ["top", "free -h", "ps", "vmstat"],
-answer: 1
+question: "You want to delete a directory forcefully along with all files inside it. Which command is correct?",
+options: ["rm -rf command removes directory recursively without prompt", "rmdir command removes empty directory only", "cp command copies directory structure", "mv command moves directory to new location"],
+answer: 0
 },
 {
-question: "Which command lists all processes?",
-options: ["ps", "jobs", "ps aux", "top"],
-answer: 2
+question: "You need to copy a file from one directory to another. Which command should you use?",
+options: ["cp command copies file to another location", "mv command deletes file permanently", "rm command moves file to trash", "touch command renames file"],
+answer: 0
 },
 {
-question: "Which command changes file permissions?",
-options: ["chown", "chmod", "chgrp", "perm"],
-answer: 1
-},
-{
-question: "Which command changes file ownership?",
-options: ["chmod", "owner", "chown", "access"],
-answer: 2
-},
-{
-question: "Which command displays IP address?",
-options: ["netstat", "ip addr", "route", "ifconfig"],
-answer: 1
-},
-{
-question: "Which command tests network connectivity?",
-options: ["route", "netstat", "ping", "ip"],
-answer: 2
-},
-{
-question: "Which command schedules repeated tasks?",
-options: ["at", "job", "crontab", "schedule"],
-answer: 2
-},
-{
-question: "Which command shows open ports?",
-options: ["top", "ls", "netstat -tuln", "ps"],
-answer: 2
+question: "You want to rename a file without changing its content. Which command is used?",
+options: ["mv command renames file or moves it", "cp command duplicates file", "rm command deletes file", "chmod command changes permissions"],
+answer: 0
 },
 
-/* ===== HARD (15) ===== */
+/* ===== USER MANAGEMENT (10) ===== */
 
 {
-question: "Which command shows disk usage per directory?",
-options: ["df -h", "du -sh", "ls -lh", "top"],
-answer: 1
+question: "What is the main difference between useradd and adduser command?",
+options: ["useradd creates user with default settings while adduser provides interactive setup", "adduser deletes user accounts and useradd modifies groups", "both commands are exactly same in all distributions", "useradd only works for root user and adduser for normal users"],
+answer: 0
 },
 {
-question: "Which command displays kernel version?",
-options: ["uname -a", "kernel", "uname -r", "version"],
-answer: 2
+question: "Which file stores encrypted user passwords in Linux system?",
+options: ["shadow file stores encrypted passwords securely", "passwd file stores encrypted passwords", "group file stores user passwords", "hosts file stores user login details"],
+answer: 0
 },
 {
-question: "Which command shows full system information?",
-options: ["details", "info", "uname -a", "system"],
-answer: 2
+question: "Which command is used to change password of a user?",
+options: ["passwd command changes user password", "useradd command creates new password", "groupadd command modifies password", "chmod command secures password file"],
+answer: 0
 },
 {
-question: "Which command finds executable location?",
-options: ["where", "find", "which", "path"],
-answer: 2
+question: "You want to delete a user along with home directory. Which command is correct?",
+options: ["userdel -r removes user and home directory", "userdel removes only password", "rm user removes account permanently", "groupdel deletes user account"],
+answer: 0
 },
 {
-question: "Which command shows command history?",
-options: ["commands", "log", "history", "list"],
-answer: 2
-},
-{
-question: "Which command clears terminal?",
-options: ["reset", "clean", "clear", "cls"],
-answer: 2
-},
-{
-question: "Which command monitors real-time processes?",
-options: ["ps", "htop", "uptime", "free"],
-answer: 1
-},
-{
-question: "Which command shows routing table?",
-options: ["netstat", "ping", "ip route", "route"],
-answer: 2
-},
-{
-question: "Which command creates new user?",
-options: ["adduser", "useradd", "newuser", "createuser"],
-answer: 1
-},
-{
-question: "Which command deletes user?",
-options: ["removeuser", "delete", "userdel", "deluser"],
-answer: 2
-},
-{
-question: "Which command locks user account?",
-options: ["disable", "stop", "passwd -l", "lock"],
-answer: 2
-},
-{
-question: "Which command shows logged users?",
-options: ["users", "all", "who", "w"],
-answer: 1
-},
-{
-question: "Which command shows file permissions?",
-options: ["stat", "chmod", "ls -l", "perm"],
-answer: 2
-},
-{
-question: "Which command checks disk IO?",
-options: ["du", "iostat", "df", "top"],
-answer: 1
-},
-{
-question: "Which command displays CPU information?",
-options: ["cpuinfo", "top", "lscpu", "ps"],
-answer: 2
+question: "You want to add a user to an existing group. Which command is used?",
+options: ["usermod -aG adds user to group", "groupadd adds user to group", "chmod assigns group permissions", "passwd modifies group"],
+answer: 0
 },
 
-/* ===== SCENARIO (15) ===== */
+/* ===== PERMISSIONS (12) ===== */
 
 {
-question: "Server CPU usage is high. What is first step?",
-options: [
-"Restart system immediately",
-"Check running processes using top",
-"Delete unnecessary files",
-"Increase disk space"
-],
-answer: 1
+question: "Which command is used to change file ownership?",
+options: ["chown command changes ownership of file", "chmod command changes permission bits", "chgrp command changes group only", "ls command displays ownership"],
+answer: 0
 },
 {
-question: "Disk is full. What should you check first?",
-options: [
-"Restart application immediately",
-"Increase RAM allocation",
-"Find large files using du command",
-"Change permissions"
-],
-answer: 2
+question: "What does chmod 777 mean in Linux?",
+options: ["Full read write execute permissions for all users", "Only owner has full permissions", "Only group has execute permissions", "File becomes read-only"],
+answer: 0
 },
 {
-question: "SSH login not working. What is first step?",
-options: [
-"Delete user account",
-"Restart system",
-"Check SSH service status",
-"Change firewall rules"
-],
-answer: 2
+question: "What is the purpose of umask in Linux?",
+options: ["Defines default permission for newly created files", "Deletes old file permissions", "Assigns ownership to file", "Encrypts file content"],
+answer: 0
 },
 {
-question: "Application not starting after reboot. What to check?",
-options: [
-"Reinstall OS",
-"Check service status using systemctl",
-"Delete configuration files",
-"Change ownership"
-],
-answer: 1
+question: "You want to give execute permission only to owner. Which symbolic command is correct?",
+options: ["chmod u+x gives execute permission to owner", "chmod g+x gives execute to group", "chmod o+x gives execute to others", "chmod a-x removes execute permission"],
+answer: 0
+},
+
+/* ===== LINKS (5) ===== */
+
+{
+question: "What is the key difference between hard link and soft link?",
+options: ["Hard link shares same inode while soft link has separate inode", "Soft link shares inode and hard link does not", "Both links are identical in structure", "Hard link points to directory only"],
+answer: 0
 },
 {
-question: "Memory usage suddenly high. What to do?",
-options: [
-"Delete logs immediately",
-"Restart system",
-"Check processes consuming high memory",
-"Change disk partitions"
-],
-answer: 2
+question: "Which command creates a symbolic link?",
+options: ["ln -s command creates symbolic link", "ln command creates soft link automatically", "cp command links files together", "mv command links files"],
+answer: 0
+},
+
+/* ===== PROCESS (10) ===== */
+
+{
+question: "What is the difference between kill and kill -9 command?",
+options: ["kill sends graceful signal while kill -9 forcefully terminates process", "kill -9 pauses process execution", "kill deletes process permanently from system", "both commands behave exactly same"],
+answer: 0
 },
 {
-question: "Logs are growing rapidly. What should you do?",
-options: [
-"Restart system",
-"Disable logging permanently",
-"Check logs and configure log rotation",
-"Delete all logs blindly"
-],
-answer: 2
+question: "You want to run a process in background. Which symbol is used?",
+options: ["Ampersand symbol runs process in background", "Pipe symbol sends output to next command", "Greater symbol writes output to file", "Hash symbol comments line"],
+answer: 0
 },
 {
-question: "Cron job not running. What should you verify?",
-options: [
-"Delete cron file",
-"Restart system",
-"Check cron service status and logs",
-"Change hostname"
-],
-answer: 2
+question: "Which command brings background process to foreground?",
+options: ["fg command brings process to foreground", "bg command stops process", "ps command lists processes", "top command monitors system"],
+answer: 0
+},
+
+/* ===== NETWORKING (10) ===== */
+
+{
+question: "What is the main difference between TCP and UDP protocols?",
+options: ["TCP is connection oriented and reliable while UDP is faster but unreliable", "UDP is connection oriented and TCP is not", "Both protocols are identical in behavior", "TCP is used only for local networks"],
+answer: 0
 },
 {
-question: "Website not accessible. What to check first?",
-options: [
-"Delete app files",
-"Restart server",
-"Check service status and open ports",
-"Change permissions"
-],
-answer: 2
+question: "Which command is used to test connectivity between two systems?",
+options: ["ping command checks network connectivity", "df command checks disk usage", "top command checks CPU usage", "chmod command changes permissions"],
+answer: 0
+},
+
+/* ===== SCENARIO BASED (13) ===== */
+
+{
+question: "Your application is failing with permission denied error. What should you check first?",
+options: ["File permissions and ownership settings", "Network configuration settings", "Disk partition size availability", "CPU usage statistics"],
+answer: 0
 },
 {
-question: "Permission denied error appears. What to check?",
-options: [
-"Restart system",
-"Delete file",
-"Verify file permissions and ownership",
-"Change network settings"
-],
-answer: 2
+question: "Disk is full and system is slow. What should you do?",
+options: ["Check large files using disk usage commands and clean unnecessary data", "Restart system immediately without checking", "Delete system files randomly", "Ignore issue until crash happens"],
+answer: 0
 },
 {
-question: "Server slow but CPU normal. What to check?",
-options: [
-"Delete data",
-"Restart system",
-"Check disk IO and memory usage",
-"Change user settings"
-],
-answer: 2
-},
-{
-question: "Port 80 not responding. What to verify?",
-options: [
-"Restart system",
-"Delete config",
-"Check service running and port binding",
-"Change timezone"
-],
-answer: 2
-},
-{
-question: "Unexpected reboot happened. What to check?",
-options: [
-"Restart again",
-"Delete logs",
-"Check system logs in /var/log",
-"Change partitions"
-],
-answer: 2
-},
-{
-question: "Slow login reported. What should you analyze?",
-options: [
-"Delete users",
-"Restart system",
-"Check authentication logs and load",
-"Change permissions"
-],
-answer: 2
-},
-{
-question: "Service fails repeatedly. What to check?",
-options: [
-"Restart server",
-"Delete config",
-"Check service logs and errors",
-"Change user settings"
-],
-answer: 2
-},
-{
-question: "Network unstable. What should you check?",
-options: [
-"Restart system",
-"Delete configs",
-"Check network configuration and routing",
-"Change permissions"
-],
-answer: 2
+question: "A process is consuming too much CPU. What is the best action?",
+options: ["Identify process using top and terminate if required", "Delete all running processes", "Restart server without checking logs", "Disable CPU usage completely"],
+answer: 0
 }
 
 ];
