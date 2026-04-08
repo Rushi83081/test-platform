@@ -99,7 +99,7 @@ options: [
 "cat command displays file content"
 ],
 answer: 0
-},
+}
 /*
 {
 question: "What is the main advantage of using a symbolic link instead of a hard link?",
@@ -251,5 +251,6 @@ options: [
 ],
 answer: 0
 }
-/*
+*/
+
 ];
