@@ -171,7 +171,7 @@ let surname = localStorage.getItem("surname");
 resultDiv.innerHTML = `
 <h2>${name} ${surname}</h2>
 <h2 class="score">Score: ${score}/${questions.length}</h2>
-
+showFeedback(score, questions.length);
 <button onclick="reportIssue('Linux')">🐞 Report Issue</button>
 
 ${resultHTML}
