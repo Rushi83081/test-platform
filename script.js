@@ -171,7 +171,7 @@ let percent = (score / total) * 100;
 
 if(percent >= 85){
 
-// 🎉 Create overlay
+// 🔥 Overlay
 let div = document.createElement("div");
 div.id = "celebration";
 div.innerHTML = `
@@ -181,11 +181,11 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.5);
+background:rgba(0,0,0,0.7);
+z-index:9999;
 display:flex;
 justify-content:center;
 align-items:center;
-z-index:9999;
 flex-direction:column;
 color:white;
 font-size:28px;
@@ -193,61 +193,66 @@ font-weight:bold;
 ">
 🎉 Congratulations! 🎉
 <p style="font-size:18px;margin-top:10px;">Excellent Performance 🚀</p>
-<canvas id="confettiCanvas"></canvas>
+<canvas id="fireworksCanvas"></canvas>
 </div>
 `;
 
 document.body.appendChild(div);
 
-// 🎆 Confetti animation
-let canvas = document.getElementById("confettiCanvas");
+// 🎆 FIREWORKS
+let canvas = document.getElementById("fireworksCanvas");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let ctx = canvas.getContext("2d");
 
-let confetti = [];
+let particles = [];
 
-for(let i=0;i<150;i++){
-confetti.push({
-x: Math.random()*canvas.width,
-y: Math.random()*canvas.height,
-r: Math.random()*6+2,
-d: Math.random()*150,
-color: `hsl(${Math.random()*360},100%,50%)`,
-tilt: Math.random()*10-5
+function createFirework(){
+let x = Math.random() * canvas.width;
+let y = Math.random() * canvas.height / 2;
+
+for(let i=0;i<80;i++){
+particles.push({
+x: x,
+y: y,
+angle: Math.random() * 2 * Math.PI,
+speed: Math.random() * 5 + 2,
+radius: 2,
+life: 100,
+color: `hsl(${Math.random()*360},100%,50%)`
 });
+}
 }
 
 function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle = "rgba(0,0,0,0.2)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
 
-confetti.forEach(c=>{
+particles.forEach((p, index)=>{
+p.x += Math.cos(p.angle) * p.speed;
+p.y += Math.sin(p.angle) * p.speed;
+p.life--;
+
 ctx.beginPath();
-ctx.fillStyle = c.color;
-ctx.fillRect(c.x,c.y,c.r,c.r);
-});
+ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+ctx.fillStyle = p.color;
+ctx.fill();
 
-update();
-}
-
-function update(){
-confetti.forEach(c=>{
-c.y += Math.cos(c.d) + 2;
-c.x += Math.sin(c.d);
-
-if(c.y > canvas.height){
-c.y = -10;
-c.x = Math.random()*canvas.width;
+if(p.life <= 0){
+particles.splice(index,1);
 }
 });
 }
 
+// launch fireworks repeatedly
+let fireInterval = setInterval(createFirework, 600);
 let animation = setInterval(draw, 20);
 
-// ⏳ Remove after 4 sec
+// ⏳ Stop after 4 seconds
 setTimeout(()=>{
 clearInterval(animation);
+clearInterval(fireInterval);
 document.getElementById("celebration").remove();
 },4000);
 
