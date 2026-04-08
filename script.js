@@ -162,3 +162,45 @@ score: "ISSUE: " + issue
 
 alert("✅ Issue reported. Thank you!");
 }
+// =======================
+// RESULT FEEDBACK
+// =======================
+function showFeedback(score, total){
+
+let percent = (score / total) * 100;
+
+if(percent >= 85){
+
+// 🎉 Fire effect
+document.body.insertAdjacentHTML("beforeend", `
+<div id="celebration" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+color:white;
+font-size:30px;
+flex-direction:column;
+">
+🎉 Excellent Work! 🎉
+<p style="font-size:18px;">You are test-ready 🚀</p>
+</div>
+`);
+
+setTimeout(()=>{
+document.getElementById("celebration").remove();
+},3000);
+
+}else{
+
+// ⚠️ Improvement message
+alert("⚠️ You need more practice. Review concepts and try again.");
+}
+
+}
