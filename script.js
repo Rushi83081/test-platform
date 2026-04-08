@@ -171,36 +171,96 @@ let percent = (score / total) * 100;
 
 if(percent >= 85){
 
-// 🎉 Fire effect
-document.body.insertAdjacentHTML("beforeend", `
-<div id="celebration" style="
+// 🎉 Create overlay
+let div = document.createElement("div");
+div.id = "celebration";
+div.innerHTML = `
+<div style="
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.5);
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:9999;
-color:white;
-font-size:30px;
 flex-direction:column;
+color:white;
+font-size:28px;
+font-weight:bold;
 ">
-🎉 Excellent Work! 🎉
-<p style="font-size:18px;">You are test-ready 🚀</p>
+🎉 Congratulations! 🎉
+<p style="font-size:18px;margin-top:10px;">Excellent Performance 🚀</p>
+<canvas id="confettiCanvas"></canvas>
 </div>
-`);
+`;
 
+document.body.appendChild(div);
+
+// 🎆 Confetti animation
+let canvas = document.getElementById("confettiCanvas");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let ctx = canvas.getContext("2d");
+
+let confetti = [];
+
+for(let i=0;i<150;i++){
+confetti.push({
+x: Math.random()*canvas.width,
+y: Math.random()*canvas.height,
+r: Math.random()*6+2,
+d: Math.random()*150,
+color: `hsl(${Math.random()*360},100%,50%)`,
+tilt: Math.random()*10-5
+});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+confetti.forEach(c=>{
+ctx.beginPath();
+ctx.fillStyle = c.color;
+ctx.fillRect(c.x,c.y,c.r,c.r);
+});
+
+update();
+}
+
+function update(){
+confetti.forEach(c=>{
+c.y += Math.cos(c.d) + 2;
+c.x += Math.sin(c.d);
+
+if(c.y > canvas.height){
+c.y = -10;
+c.x = Math.random()*canvas.width;
+}
+});
+}
+
+let animation = setInterval(draw, 20);
+
+// ⏳ Remove after 4 sec
 setTimeout(()=>{
+clearInterval(animation);
 document.getElementById("celebration").remove();
-},3000);
+},4000);
 
-}else{
+}
+else if(percent >= 70){
 
-// ⚠️ Improvement message
-alert("⚠️ You need more practice. Review concepts and try again.");
+alert("👍 Good job! Review a few topics and improve.");
+
+}
+else{
+
+alert("⚠️ You need more practice. Go through the concepts again.");
+
 }
 
 }
