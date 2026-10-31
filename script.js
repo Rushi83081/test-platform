@@ -1,6 +1,22 @@
-// =======================
-// STEP 1: GO TO TEST SELECTION
-// =======================
+// ==========================================
+// 🎨 AVATAR STATE ENGINE CONTROL
+// ==========================================
+function setAvatarState(stateClassName) {
+    const avatar = document.getElementById("avatarSvg");
+    if (!avatar) return;
+    
+    // Clear out previous active animation/position classes
+    avatar.classList.remove('look-down', 'thinking', 'thumbs-up');
+    
+    // Add the new active status if one is passed
+    if (stateClassName) {
+        avatar.classList.add(stateClassName);
+    }
+}
+
+// ==========================================
+// 🚀 STEP 1: GO TO TEST SELECTION
+// ==========================================
 function goToSelection(){
     let name = document.getElementById("name").value.trim();
     let surname = document.getElementById("surname").value.trim();
@@ -10,69 +26,120 @@ function goToSelection(){
         return;
     }
 
-    // SAVE USER DATA
+    // SAVE USER DATA TO STORAGE
     localStorage.setItem("name", name);
     localStorage.setItem("surname", surname);
 
-    // HIDE FORM & SHOW TEST OPTIONS
+    // HIDE FORM & VISUALIZE NEXT STAGE
     document.getElementById("userForm").classList.add("hidden");
     document.getElementById("testSelection").classList.remove("hidden");
+    
+    // Switch character into thinking loop mode
+    setAvatarState('thinking');
 }
 
-// =======================
-// STEP 2: SELECT MAIN TEST
-// =======================
+// ==========================================
+// 📋 STEP 2: SELECT MAIN TEST CATEGORY
+// ==========================================
 function selectTest(type){
     localStorage.setItem("testType", type);
 
-    // HIDE MAIN OPTIONS
+    // HIDE MAIN SELECTION TRACK
     document.getElementById("testSelection").classList.add("hidden");
 
-    // IF DEVOPS → SHOW TOOLS
+    // IF DEVOPS ROUTE -> BURST OUT DETAILED TOOLS
     if(type === "devops"){
         document.getElementById("devopsOptions").classList.remove("hidden");
+        setAvatarState('thinking'); // Keep the character thinking during submenu
     } else {
         showStart(type);
     }
 }
 
-// =======================
-// STEP 3: SELECT DEVOPS TOOL
-// =======================
+// ==========================================
+// 🛠️ STEP 3: SELECT DEVOPS SPECIFIC TOOL
+// ==========================================
 function selectDevops(tool){
     localStorage.setItem("devopsTool", tool);
 
-    // HIDE TOOL OPTIONS
+    // HIDE THE SUBCATEGORY MENU CONTAINER
     document.getElementById("devopsOptions").classList.add("hidden");
 
-    // SHOW START BUTTON
+    // SHOW FINAL START PROMPT
     showStart("devops - " + tool);
 }
 
-// =======================
-// STEP 4: SHOW START BUTTON
-// =======================
+// ==========================================
+// 🏁 STEP 4: PREPARE AND SHOW START SELECTION
+// ==========================================
 function showStart(text){
+    setAvatarState(''); // Return the character to clean neutral stance
     document.getElementById("startSection").classList.remove("hidden");
     document.getElementById("selectedTestText").innerText = "You selected: " + text.toUpperCase();
 }
 
-// =======================
-// STEP 5: START TEST (ROUTING)
-// =======================
+// ==========================================
+// ⏱️ STEP 5: START TEST (CINEMATIC COUNTDOWN)
+// ==========================================
 function startTest(){
+    const overlay = document.getElementById("countdownOverlay");
+    const countdownDisplay = document.getElementById("countdownDisplay");
+    const wishTextDisplay = document.getElementById("wishTextDisplay");
+    const overlayAvatarBox = document.getElementById("overlayAvatarBox");
+    const originalAvatar = document.getElementById("avatarSvg");
+
+    // Clone the character block cleanly to render inside overlay space
+    overlayAvatarBox.innerHTML = "";
+    const clonedAvatar = originalAvatar.cloneNode(true);
+    clonedAvatar.id = "overlayAvatar";
+    overlayAvatarBox.appendChild(clonedAvatar);
+
+    // Activate overlay container views
+    overlay.classList.add("active");
+    
+    let count = 3;
+    countdownDisplay.innerText = count;
+    wishTextDisplay.classList.add("hidden");
+    countdownDisplay.classList.remove("hidden");
+
+    // Sequential 3.. 2.. 1.. Clock Beat Tick Interval Execution
+    let timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownDisplay.innerText = count;
+        } else if (count === 0) {
+            clearInterval(timer);
+            
+            // Hide running clock, set thumbs-up animation, fire off wish text banner
+            countdownDisplay.classList.add("hidden");
+            clonedAvatar.classList.remove('look-down', 'thinking');
+            clonedAvatar.classList.add('thumbs-up');
+            wishTextDisplay.classList.remove("hidden");
+
+            // Pause frame briefly for user engagement before routing execution
+            setTimeout(() => {
+                executeRouting();
+            }, 1500);
+        }
+    }, 1000);
+}
+
+// ==========================================
+// 🧭 STEP 6: DIRECT ROUTING INTERFACES
+// ==========================================
+function executeRouting() {
     let type = localStorage.getItem("testType");
     let tool = localStorage.getItem("devopsTool");
 
-    // AWS TEST
+    // AWS PATHWAYS
     if(type === "aws"){
         window.location.href = "tests/aws/aws.html";
     }
-    // LINUX TEST
+    // LINUX PATHWAYS
     else if(type === "linux"){
         window.location.href = "tests/linux/linux.html";
     }
-    // DEVOPS TEST
+    // DEVOPS TOOLS PATHWAYS
     else if(type === "devops"){
         if(tool === "git"){
             window.location.href = "tests/devops/git/git.html";
@@ -95,9 +162,9 @@ function startTest(){
     }
 }
 
-// =======================
-// 🔥 SEND DATA TO GOOGLE SHEET
-// =======================
+// ==========================================
+// 🔥 SEND AGGREGATED SCORE TO GOOGLE SHEETS
+// ==========================================
 function sendToGoogleSheet(score, testName){
     let name = localStorage.getItem("name");
     let surname = localStorage.getItem("surname");
@@ -107,7 +174,7 @@ function sendToGoogleSheet(score, testName){
         return;
     }
 
-    fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
+    fetch("https://google.com", {
         method: "POST",
         body: JSON.stringify({
             name: name,
@@ -118,9 +185,9 @@ function sendToGoogleSheet(score, testName){
     });
 }
 
-// =======================
-// 🐞 REPORT ISSUE FUNCTION
-// =======================
+// ==========================================
+// 🐞 THE INTEGRATED BUG REPORT ENGINE
+// ==========================================
 function reportIssue(testName){
     let name = localStorage.getItem("name");
     let surname = localStorage.getItem("surname");
@@ -128,7 +195,7 @@ function reportIssue(testName){
     let issue = prompt("Describe the issue you found:");
     if(!issue) return;
 
-    fetch("https://script.google.com/macros/s/AKfycbzE4SYIXjT2miAjT20YN0iSAordk1uQtoktJG8dhUel4-xTDYgHYdwBsfU-wKQA0PW5/exec", {
+    fetch("https://google.com", {
         method: "POST",
         body: JSON.stringify({
             name: name,
@@ -141,14 +208,14 @@ function reportIssue(testName){
     alert("✅ Issue reported. Thank you!");
 }
 
-// =======================
-// RESULT FEEDBACK
-// =======================
+// ==========================================
+// 🎉 FINAL RESULT CELEBRATION DISPLAYS
+// ==========================================
 function showFeedback(score, total){
     let percent = (score / total) * 100;
 
     if(percent >= 85){
-        // 🔥 Overlay
+        // Dynamic Celebrations Overlay
         let div = document.createElement("div");
         div.id = "celebration";
         div.innerHTML = `
@@ -179,7 +246,7 @@ function showFeedback(score, total){
 
         document.body.appendChild(div);
 
-        // 🎆 FIREWORKS
+        // Canvas Particles Initialization Loops
         let canvas = document.getElementById("fireworksCanvas");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -227,15 +294,6 @@ function showFeedback(score, total){
         let fireInterval = setInterval(createFirework, 600);
         let animation = setInterval(draw, 20);
 
+        // Self-destruct frame component overlay tracking loops after completion
         setTimeout(()=>{
             clearInterval(animation);
-            clearInterval(fireInterval);
-            document.getElementById("celebration").remove();
-        },4000);
-
-    } else if(percent >= 70){
-        alert("👍 Good job! Review a few topics and improve.");
-    } else {
-        alert("⚠️ You need more practice. Go through the concepts again.");
-    }
-}
