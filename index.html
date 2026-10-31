@@ -7,7 +7,7 @@
 <style>
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(-45deg, #0f172a, #1e1b4b, #2e1065, #0f172a);
+    background: linear-gradient(-45deg, #0a0f1d, #14112e, #220b45, #0a0f1d);
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
     margin: 0;
@@ -27,218 +27,302 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    padding: 30px;
-    max-width: 550px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 35px 30px;
+    max-width: 520px;
     width: 100%;
     margin: auto;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
     text-align: center;
     position: relative;
     z-index: 10;
 }
 
-/* --- CHARACTER GRAPHIC CANVAS --- */
-.avatar-box {
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 15px auto;
-    position: relative;
-}
-
-.boy-avatar {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* State: Thinking Animation */
-.boy-avatar.thinking {
-    animation: floatThink 2.5s ease-in-out infinite;
-}
-@keyframes floatThink {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(2deg); }
-}
-
-/* SVG Internal Target Transitions */
-.eye-pupil {
-    transition: transform 0.3s ease;
-}
-.boy-arm, .boy-thumb {
-    display: none;
-    transform-origin: 30px 110px;
-}
-.thinking-hand {
-    display: none;
-    transform-origin: 75px 120px;
-}
-
-/* Toggling parts via parent state classes */
-.boy-avatar.look-down .eye-pupil {
-    transform: translateY(4px) scaleY(0.9);
-}
-.boy-avatar.thinking .thinking-hand {
-    display: block;
-    animation: handNudge 2.5s ease-in-out infinite;
-}
-@keyframes handNudge {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-}
-.boy-avatar.thumbs-up .boy-arm, 
-.boy-avatar.thumbs-up .boy-thumb {
-    display: block;
-    animation: popThumb 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-@keyframes popThumb {
-    0% { transform: scale(0) rotate(-20deg); }
-    100% { transform: scale(1) rotate(0deg); }
-}
-
 h2 {
-    font-size: 28px;
+    font-size: 30px;
     margin: 0 0 25px 0;
-    background: linear-gradient(to right, #38bdf8, #818cf8);
+    background: linear-gradient(to right, #38bdf8, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.5px;
+    font-weight: 700;
 }
 
 h3 {
     color: #cbd5e1;
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-weight: 500;
 }
 
-/* --- FORM & DESIGN FIELDS --- */
 input {
-    padding: 14px 16px;
-    width: 80%;
-    max-width: 300px;
-    border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    background: rgba(15, 23, 42, 0.4);
+    padding: 14px 18px;
+    width: 82%;
+    max-width: 320px;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 15, 30, 0.6);
     color: #fff;
     font-size: 16px;
-    margin: 8px 0;
+    margin: 10px 0;
     outline: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-input::placeholder { color: #64748b; }
+input::placeholder { color: #475569; }
 input:focus {
     border-color: #38bdf8;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    background: rgba(10, 15, 30, 0.8);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
 }
 
 button {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
     border: none;
-    padding: 14px 28px;
+    padding: 14px 32px;
     font-size: 16px;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 14px;
     cursor: pointer;
-    margin: 8px;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 button:hover {
-    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
-button:active { transform: translateY(0); }
 
 .hidden { display: none !important; }
-.section { margin-top: 10px; }
+.section { margin-top: 5px; }
 
-/* --- FULLSCREEN COUNTDOWN SCREEN --- */
+.character-viewport {
+    width: 100%;
+    height: 190px;
+    margin: 25px auto 0 auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.char-container {
+    width: 120px;
+    height: 180px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
+}
+
+.boy-head {
+    width: 50px;
+    height: 52px;
+    background: #fcd34d;
+    border-radius: 50% 50% 45% 45%;
+    position: absolute;
+    top: 15px; left: 35px;
+    box-shadow: inset -3px -3px 8px rgba(217, 119, 6, 0.3), 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 5;
+}
+
+.boy-hair {
+    width: 54px;
+    height: 30px;
+    background: #271c19;
+    border-radius: 40% 40% 10% 10%;
+    position: absolute;
+    top: -5px; left: -2px;
+    box-shadow: inset 0 4px 6px rgba(255,255,255,0.1);
+}
+.boy-hair::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 15px;
+    background: #271c19;
+    top: 22px; left: 5px;
+    border-radius: 0 0 5px 0;
+    transform: rotate(-15deg);
+}
+
+.eye {
+    width: 9px; height: 11px;
+    background: #111827;
+    border-radius: 50%;
+    position: absolute;
+    top: 22px;
+}
+.eye.left { left: 12px; }
+.eye.right { right: 12px; }
+.eye::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    top: 2px; left: 2px;
+}
+
+.mouth {
+    width: 14px; height: 6px;
+    border-bottom: 3px solid #b45309;
+    border-radius: 0 0 50% 50%;
+    position: absolute;
+    bottom: 10px; left: 18px;
+    transition: all 0.3s ease;
+}
+
+.boy-torso {
+    width: 44px; height: 55px;
+    background: #ffffff;
+    border-radius: 12px 12px 4px 4px;
+    position: absolute;
+    top: 65px; left: 38px;
+    z-index: 4;
+    box-shadow: inset -4px -2px 8px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2);
+}
+.collar-l, .collar-r {
+    width: 0; height: 0;
+    border-top: 8px solid #e2e8f0;
+    border-right: 10px solid transparent;
+    position: absolute; top: 0;
+}
+.collar-l { left: 8px; border-right: 12px solid transparent; transform: rotate(-10deg); }
+.collar-r { right: 8px; border-left: 12px solid transparent; transform: rotate(10deg); }
+.tie {
+    width: 6px; height: 26px;
+    background: #2563eb;
+    position: absolute;
+    top: 6px; left: 19px;
+    border-radius: 2px 2px 4px 4px;
+}
+
+.boy-pants {
+    width: 44px; height: 45px;
+    background: #1e3a8a;
+    border-radius: 2px 2px 8px 8px;
+    position: absolute;
+    top: 118px; left: 38px;
+    z-index: 3;
+    box-shadow: inset -4px -2px 6px rgba(0,0,0,0.15);
+}
+
+.leg {
+    width: 14px; height: 25px;
+    background: #1e3a8a;
+    position: absolute;
+    bottom: -15px;
+    transform-origin: top center;
+    border-radius: 0 0 4px 4px;
+}
+.leg.left { left: 4px; }
+.leg.right { right: 4px; }
+.foot {
+    width: 18px; height: 10px;
+    background: #334155;
+    position: absolute; bottom: -8px; left: -2px;
+    border-radius: 6px 6px 2px 2px;
+}
+
+.arm {
+    width: 12px; height: 42px;
+    background: #ffffff;
+    position: absolute;
+    top: 4px;
+    transform-origin: top center;
+    border-radius: 6px;
+    box-shadow: inset -2px 0 4px rgba(0,0,0,0.05);
+}
+.arm.left { left: -10px; transform: rotate(15deg); }
+.arm.right { right: -10px; transform: rotate(-15deg); }
+.hand {
+    width: 12px; height: 12px;
+    background: #fcd34d;
+    position: absolute; bottom: -4px; left: 0;
+    border-radius: 50%;
+}
+
+.char-container.look-down .eye { transform: translateY(3px); }
+.char-container.look-down .boy-head { transform: translateY(2px) rotateX(10deg); }
+
+.char-container.walking .leg.left { animation: walkCycle 0.6s infinite alternate ease-in-out; }
+.char-container.walking .leg.right { animation: walkCycle 0.6s infinite alternate-reverse ease-in-out; }
+.char-container.walking .arm.left { animation: armCycle 0.6s infinite alternate-reverse ease-in-out; }
+.char-container.walking .arm.right { animation: armCycle 0.6s infinite alternate ease-in-out; }
+.char-container.walking { animation: bobCycle 0.3s infinite alternate ease-in-out; }
+
+@keyframes walkCycle { 0% { transform: rotate(28deg); } 100% { transform: rotate(-28deg); } }
+@keyframes armCycle { 0% { transform: rotate(20deg); } 100% { transform: rotate(-20deg); } }
+@keyframes bobCycle { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
+
+.char-container.thinking { animation: thinkFloat 3s infinite ease-in-out; }
+.char-container.thinking .eye { transform: translate(-1px, -2px); }
+.char-container.thinking .mouth { width: 10px; height: 3px; border-radius: 50% 50% 0 0; border-top: 3px solid #b45309; border-bottom: none; bottom: 12px; }
+.char-container.thinking .arm.left { transform: rotate(-40deg) translateY(-4px); }
+.char-container.thinking .arm.right { transform: rotate(-110deg) translateX(-5px); top: 2px; }
+
+@keyframes thinkFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(1.5deg); } }
+
+.char-container.thumbs-up .arm.right { transform: rotate(-135deg); top: 2px; }
+.char-container.thumbs-up .mouth { width: 18px; height: 10px; border-radius: 0 0 50% 50%; border-bottom-width: 4px; }
+.char-container.thumbs-up .eye { transform: scaleY(0.2) translateY(2px); background: #b45309; }
+
 #countdownOverlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(20px);
+    background: rgba(7, 10, 19, 0.97);
+    backdrop-filter: blur(25px);
     z-index: 99999;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #countdownOverlay.active { opacity: 1; pointer-events: auto; }
 
 .countdown-number {
-    font-size: 120px;
-    font-weight: 800;
+    font-size: 130px;
+    font-weight: 900;
     color: #38bdf8;
-    text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
-    animation: scalePulse 1s ease-in-out infinite;
+    text-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
+    animation: pulseZoom 1s ease-in-out infinite;
 }
-@keyframes scalePulse {
-    0% { transform: scale(0.6); opacity: 0; }
+@keyframes pulseZoom {
+    0% { transform: scale(0.5); opacity: 0; }
     30% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); opacity: 0; }
 }
 
 .wish-text {
-    font-size: 42px;
-    font-weight: 800;
-    background: linear-gradient(to right, #f59e0b, #ef4444, #ec4899);
+    font-size: 46px;
+    font-weight: 900;
+    background: linear-gradient(to right, #fbbf24, #f87171, #f472b6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-top: 20px;
+    margin-top: 25px;
     letter-spacing: 1px;
-    animation: textPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    animation: popReveal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
-@keyframes textPop {
-    0% { transform: scale(0.5); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
+@keyframes popReveal { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
 
 <div class="container">
-    
-    <!-- THE RESPONSIVE BOY AVATAR SYSTEM -->
-    <div class="avatar-box">
-        <svg class="boy-avatar" id="avatarSvg" viewBox="0 0 150 150">
-            <!-- Hair Background -->
-            <path d="M40,50 Q75,15 110,50 Q115,35 100,25 Q75,10 50,25 Q35,35 40,50" fill="#2d1d13"/>
-            <!-- Face -->
-            <circle cx="75" cy="65" r="35" fill="#fcd34d"/>
-            <!-- Hair Front Fringe -->
-            <path d="M41,45 Q60,35 75,48 Q90,35 109,45 Q95,25 75,30 Q55,25 41,45" fill="#3d2a1d"/>
-            <!-- Eyes Base (White) -->
-            <circle cx="62" cy="60" r="6" fill="#fff"/>
-            <circle cx="88" cy="60" r="6" fill="#fff"/>
-            <!-- Pupils (Moving Elements) -->
-            <circle class="eye-pupil" id="pupilL" cx="62" cy="60" r="3" fill="#0f172a"/>
-            <circle class="eye-pupil" id="pupilR" cx="88" cy="60" r="3" fill="#0f172a"/>
-            <!-- Happy Mouth -->
-            <path d="M65,78 Q75,86 85,78" fill="none" stroke="#9a3412" stroke-width="3" stroke-linecap="round"/>
-            <!-- Thinking Hand Arm Pose Component -->
-            <path class="thinking-hand" d="M60,95 Q52,78 68,75" fill="none" stroke="#fcd34d" stroke-width="7" stroke-linecap="round"/>
-            <!-- Thumbs up Arm Component -->
-            <path class="boy-arm" d="M110,85 Q130,85 125,70" fill="none" stroke="#fcd34d" stroke-width="8" stroke-linecap="round"/>
-            <path class="boy-thumb" d="M125,70 Q125,58 129,58 Q134,58 132,70" fill="none" stroke="#fcd34d" stroke-width="6" stroke-linecap="round"/>
-        </svg>
-    </div>
-
     <h2>DevOps Test Platform</h2>
 
-    <!-- STEP 1: USER INPUT -->
+    <!-- STEP 1: LOGIN FORM -->
     <div id="userForm" class="section">
-        <input type="text" id="name" placeholder="Enter Name" onfocus="setAvatarState('look-down')" onblur="setAvatarState('')">
-        <input type="text" id="surname" placeholder="Enter Surname" onfocus="setAvatarState('look-down')" onblur="setAvatarState('')">
+        <input type="text" id="name" placeholder="Enter Name" onfocus="setAvatarState('look-down')" onblur="setAvatarState('walking')">
+        <input type="text" id="surname" placeholder="Enter Surname" onfocus="setAvatarState('look-down')" onblur="setAvatarState('walking')">
         <br>
         <button onclick="goToSelection()">Next</button>
     </div>
@@ -251,7 +335,7 @@ button:active { transform: translateY(0); }
         <button onclick="selectTest('devops')">DevOps Test</button>
     </div>
 
-    <!-- STEP 3: DEVOPS OPTIONS -->
+    <!-- STEP 3: DEVOPS SPECIFIC SUBOPTIONS -->
     <div id="devopsOptions" class="section hidden">
         <h3>Select DevOps Tool</h3>
         <button onclick="selectDevops('git')">Git</button>
@@ -262,16 +346,39 @@ button:active { transform: translateY(0); }
         <button onclick="selectDevops('all')">All DevOps</button>
     </div>
 
-    <!-- STEP 4: START -->
+    <!-- STEP 4: PRE-START VERIFICATION INTERFACE -->
     <div id="startSection" class="section hidden">
         <h3 id="selectedTestText"></h3>
         <button onclick="startTest()">Start Test</button>
     </div>
+
+    <!-- 🕺 DYNAMIC 3D CHARACTER RIG VIEWPORT -->
+    <div class="character-viewport">
+        <div class="char-container walking" id="3dBoyRig">
+            <div class="boy-head">
+                <div class="boy-hair"></div>
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="mouth"></div>
+            </div>
+            <div class="boy-torso">
+                <div class="collar-l"></div>
+                <div class="collar-r"></div>
+                <div class="tie"></div>
+                <div class="arm left"><div class="hand"></div></div>
+                <div class="arm right"><div class="hand"></div></div>
+            </div>
+            <div class="boy-pants">
+                <div class="leg left"><div class="foot"></div></div>
+                <div class="leg right"><div class="foot"></div></div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- CINEMATIC ANIMATED OVERLAY FOR COUNTDOWN -->
+<!-- 🎬 CINEMATIC MOTION COUNTDOWN LAYERS -->
 <div id="countdownOverlay">
-    <div class="avatar-box" id="overlayAvatarBox" style="width:200px; height:200px;"></div>
+    <div class="character-viewport" id="overlayViewport" style="height:220px; margin-bottom:20px;"></div>
     <div id="countdownDisplay" class="countdown-number">3</div>
     <div id="wishTextDisplay" class="wish-text hidden">ALL THE BEST! 🚀</div>
 </div>
