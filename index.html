@@ -4,10 +4,12 @@
 <title>DevOps Test Platform</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Load Three.js Engine from trusted CDN for smooth 3D rendering loops -->
+<script src="https://cloudflare.com"></script>
 <style>
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(-45deg, #0a0f1d, #14112e, #220b45, #0a0f1d);
+    background: linear-gradient(-45deg, #090d16, #110e25, #1d093b, #090d16);
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
     margin: 0;
@@ -16,7 +18,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 95vh;
-    overflow-x: hidden;
+    overflow: hidden;
     color: #f8fafc;
 }
 
@@ -27,34 +29,34 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 35px 30px;
-    max-width: 520px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 30px;
+    max-width: 500px;
     width: 100%;
     margin: auto;
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
     text-align: center;
     position: relative;
     z-index: 10;
 }
 
 h2 {
-    font-size: 30px;
-    margin: 0 0 25px 0;
-    background: linear-gradient(to right, #38bdf8, #a78bfa);
+    font-size: 32px;
+    margin: 0 0 20px 0;
+    background: linear-gradient(to right, #38bdf8, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: 800;
     letter-spacing: -0.5px;
-    font-weight: 700;
 }
 
 h3 {
-    color: #cbd5e1;
-    font-size: 20px;
+    color: #94a3b8;
+    font-size: 19px;
     margin-bottom: 25px;
     font-weight: 500;
 }
@@ -64,8 +66,8 @@ input {
     width: 82%;
     max-width: 320px;
     border-radius: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    background: rgba(10, 15, 30, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    background: rgba(5, 8, 16, 0.7);
     color: #fff;
     font-size: 16px;
     margin: 10px 0;
@@ -75,12 +77,12 @@ input {
 input::placeholder { color: #475569; }
 input:focus {
     border-color: #38bdf8;
-    background: rgba(10, 15, 30, 0.8);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    background: rgba(5, 8, 16, 0.9);
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
 }
 
 button {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     border: none;
     padding: 14px 32px;
@@ -88,230 +90,76 @@ button {
     font-weight: 600;
     border-radius: 14px;
     cursor: pointer;
-    margin: 10px;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+    margin: 8px;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 button:hover {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
 }
 
 .hidden { display: none !important; }
 .section { margin-top: 5px; }
 
-.character-viewport {
+/* 🌟 REAL-TIME 3D VIEWPORT CANVAS (SITS PERFECTLY AT THE BOTTOM/TASKBAR REGION) */
+.canvas-3d-viewport {
     width: 100%;
-    height: 190px;
-    margin: 25px auto 0 auto;
+    height: 220px;
+    margin-top: 20px;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    border-radius: 16px;
+    background: radial-gradient(circle at center, rgba(30,41,59,0.3) 0%, transparent 70%);
     overflow: hidden;
 }
 
-.char-container {
-    width: 120px;
-    height: 180px;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: all 0.5s ease;
+#threeJsCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
-.boy-head {
-    width: 50px;
-    height: 52px;
-    background: #fcd34d;
-    border-radius: 50% 50% 45% 45%;
-    position: absolute;
-    top: 15px; left: 35px;
-    box-shadow: inset -3px -3px 8px rgba(217, 119, 6, 0.3), 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 5;
-}
-
-.boy-hair {
-    width: 54px;
-    height: 30px;
-    background: #271c19;
-    border-radius: 40% 40% 10% 10%;
-    position: absolute;
-    top: -5px; left: -2px;
-    box-shadow: inset 0 4px 6px rgba(255,255,255,0.1);
-}
-.boy-hair::after {
-    content: '';
-    position: absolute;
-    width: 20px; height: 15px;
-    background: #271c19;
-    top: 22px; left: 5px;
-    border-radius: 0 0 5px 0;
-    transform: rotate(-15deg);
-}
-
-.eye {
-    width: 9px; height: 11px;
-    background: #111827;
-    border-radius: 50%;
-    position: absolute;
-    top: 22px;
-}
-.eye.left { left: 12px; }
-.eye.right { right: 12px; }
-.eye::after {
-    content: '';
-    position: absolute;
-    width: 3px; height: 3px;
-    background: #fff;
-    border-radius: 50%;
-    top: 2px; left: 2px;
-}
-
-.mouth {
-    width: 14px; height: 6px;
-    border-bottom: 3px solid #b45309;
-    border-radius: 0 0 50% 50%;
-    position: absolute;
-    bottom: 10px; left: 18px;
-    transition: all 0.3s ease;
-}
-
-.boy-torso {
-    width: 44px; height: 55px;
-    background: #ffffff;
-    border-radius: 12px 12px 4px 4px;
-    position: absolute;
-    top: 65px; left: 38px;
-    z-index: 4;
-    box-shadow: inset -4px -2px 8px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.2);
-}
-.collar-l, .collar-r {
-    width: 0; height: 0;
-    border-top: 8px solid #e2e8f0;
-    border-right: 10px solid transparent;
-    position: absolute; top: 0;
-}
-.collar-l { left: 8px; border-right: 12px solid transparent; transform: rotate(-10deg); }
-.collar-r { right: 8px; border-left: 12px solid transparent; transform: rotate(10deg); }
-.tie {
-    width: 6px; height: 26px;
-    background: #2563eb;
-    position: absolute;
-    top: 6px; left: 19px;
-    border-radius: 2px 2px 4px 4px;
-}
-
-.boy-pants {
-    width: 44px; height: 45px;
-    background: #1e3a8a;
-    border-radius: 2px 2px 8px 8px;
-    position: absolute;
-    top: 118px; left: 38px;
-    z-index: 3;
-    box-shadow: inset -4px -2px 6px rgba(0,0,0,0.15);
-}
-
-.leg {
-    width: 14px; height: 25px;
-    background: #1e3a8a;
-    position: absolute;
-    bottom: -15px;
-    transform-origin: top center;
-    border-radius: 0 0 4px 4px;
-}
-.leg.left { left: 4px; }
-.leg.right { right: 4px; }
-.foot {
-    width: 18px; height: 10px;
-    background: #334155;
-    position: absolute; bottom: -8px; left: -2px;
-    border-radius: 6px 6px 2px 2px;
-}
-
-.arm {
-    width: 12px; height: 42px;
-    background: #ffffff;
-    position: absolute;
-    top: 4px;
-    transform-origin: top center;
-    border-radius: 6px;
-    box-shadow: inset -2px 0 4px rgba(0,0,0,0.05);
-}
-.arm.left { left: -10px; transform: rotate(15deg); }
-.arm.right { right: -10px; transform: rotate(-15deg); }
-.hand {
-    width: 12px; height: 12px;
-    background: #fcd34d;
-    position: absolute; bottom: -4px; left: 0;
-    border-radius: 50%;
-}
-
-.char-container.look-down .eye { transform: translateY(3px); }
-.char-container.look-down .boy-head { transform: translateY(2px) rotateX(10deg); }
-
-.char-container.walking .leg.left { animation: walkCycle 0.6s infinite alternate ease-in-out; }
-.char-container.walking .leg.right { animation: walkCycle 0.6s infinite alternate-reverse ease-in-out; }
-.char-container.walking .arm.left { animation: armCycle 0.6s infinite alternate-reverse ease-in-out; }
-.char-container.walking .arm.right { animation: armCycle 0.6s infinite alternate ease-in-out; }
-.char-container.walking { animation: bobCycle 0.3s infinite alternate ease-in-out; }
-
-@keyframes walkCycle { 0% { transform: rotate(28deg); } 100% { transform: rotate(-28deg); } }
-@keyframes armCycle { 0% { transform: rotate(20deg); } 100% { transform: rotate(-20deg); } }
-@keyframes bobCycle { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
-
-.char-container.thinking { animation: thinkFloat 3s infinite ease-in-out; }
-.char-container.thinking .eye { transform: translate(-1px, -2px); }
-.char-container.thinking .mouth { width: 10px; height: 3px; border-radius: 50% 50% 0 0; border-top: 3px solid #b45309; border-bottom: none; bottom: 12px; }
-.char-container.thinking .arm.left { transform: rotate(-40deg) translateY(-4px); }
-.char-container.thinking .arm.right { transform: rotate(-110deg) translateX(-5px); top: 2px; }
-
-@keyframes thinkFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-6px) rotate(1.5deg); } }
-
-.char-container.thumbs-up .arm.right { transform: rotate(-135deg); top: 2px; }
-.char-container.thumbs-up .mouth { width: 18px; height: 10px; border-radius: 0 0 50% 50%; border-bottom-width: 4px; }
-.char-container.thumbs-up .eye { transform: scaleY(0.2) translateY(2px); background: #b45309; }
-
+/* --- COUNTDOWN MOTION OVERLAYS --- */
 #countdownOverlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(7, 10, 19, 0.97);
-    backdrop-filter: blur(25px);
+    background: rgba(5, 8, 16, 0.98);
+    backdrop-filter: blur(30px);
     z-index: 99999;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.4s ease;
 }
 #countdownOverlay.active { opacity: 1; pointer-events: auto; }
 
 .countdown-number {
-    font-size: 130px;
+    font-size: 140px;
     font-weight: 900;
     color: #38bdf8;
-    text-shadow: 0 0 40px rgba(56, 189, 248, 0.4);
-    animation: pulseZoom 1s ease-in-out infinite;
+    text-shadow: 0 0 50px rgba(56, 189, 248, 0.4);
+    animation: scalePulse 1s ease-in-out infinite;
 }
-@keyframes pulseZoom {
+@keyframes scalePulse {
     0% { transform: scale(0.5); opacity: 0; }
     30% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); opacity: 0; }
 }
 
 .wish-text {
-    font-size: 46px;
+    font-size: 48px;
     font-weight: 900;
-    background: linear-gradient(to right, #fbbf24, #f87171, #f472b6);
+    background: linear-gradient(to right, #fbbf24, #f87171, #ec4899);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-top: 25px;
+    margin-top: 20px;
     letter-spacing: 1px;
-    text-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    animation: popReveal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: textPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
-@keyframes popReveal { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes textPop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -319,10 +167,10 @@ button:hover {
 <div class="container">
     <h2>DevOps Test Platform</h2>
 
-    <!-- STEP 1: LOGIN FORM -->
+    <!-- STEP 1: USER INPUT -->
     <div id="userForm" class="section">
-        <input type="text" id="name" placeholder="Enter Name" onfocus="setAvatarState('look-down')" onblur="setAvatarState('walking')">
-        <input type="text" id="surname" placeholder="Enter Surname" onfocus="setAvatarState('look-down')" onblur="setAvatarState('walking')">
+        <input type="text" id="name" placeholder="Enter Name" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
+        <input type="text" id="surname" placeholder="Enter Surname" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
         <br>
         <button onclick="goToSelection()">Next</button>
     </div>
@@ -335,7 +183,7 @@ button:hover {
         <button onclick="selectTest('devops')">DevOps Test</button>
     </div>
 
-    <!-- STEP 3: DEVOPS SPECIFIC SUBOPTIONS -->
+    <!-- STEP 3: DEVOPS OPTIONS -->
     <div id="devopsOptions" class="section hidden">
         <h3>Select DevOps Tool</h3>
         <button onclick="selectDevops('git')">Git</button>
@@ -346,43 +194,259 @@ button:hover {
         <button onclick="selectDevops('all')">All DevOps</button>
     </div>
 
-    <!-- STEP 4: PRE-START VERIFICATION INTERFACE -->
+    <!-- STEP 4: START -->
     <div id="startSection" class="section hidden">
         <h3 id="selectedTestText"></h3>
         <button onclick="startTest()">Start Test</button>
     </div>
 
-    <!-- 🕺 DYNAMIC 3D CHARACTER RIG VIEWPORT -->
-    <div class="character-viewport">
-        <div class="char-container walking" id="3dBoyRig">
-            <div class="boy-head">
-                <div class="boy-hair"></div>
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="mouth"></div>
-            </div>
-            <div class="boy-torso">
-                <div class="collar-l"></div>
-                <div class="collar-r"></div>
-                <div class="tie"></div>
-                <div class="arm left"><div class="hand"></div></div>
-                <div class="arm right"><div class="hand"></div></div>
-            </div>
-            <div class="boy-pants">
-                <div class="leg left"><div class="foot"></div></div>
-                <div class="leg right"><div class="foot"></div></div>
-            </div>
-        </div>
+    <!-- 🌟 TASKBAR LEVEL 3D RENDER CANVAS VIEWPORT -->
+    <div class="canvas-3d-viewport">
+        <div id="threeJsCanvas"></div>
     </div>
 </div>
 
-<!-- 🎬 CINEMATIC MOTION COUNTDOWN LAYERS -->
+<!-- FULLSCREEN COUNTDOWN SYSTEM -->
 <div id="countdownOverlay">
-    <div class="character-viewport" id="overlayViewport" style="height:220px; margin-bottom:20px;"></div>
+    <div class="canvas-3d-viewport" id="overlayCanvasViewport" style="height:250px; width:250px; margin-bottom:10px;"></div>
     <div id="countdownDisplay" class="countdown-number">3</div>
     <div id="wishTextDisplay" class="wish-text hidden">ALL THE BEST! 🚀</div>
 </div>
 
 <script src="script.js"></script>
-</body>
-</html>
+
+<!-- =============================================================
+     🎨 HIGH-FIDELITY AUTOMATED GL-ENGINE RIGGING CONTROLS
+     ============================================================= -->
+<script>
+let scene, camera, renderer, characterGroup;
+let headMesh, leftArm, rightArm, leftLeg, rightLeg;
+let targetExpression = 'walk';
+let globalAnimationTimer = 0;
+
+function init3DCharacterEngine() {
+    const containerElement = document.getElementById('threeJsCanvas');
+    const displayWidth = containerElement.clientWidth;
+    const displayHeight = 220;
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(45, displayWidth / displayHeight, 0.1, 1000);
+    camera.position.set(0, 0, 7.5);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(displayWidth, displayHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    containerElement.appendChild(renderer.domElement);
+
+    // Studio Lighting setup to give a true premium 3D look
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(5, 10, 7);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
+
+    const rimLight = new THREE.DirectionalLight(0xa78bfa, 0.6);
+    rimLight.position.set(-5, 2, -5);
+    scene.add(rimLight);
+
+    // Character Group Root Rig
+    characterGroup = new THREE.Group();
+    characterGroup.position.y = -1.6;
+    scene.add(characterGroup);
+
+    // High Quality Shaded Materials
+    const skinMaterial = new THREE.MeshStandardMaterial({ color: 0xfcd34d, roughness: 0.35, metalness: 0.05 });
+    const hairMaterial = new THREE.MeshStandardMaterial({ color: 0x271c19, roughness: 0.5 });
+    const shirtMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 });
+    const pantsMaterial = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.4 });
+    const tieMaterial = new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.4 });
+    const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0x111827 });
+    const shoeMaterial = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.5 });
+
+    // 🧑 HEAD MESH 
+    const headGeo = new THREE.SphereGeometry(0.7, 32, 32);
+    headGeo.scale(1, 1.05, 0.95);
+    headMesh = new THREE.Mesh(headGeo, skinMaterial);
+    headMesh.position.y = 2.4;
+    characterGroup.add(headMesh);
+
+    // Dynamic Eyes System
+    const eyeGeo = new THREE.SphereGeometry(0.09, 16, 16);
+    const leftEye = new THREE.Mesh(eyeGeo, eyeMaterial);
+    leftEye.position.set(-0.25, 0.1, 0.6);
+    headMesh.add(leftEye);
+
+    const rightEye = new THREE.Mesh(eyeGeo, eyeMaterial);
+    rightEye.position.set(0.25, 0.1, 0.6);
+    headMesh.add(rightEye);
+
+    // Handsome Styled Hair Layers
+    const hairTopGeo = new THREE.SphereGeometry(0.74, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
+    const hairTop = new THREE.Mesh(hairTopGeo, hairMaterial);
+    hairTop.position.y = 0.1;
+    headMesh.add(hairTop);
+
+    const swooshGeo = new THREE.ConeGeometry(0.3, 0.6, 16);
+    const hairSwoosh = new THREE.Mesh(swooshGeo, hairMaterial);
+    hairSwoosh.position.set(0.1, 0.6, 0.4);
+    hairSwoosh.rotation.set(0.3, 0, -0.6);
+    headMesh.add(hairSwoosh);
+
+    // 👔 TORSO MESH (White Shirt + Blue Tie)
+    const torsoGeo = new THREE.CylinderGeometry(0.55, 0.45, 1.4, 32);
+    const torsoMesh = new THREE.Mesh(torsoGeo, shirtMaterial);
+    torsoMesh.position.y = 1.2;
+    characterGroup.add(torsoMesh);
+
+    const tieGeo = new THREE.BoxGeometry(0.12, 0.6, 0.05);
+    const tieMesh = new THREE.Mesh(tieGeo, tieMaterial);
+    tieMesh.position.set(0, 0.2, 0.52);
+    tieMesh.rotation.x = 0.05;
+    torsoMesh.add(tieMesh);
+
+    // 👖 PANTS MESH (Blue Pants Layout)
+    const pantsGeo = new THREE.CylinderGeometry(0.46, 0.46, 0.5, 32);
+    const pantsMesh = new THREE.Mesh(pantsGeo, pantsMaterial);
+    pantsMesh.position.y = 0.35;
+    characterGroup.add(pantsMesh);
+
+    // 🦵 LIMBS RIGGING SYSTEM
+    const limbGeo = new THREE.CylinderGeometry(0.15, 0.13, 0.9, 16);
+    
+    // Left Leg Setup
+    leftLeg = new THREE.Group();
+    leftLeg.position.set(-0.25, 0.2, 0);
+    characterGroup.add(leftLeg);
+    const leftLegMesh = new THREE.Mesh(limbGeo, pantsMaterial);
+    leftLegMesh.position.y = -0.45;
+    leftLeg.add(leftLegMesh);
+    const leftFoot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.15, 0.35), shoeMaterial);
+    leftFoot.position.set(0, -0.9, 0.08);
+    leftLeg.add(leftFoot);
+
+    // Right Leg Setup
+    rightLeg = new THREE.Group();
+    rightLeg.position.set(0.25, 0.2, 0);
+    characterGroup.add(rightLeg);
+    const rightLegMesh = new THREE.Mesh(limbGeo, pantsMaterial);
+    rightLegMesh.position.y = -0.45;
+    rightLeg.add(rightLegMesh);
+    const rightFoot = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.15, 0.35), shoeMaterial);
+    rightFoot.position.set(0, -0.9, 0.08);
+    rightLeg.add(rightFoot);
+
+    // Left Arm Setup
+    leftArm = new THREE.Group();
+    leftArm.position.set(-0.7, 1.7, 0);
+    characterGroup.add(leftArm);
+    const leftArmMesh = new THREE.Mesh(limbGeo, shirtMaterial);
+    leftArmMesh.position.y = -0.45;
+    leftArm.add(leftArmMesh);
+    const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 16), skinMaterial);
+    leftHand.position.y = -0.9;
+    leftArm.add(leftHand);
+
+    // Right Arm Setup
+    rightArm = new THREE.Group();
+    rightArm.position.set(0.7, 1.7, 0);
+    characterGroup.add(rightArm);
+    const rightArmMesh = new THREE.Mesh(limbGeo, shirtMaterial);
+    rightArmMesh.position.y = -0.45;
+    rightArm.add(rightArmMesh);
+    const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 16), skinMaterial);
+    rightHand.position.y = -0.9;
+    rightArm.add(rightHand);
+
+    animate3DLoop();
+}
+
+// Real-time programmatic expression state triggers
+function trigger3DExpression(poseType) {
+    targetExpression = poseType;
+}
+
+function animate3DLoop() {
+    requestAnimationFrame(animate3DLoop);
+    globalAnimationTimer += 0.05;
+
+    // Default micro idle breathing
+    headMesh.rotation.y = Math.sin(globalAnimationTimer * 0.5) * 0.05;
+    headMesh.position.y = 2.4 + Math.sin(globalAnimationTimer) * 0.02;
+
+    // Reset rotation speeds smoothly
+    let lerpSpeed = 0.15;
+
+    if (targetExpression === 'walk') {
+        // Natural handsome walking rhythm configuration
+        leftLeg.rotation.x = Math.sin(globalAnimationTimer * 1.5) * 0.4;
+        rightLeg.rotation.x = -Math.sin(globalAnimationTimer * 1.5) * 0.4;
+        leftArm.rotation.x = -Math.sin(globalAnimationTimer * 1.5) * 0.3;
+        rightArm.rotation.x = Math.sin(globalAnimationTimer * 1.5) * 0.3;
+        leftArm.rotation.z = THREE.MathUtils.lerp(leftArm.rotation.z, -0.1, lerpSpeed);
+        rightArm.rotation.z = THREE.MathUtils.lerp(rightArm.rotation.z, 0.1, lerpSpeed);
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, 0, lerpSpeed);
+    } 
+    else if (targetExpression === 'look-down') {
+        // Dynamic look down expression (tilted neck bone vectors)
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, 0.3, lerpSpeed);
+        leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0.1, lerpSpeed);
+        rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, 0.1, lerpSpeed);
+        leftLeg.rotation.x = THREE.MathUtils.lerp(leftLeg.rotation.x, 0, lerpSpeed);
+        rightLeg.rotation.x = THREE.MathUtils.lerp(rightLeg.rotation.x, 0, lerpSpeed);
+    } 
+    else if (targetExpression === 'thinking') {
+        // Intellectual thinking pose (cross arm to chin structure)
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, -0.1, lerpSpeed);
+headMesh.rotation.y = THREE.MathUtils.lerp(headMesh.rotation.y, -0.2, lerpSpeed);
+leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, -0.4, lerpSpeed);
+leftArm.rotation.z = THREE.MathUtils.lerp(leftArm.rotation.z, 0.3, lerpSpeed);
+rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, -1.8, lerpSpeed);
+rightArm.rotation.y = THREE.MathUtils.lerp(rightArm.rotation.y, -0.6, lerpSpeed);
+leftLeg.rotation.x = THREE.MathUtils.lerp(leftLeg.rotation.x, 0.1, lerpSpeed);
+rightLeg.rotation.x = THREE.MathUtils.lerp(rightLeg.rotation.x, -0.1, lerpSpeed);
+}
+else if (targetExpression === 'thumbs-up') {
+// Energetic thumbs up pose
+headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, -0.05, lerpSpeed);
+headMesh.rotation.y = THREE.MathUtils.lerp(headMesh.rotation.y, 0, lerpSpeed);
+leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0.2, lerpSpeed);
+leftArm.rotation.z = THREE.MathUtils.lerp(leftArm.rotation.z, -0.2, lerpSpeed);
+rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, -2.1, lerpSpeed);
+rightArm.rotation.z = THREE.MathUtils.lerp(rightArm.rotation.z, -0.4, lerpSpeed);
+leftLeg.rotation.x = THREE.MathUtils.lerp(leftLeg.rotation.x, 0, lerpSpeed);
+rightLeg.rotation.x = THREE.MathUtils.lerp(rightLeg.rotation.x, 0, lerpSpeed);
+}
+renderer.render(scene, camera);
+}
+// Window Responsive resizing hooks
+window.addEventListener('resize', () => {
+if (!containerElement || !camera || !renderer) return;
+const w = document.getElementById('threeJsCanvas').clientWidth;
+camera.aspect = w / 220;
+camera.updateProjectionMatrix();
+renderer.setSize(w, 220);
+});
+// Launch on canvas mounting
+window.addEventListener('DOMContentLoaded', init3DCharacterEngine);
+
+---
+
+### 🎨 How to update your `script.js` file next
+To make sure your existing transition buttons hook perfectly into the new Three.js real-time animation state machine, simply add this one line inside your `script.js` functions:
+
+* In **`goToSelection()`** and **`selectTest()`** → add `trigger3DExpression('thinking');`
+* In **`showStart()`** → add `trigger3DExpression('walk');`
+* In **`startTest()`** → change the overlay render logic to switch expression state using `trigger3DExpression('thumbs-up');`
+
+---
+
+<FollowUp>
+Now that your root page has a stunning WebGL 3D schoolboy character walking and reacting directly inside your application framework, what file should we work on next? You can paste:
+* One of your assessment pages (like **`tests/aws/aws.html`**).
+* One of your question collections (like **`questions.js`**).
+
+Whenever you're ready, let's keep going!
+</FollowUp>
