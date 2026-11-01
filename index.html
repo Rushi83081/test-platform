@@ -4,13 +4,10 @@
 <title>DevOps Test Platform</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Industry-Standard High-Performance 3D WebGL Engine Core Libraries -->
-<script src="https://cloudflare.com"></script>
-<script src="https://jsdelivr.net"></script>
 <style>
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(-45deg, #05070f, #0b0a1a, #130528, #05070f);
+    background: linear-gradient(-45deg, #060913, #0f0d22, #1b0936, #060913);
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
     margin: 0;
@@ -33,13 +30,13 @@ body {
     background: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    padding: 35px 30px;
+    padding: 30px;
     max-width: 460px;
     width: 100%;
     margin: auto;
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
     text-align: center;
     position: relative;
     z-index: 10;
@@ -47,7 +44,7 @@ body {
 h2 {
     font-size: 32px;
     margin: 0 0 20px 0;
-    background: linear-gradient(to right, #38bdf8, #a78bfa);
+    background: linear-gradient(to right, #38bdf8, #c084fc);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
@@ -66,21 +63,23 @@ input {
     width: 82%;
     max-width: 320px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(4, 6, 12, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    background: rgba(5, 8, 16, 0.7);
     color: #fff;
     font-size: 16px;
     margin: 10px 0;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+input::placeholder { color: #475569; }
 input:focus {
     border-color: #38bdf8;
+    background: rgba(5, 8, 16, 0.9);
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
 }
 
 button {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     color: white;
     border: none;
     padding: 14px 32px;
@@ -89,39 +88,72 @@ button {
     border-radius: 14px;
     cursor: pointer;
     margin: 8px;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 button:hover {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
 }
 
 .hidden { display: none !important; }
 .section { margin-top: 5px; }
-
 .canvas-3d-viewport {
     width: 100%;
-    height: 220px;
+    height: 200px;
     margin-top: 20px;
     position: relative;
     border-radius: 20px;
-    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 75%);
+    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.06) 0%, transparent 75%);
     overflow: hidden;
 }
-#threeJsCanvas { width: 100%; height: 100%; display: block; }
+
+#charCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
 
 #countdownOverlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(4, 6, 12, 0.99);
-    backdrop-filter: blur(40px); z-index: 99999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+    background: rgba(4, 6, 12, 0.98);
+    backdrop-filter: blur(35px);
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
 }
 #countdownOverlay.active { opacity: 1; pointer-events: auto; }
-.countdown-number { font-size: 140px; font-weight: 900; color: #38bdf8; text-shadow: 0 0 50px rgba(56, 189, 248, 0.4); }
-.wish-text { font-size: 48px; font-weight: 900; background: linear-gradient(to right, #fbbf24, #f87171, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 20px; }
+
+.countdown-number {
+    font-size: 140px;
+    font-weight: 900;
+    color: #38bdf8;
+    text-shadow: 0 0 50px rgba(56, 189, 248, 0.4);
+    animation: scalePulse 1s ease-in-out infinite;
+}
+@keyframes scalePulse {
+    0% { transform: scale(0.5); opacity: 0; }
+    30% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+.wish-text {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(to right, #fbbf24, #f87171, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    animation: textPop 0.5s ease forwards;
+}
+@keyframes textPop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -130,8 +162,8 @@ button:hover {
 
     <!-- STEP 1: USER INPUT -->
     <div id="userForm" class="section">
-        <input type="text" id="name" placeholder="Enter Name" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
-        <input type="text" id="surname" placeholder="Enter Surname" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
+        <input type="text" id="name" placeholder="Enter Name" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
+        <input type="text" id="surname" placeholder="Enter Surname" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
         <br>
         <button onclick="goToSelection()">Next</button>
     </div>
@@ -161,9 +193,9 @@ button:hover {
         <button onclick="startTest()">Start Test</button>
     </div>
 
-    <!-- 🌟 PRODUCTION TASKBAR-LEVEL GLTF MODEL SPACE -->
+    <!-- 🌟 TASKBAR LEVEL GRAPHICS CONTAINER VIEWPORT -->
     <div class="canvas-3d-viewport">
-        <div id="threeJsCanvas"></div>
+        <canvas id="charCanvas"></canvas>
     </div>
 </div>
 
@@ -174,90 +206,131 @@ button:hover {
 
 <script src="script.js"></script>
 <script>
-let scene, camera, renderer, modelMixer;
-let currentWalkingAction, currentThinkingAction, currentThumbsUpAction;
-let activeGLTFModel;
-const clock = new THREE.Clock();
+let canvasNode = document.getElementById("charCanvas");
+let glContext = canvasNode.getContext("2d");
+let currentMode = "walk";
+let tickTimer = 0;
 
-function initProductionGLTFEngine() {
-    const container = document.getElementById('threeJsCanvas');
-    if (!container) return;
-    const w = container.clientWidth || 400;
-    const h = 220;
-
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    camera.position.set(0, 0.5, 3.2);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    container.appendChild(renderer.domElement);
-
-    // Studio Lighting
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-    const dLight = new THREE.DirectionalLight(0xffffff, 1.4);
-    dLight.position.set(4, 8, 4);
-    scene.add(dLight);
-
-    // 🚀 ASSET UPLOADING STAGE
-    // Simply export your 3D rigged animated student model as character.glb into your folder
-    const loader = new THREE.GLTFLoader();
-    loader.load('character.glb', (gltf) => {
-        activeGLTFModel = gltf.scene;
-        activeGLTFModel.position.y = -0.9;
-        activeGLTFModel.scale.set(0.85, 0.85, 0.85);
-        scene.add(activeGLTFModel);
-
-        // Map rigged animations out of model files smoothly
-        modelMixer = new THREE.AnimationMixer(activeGLTFModel);
-        
-        // Auto-detect clip tracks present inside your exported 3D asset file
-        if (gltf.animations.length > 0) {
-            currentWalkingAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'walk'));
-            currentThinkingAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'think'));
-            currentThumbsUpAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'thumbs-up'));
-            
-            // Fallback to defaults if custom naming scales differ
-            if(!currentWalkingAction) currentWalkingAction = modelMixer.clipAction(gltf.animations[0]);
-            
-            currentWalkingAction.play();
-        }
-    }, undefined, (error) => {
-        console.log("To render your exact custom character asset model, upload character.glb into your root folder.");
-    });
-
-    renderEngineFrame();
+function adjustCanvasSpecs() {
+    canvasNode.width = canvasNode.parentElement.clientWidth;
+    canvasNode.height = 200;
 }
+window.addEventListener("resize", adjustCanvasSpecs);
+adjustCanvasSpecs();
 
-function trigger3DExpression(poseType) {
-    if (!modelMixer) return;
+function drawRigPart(color, x, y, w, h, radius = 0, angle = 0, shadow = false) {
+    glContext.save();
+    glContext.translate(x, y);
+    glContext.rotate(angle);
+    glContext.fillStyle = color;
     
-    // Stop all active animation tracks smoothly before blending next action
-    if(currentWalkingAction) currentWalkingAction.fadeOut(0.2);
-    if(currentThinkingAction) currentThinkingAction.fadeOut(0.2);
-    if(currentThumbsUpAction) currentThumbsUpAction.fadeOut(0.2);
-
-    if (poseType === 'walk' && currentWalkingAction) {
-        currentWalkingAction.reset().fadeIn(0.2).play();
-    } else if (poseType === 'thinking' && currentThinkingAction) {
-        currentThinkingAction.reset().fadeIn(0.2).play();
-    } else if (poseType === 'thumbs-up' && currentThumbsUpAction) {
-        currentThumbsUpAction.reset().fadeIn(0.2).play();
+    if (shadow) {
+        glContext.shadowColor = "rgba(0, 0, 0, 0.4)";
+        glContext.shadowBlur = 8;
+        glContext.shadowOffsetY = 4;
     }
+    
+    glContext.beginPath();
+    if (radius > 0) {
+        glContext.roundRect(-w/2, 0, w, h, radius);
+    } else {
+        glContext.rect(-w/2, 0, w, h);
+    }
+    glContext.fill();
+    glContext.restore();
 }
 
-function triggerBoyExpression(p) { trigger3DExpression(p); }
+function processRenderCycle() {
+    adjustCanvasSpecs();
+    glContext.clearRect(0, 0, canvasNode.width, canvasNode.height);
+    tickTimer += 0.08;
+    
+    let midX = canvasNode.width / 2;
+    let midY = 120;
+    
+    let bodyOffset = 0;
+    let leftLegRotation = 0;
+    let rightLegRotation = 0;
+    let leftArmRotation = 0;
+    let rightArmRotation = 0;
+    let faceTilt = 0;
+    let faceDrop = 0;
 
-function renderEngineFrame() {
-    requestAnimationFrame(renderEngineFrame);
-    const delta = clock.getDelta();
-    if (modelMixer) modelMixer.update(delta);
-    if (renderer && scene && camera) renderer.render(scene, camera);
+    if (currentMode === "walk") {
+        bodyOffset = Math.abs(Math.sin(tickTimer * 2)) * 4;
+        leftLegRotation = Math.sin(tickTimer * 2) * 0.4;
+        rightLegRotation = -Math.sin(tickTimer * 2) * 0.4;
+        leftArmRotation = -Math.sin(tickTimer * 2) * 0.3;
+        rightArmRotation = Math.sin(tickTimer * 2) * 0.3;
+    } else if (currentMode === "look-down") {
+        faceDrop = 4;
+        faceTilt = 0.05;
+    } else if (currentMode === "thinking") {
+        leftArmRotation = -0.2;
+        rightArmRotation = -1.8;
+        faceTilt = -0.05;
+        bodyOffset = Math.sin(tickTimer) * 2;
+    } else if (currentMode === "thumbs-up") {
+        leftArmRotation = 0.2;
+        rightArmRotation = -2.2;
+        bodyOffset = -Math.abs(Math.sin(tickTimer * 4)) * 3;
+    }
+
+    let coreY = midY - bodyOffset;
+    // 🦵 Draw Blue Pants Leg Nodes
+    drawRigPart("#1e3a8a", midX - 10, coreY + 35, 12, 28, 4, leftLegRotation);
+    drawRigPart("#1e3a8a", midX + 10, coreY + 35, 12, 28, 4, rightLegRotation);
+    
+    // 👞 Draw Polished Dress Shoes
+    drawRigPart("#1e293b", midX - 12 + (leftLegRotation * 10), coreY + 63, 16, 10, [4, 4, 1, 1]);
+    drawRigPart("#1e293b", midX + 8 + (rightLegRotation * 10), coreY + 63, 16, 10, [4, 4, 1, 1]);
+
+    // 👕 Draw Tucked Torso White Shirt Layer
+    drawRigPart("#ffffff", midX, coreY, 36, 38, 6, 0, true);
+    
+    // 👔 Draw Uniform Crimson Tie Block
+    drawRigPart("#ef4444", midX, coreY + 6, 6, 20, 1);
+
+    // 🦾 Draw Sleeve Arms
+    drawRigPart("#ffffff", midX - 22, coreY + 2, 10, 26, 4, leftArmRotation);
+    drawRigPart("#ffffff", midX + 22, coreY + 2, 10, 26, 4, rightArmRotation);
+    
+    // ✋ Hands
+    drawRigPart("#fcd34d", midX - 22 + (leftArmRotation * 18), coreY + 26, 10, 10, 5);
+    drawRigPart("#fcd34d", midX + 22 + (rightArmRotation * 18), coreY + 26, 10, 10, 5);
+
+    // 🧑 Draw Handsome Face Mesh Head
+    let headCenterY = coreY - 24 + faceDrop;
+    drawRigPart("#fcd34d", midX, headCenterY, 34, 36, 16, faceTilt, true);
+    
+    // 💇 Styled Academic Hair
+    drawRigPart("#271c19", midX, headCenterY - 14, 38, 16, [10, 10, 2, 2], faceTilt);
+    drawRigPart("#271c19", midX + 6, headCenterY - 18, 14, 12, 4, faceTilt + 0.3);
+
+    // 👁️ Eyes
+    glContext.fillStyle = "#1e293b";
+    glContext.beginPath();
+    glContext.arc(midX - 7, headCenterY + 2, 2.5, 0, Math.PI * 2);
+    glContext.arc(midX + 7, headCenterY + 2, 2.5, 0, Math.PI * 2);
+    glContext.fill();
+
+    // 💋 Smile
+    glContext.strokeStyle = "#9a3412";
+    glContext.lineWidth = 2;
+    glContext.beginPath();
+    glContext.arc(midX, headCenterY + 10, 5, 0, Math.PI);
+    glContext.stroke();
+
+    requestAnimationFrame(processRenderCycle);
 }
 
-window.addEventListener('load', initProductionGLTFEngine);
+function triggerBoyExpression(poseName) {
+    currentMode = poseName;
+}
+function trigger3DExpression(p) { triggerBoyExpression(p); }
+
+// Launch automated initialization frame loops
+requestAnimationFrame(processRenderCycle);
 </script>
 </body>
 </html>
