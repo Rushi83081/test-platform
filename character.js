@@ -53,7 +53,7 @@ function initBoy() {
 
     boyScene = new THREE.Scene();
     boyCamera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
-    boyCamera.position.set(0, 1.2, 5);
+    boyCamera.position.set(0, 1.5, 3);
 
     boyRenderer = new THREE.WebGLRenderer({
         alpha: true,
@@ -86,8 +86,8 @@ function initBoy() {
             boyModel.position.sub(center);
 
             const largestDimension = Math.max(size.x, size.y, size.z) || 1;
-            boyModel.scale.setScalar(2.1 / largestDimension);
-            boyModel.position.y = -0.85;
+                boyModel.scale.setScalar(2.1 / largestDimension);
+                boyModel.position.y = 0.2;
 
             boyMixer = new THREE.AnimationMixer(boyModel);
 
