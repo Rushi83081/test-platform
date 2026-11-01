@@ -1,3 +1,6 @@
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
 let boyMixer;
 let boyActions = {};
 let activeBoyAction;
@@ -39,9 +42,9 @@ function triggerBoyExpression(expression) {
 
 function initBoy() {
     const viewport = document.getElementById("threeJsCanvas");
-    if (!viewport || !window.THREE || !THREE.GLTFLoader) {
-        console.error("Three.js or GLTFLoader did not load.");
-        setBoyMessage("3D character could not start");
+
+    if (!viewport) {
+        console.error("Could not find #threeJsCanvas.");
         return;
     }
 
@@ -52,20 +55,23 @@ function initBoy() {
     boyCamera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
     boyCamera.position.set(0, 1.2, 5);
 
-    boyRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    boyRenderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+    });
     boyRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     boyRenderer.setSize(width, height);
     viewport.appendChild(boyRenderer.domElement);
 
     boyScene.add(new THREE.HemisphereLight(0xffffff, 0x38435c, 2));
 
-    const light = new THREE.DirectionalLight(0xffffff, 2);
-    light.position.set(3, 5, 4);
-    boyScene.add(light);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2);
+    keyLight.position.set(3, 5, 4);
+    boyScene.add(keyLight);
 
     boyClock = new THREE.Clock();
 
-    const loader = new THREE.GLTFLoader();
+    const loader = new GLTFLoader();
 
     loader.load(
         "./character.glb",
@@ -100,7 +106,13 @@ function initBoy() {
                 setTimeout(() => triggerBoyExpression("walk"), 2200);
             } else {
                 triggerBoyExpression("walk");
+                console.info("Model loaded, but no wave animation clip was found.");
             }
+
+            console.info(
+                "Character loaded. Animation clips:",
+                gltf.animations.map((clip) => clip.name)
+            );
         },
         undefined,
         (error) => {
@@ -122,7 +134,7 @@ function initBoy() {
     animate();
 
     window.addEventListener("resize", () => {
-        const newWidth = viewport.clientWidth;
+        const newWidth = viewport.clientWidth || 400;
         const newHeight = viewport.clientHeight || 245;
 
         boyCamera.aspect = newWidth / newHeight;
@@ -131,4 +143,4 @@ function initBoy() {
     });
 }
 
-window.addEventListener("load", initBoy);
+initBoy();
