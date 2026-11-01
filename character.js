@@ -68,7 +68,7 @@ function initBoy() {
     const loader = new THREE.GLTFLoader();
 
     loader.load(
-        "character.glb",
+        "./character.glb",
         (gltf) => {
             boyModel = gltf.scene;
             boyScene.add(boyModel);
