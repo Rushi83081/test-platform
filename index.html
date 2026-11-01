@@ -6,8 +6,14 @@
     <meta name="theme-color" content="#080b18">
     <title>DevOps Test Platform</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 
     <style>
         * {
@@ -85,6 +91,7 @@
                 opacity: 0;
                 transform: translateY(8px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -320,6 +327,7 @@
                     aria-label="First name"
                     onfocus="triggerBoyExpression('look-down')"
                     onblur="triggerBoyExpression('walk')">
+
                 <input
                     type="text"
                     id="surname"
@@ -330,6 +338,7 @@
                     onfocus="triggerBoyExpression('look-down')"
                     onblur="triggerBoyExpression('walk')">
             </div>
+
             <button class="primary-button" type="button" onclick="goToSelection()">Next</button>
         </section>
 
@@ -371,6 +380,6 @@
     </div>
 
     <script src="script.js"></script>
-    <script src="character.js"></script>
+    <script type="module" src="character.js"></script>
 </body>
 </html>
