@@ -4,10 +4,13 @@
 <title>DevOps Test Platform</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Industry-Standard High-Performance 3D WebGL Engine Core Libraries -->
+<script src="https://cloudflare.com"></script>
+<script src="https://jsdelivr.net"></script>
 <style>
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(-45deg, #090d16, #110e25, #1d093b, #090d16);
+    background: linear-gradient(-45deg, #05070f, #0b0a1a, #130528, #05070f);
     background-size: 400% 400%;
     animation: gradientMove 15s ease infinite;
     margin: 0;
@@ -27,16 +30,16 @@ body {
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    padding: 30px;
-    max-width: 480px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    padding: 35px 30px;
+    max-width: 460px;
     width: 100%;
     margin: auto;
     border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.85);
     text-align: center;
     position: relative;
     z-index: 10;
@@ -44,7 +47,7 @@ body {
 h2 {
     font-size: 32px;
     margin: 0 0 20px 0;
-    background: linear-gradient(to right, #38bdf8, #c084fc);
+    background: linear-gradient(to right, #38bdf8, #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
@@ -63,22 +66,21 @@ input {
     width: 82%;
     max-width: 320px;
     border-radius: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.06);
-    background: rgba(5, 8, 16, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(4, 6, 12, 0.8);
     color: #fff;
     font-size: 16px;
     margin: 10px 0;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-input::placeholder { color: #475569; }
 input:focus {
     border-color: #38bdf8;
-    background: rgba(5, 8, 16, 0.9);
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
 }
+
 button {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
     border: none;
     padding: 14px 32px;
@@ -87,103 +89,49 @@ button {
     border-radius: 14px;
     cursor: pointer;
     margin: 8px;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+    transition: all 0.3s ease;
 }
 button:hover {
-    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
 }
 
 .hidden { display: none !important; }
 .section { margin-top: 5px; }
 
-.student-avatar-space {
+.canvas-3d-viewport {
     width: 100%;
     height: 220px;
-    margin-top: 25px;
+    margin-top: 20px;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    border-radius: 20px;
+    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 75%);
     overflow: hidden;
-    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
-    border-radius: 16px;
 }
-
-.student-character {
-    width: 150px;
-    height: 210px;
-    position: relative;
-    background-image: url('student.png');
-    background-repeat: no-repeat;
-    background-size: 600px auto;
-    background-position: -20px -5px;
-    transition: all 0.3s ease-in-out;
-    transform-origin: bottom center;
-}
-.student-character.walk {
-    animation: studentBreatheWalk 0.8s infinite alternate ease-in-out;
-}
-@keyframes studentBreatheWalk {
-    0% { transform: translateY(0) scale(1); }
-    100% { transform: translateY(-5px) scale(1.02); }
-}
-
-.student-character.look-down {
-    transform: translateY(2px) scaleY(0.97);
-}
-
-.student-character.thinking {
-    background-position: -170px -5px;
-    animation: studentThink 2s infinite alternate ease-in-out;
-}
-@keyframes studentThink {
-    0% { transform: rotate(-1deg); }
-    100% { transform: rotate(1deg); }
-}
-
-.student-character.thumbs-up {
-    background-position: -20px -5px;
-    animation: studentWin 0.4s infinite alternate ease-in-out;
-}
-@keyframes studentWin {
-    0% { transform: scale(1) translateY(0); }
-    100% { transform: scale(1.08) translateY(-8px); }
-}
+#threeJsCanvas { width: 100%; height: 100%; display: block; }
 
 #countdownOverlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(5, 8, 16, 0.98);
-    backdrop-filter: blur(30px); z-index: 99999;
+    background: rgba(4, 6, 12, 0.99);
+    backdrop-filter: blur(40px); z-index: 99999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
 }
 #countdownOverlay.active { opacity: 1; pointer-events: auto; }
-.countdown-number {
-    font-size: 140px; font-weight: 900; color: #38bdf8;
-    text-shadow: 0 0 50px rgba(56, 189, 248, 0.4); animation: scalePulse 1s ease-in-out infinite;
-}
-@keyframes scalePulse { 0% { transform: scale(0.5); opacity: 0; } 30% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
-.wish-text {
-    font-size: 48px; font-weight: 900; background: linear-gradient(to right, #fbbf24, #f87171, #ec4899);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 20px;
-    letter-spacing: 1px; animation: textPop 0.5s ease forwards;
-}
-@keyframes textPop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.countdown-number { font-size: 140px; font-weight: 900; color: #38bdf8; text-shadow: 0 0 50px rgba(56, 189, 248, 0.4); }
+.wish-text { font-size: 48px; font-weight: 900; background: linear-gradient(to right, #fbbf24, #f87171, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 20px; }
 </style>
 </head>
 <body>
-
 <div class="container">
     <h2>DevOps Test Platform</h2>
 
     <!-- STEP 1: USER INPUT -->
     <div id="userForm" class="section">
-        <input type="text" id="name" placeholder="Enter Name" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
-        <input type="text" id="surname" placeholder="Enter Surname" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
+        <input type="text" id="name" placeholder="Enter Name" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
+        <input type="text" id="surname" placeholder="Enter Surname" onfocus="trigger3DExpression('look-down')" onblur="trigger3DExpression('walk')">
         <br>
         <button onclick="goToSelection()">Next</button>
     </div>
@@ -206,34 +154,110 @@ button:hover {
         <button onclick="selectDevops('jenkins')">Jenkins</button>
         <button onclick="selectDevops('all')">All DevOps</button>
     </div>
+
     <!-- STEP 4: START -->
     <div id="startSection" class="section hidden">
         <h3 id="selectedTestText"></h3>
         <button onclick="startTest()">Start Test</button>
     </div>
 
-    <!-- 🌟 TASKBAR-LEVEL CONTAINER WINDOW FOR IMAGE RIG -->
-    <div class="student-avatar-space">
-        <div class="student-character walk" id="studentRigNode"></div>
+    <!-- 🌟 PRODUCTION TASKBAR-LEVEL GLTF MODEL SPACE -->
+    <div class="canvas-3d-viewport">
+        <div id="threeJsCanvas"></div>
     </div>
 </div>
 
-<!-- FULLSCREEN COUNTDOWN SYSTEM -->
 <div id="countdownOverlay">
-    <div class="student-avatar-space" id="overlayViewport" style="height:220px; width:220px; margin-bottom:15px; background:none;"></div>
     <div id="countdownDisplay" class="countdown-number">3</div>
     <div id="wishTextDisplay" class="wish-text hidden">ALL THE BEST! 🚀</div>
 </div>
 
+<script src="script.js"></script>
 <script>
-function triggerBoyExpression(poseName) {
-    const node = document.getElementById("studentRigNode");
-    if (node) {
-        node.className = "student-character " + poseName;
+let scene, camera, renderer, modelMixer;
+let currentWalkingAction, currentThinkingAction, currentThumbsUpAction;
+let activeGLTFModel;
+const clock = new THREE.Clock();
+
+function initProductionGLTFEngine() {
+    const container = document.getElementById('threeJsCanvas');
+    if (!container) return;
+    const w = container.clientWidth || 400;
+    const h = 220;
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
+    camera.position.set(0, 0.5, 3.2);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    container.appendChild(renderer.domElement);
+
+    // Studio Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+    const dLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    dLight.position.set(4, 8, 4);
+    scene.add(dLight);
+
+    // 🚀 ASSET UPLOADING STAGE
+    // Simply export your 3D rigged animated student model as character.glb into your folder
+    const loader = new THREE.GLTFLoader();
+    loader.load('character.glb', (gltf) => {
+        activeGLTFModel = gltf.scene;
+        activeGLTFModel.position.y = -0.9;
+        activeGLTFModel.scale.set(0.85, 0.85, 0.85);
+        scene.add(activeGLTFModel);
+
+        // Map rigged animations out of model files smoothly
+        modelMixer = new THREE.AnimationMixer(activeGLTFModel);
+        
+        // Auto-detect clip tracks present inside your exported 3D asset file
+        if (gltf.animations.length > 0) {
+            currentWalkingAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'walk'));
+            currentThinkingAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'think'));
+            currentThumbsUpAction = modelMixer.clipAction(THREE.AnimationClip.findByName(gltf.animations, 'thumbs-up'));
+            
+            // Fallback to defaults if custom naming scales differ
+            if(!currentWalkingAction) currentWalkingAction = modelMixer.clipAction(gltf.animations[0]);
+            
+            currentWalkingAction.play();
+        }
+    }, undefined, (error) => {
+        console.log("To render your exact custom character asset model, upload character.glb into your root folder.");
+    });
+
+    renderEngineFrame();
+}
+
+function trigger3DExpression(poseType) {
+    if (!modelMixer) return;
+    
+    // Stop all active animation tracks smoothly before blending next action
+    if(currentWalkingAction) currentWalkingAction.fadeOut(0.2);
+    if(currentThinkingAction) currentThinkingAction.fadeOut(0.2);
+    if(currentThumbsUpAction) currentThumbsUpAction.fadeOut(0.2);
+
+    if (poseType === 'walk' && currentWalkingAction) {
+        currentWalkingAction.reset().fadeIn(0.2).play();
+    } else if (poseType === 'thinking' && currentThinkingAction) {
+        currentThinkingAction.reset().fadeIn(0.2).play();
+    } else if (poseType === 'thumbs-up' && currentThumbsUpAction) {
+        currentThumbsUpAction.reset().fadeIn(0.2).play();
     }
 }
-function trigger3DExpression(p) { triggerBoyExpression(p); }
+
+function triggerBoyExpression(p) { trigger3DExpression(p); }
+
+function renderEngineFrame() {
+    requestAnimationFrame(renderEngineFrame);
+    const delta = clock.getDelta();
+    if (modelMixer) modelMixer.update(delta);
+    if (renderer && scene && camera) renderer.render(scene, camera);
+}
+
+window.addEventListener('load', initProductionGLTFEngine);
 </script>
-<script src="script.js"></script>
 </body>
 </html>
