@@ -4,7 +4,7 @@
 <title>DevOps Test Platform</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Load safe, reliable WebGL library via official CDN -->
+<!-- Load production-grade 3D libraries with built-in asset rigging controllers -->
 <script src="https://cloudflare.com"></script>
 <style>
 body {
@@ -193,7 +193,7 @@ function init3DCharacterEngine() {
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    // Adjusted camera distance closer to ensure full high-impact visibility
+    // Positioned close and center for high-fidelity view
     camera.position.set(0, 0.3, 4.2);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -201,7 +201,7 @@ function init3DCharacterEngine() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Dynamic Cinematic Studio Space Lighting Map
+    // Premium Studio Lighting Layers
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.2);
     dLight.position.set(5, 10, 5);
@@ -214,7 +214,7 @@ function init3DCharacterEngine() {
     characterGroup.position.y = -0.9;
     scene.add(characterGroup);
 
-    // Premium Solid Poly Shaders
+    // High-End Poly Shaders mapped cleanly
     const skinMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.4 });
     const hairMat = new THREE.MeshStandardMaterial({ color: 0x1a110e, roughness: 0.6 });
     const shirtMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
@@ -245,7 +245,7 @@ function init3DCharacterEngine() {
     hairTop.position.y = 0.04;
     headMesh.add(hairTop);
 
-    // 👔 TORSO MESH (Tucked White Dress Shirt + Red Tie)
+    // 👔 TORSO MESH (Tilted White Dress Shirt + Red Tie)
     const torsoGeo = new THREE.CylinderGeometry(0.28, 0.24, 0.75, 32);
     const torsoMesh = new THREE.Mesh(torsoGeo, shirtMat);
     torsoMesh.position.y = 0.75;
