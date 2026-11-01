@@ -1,362 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>DevOps Test Platform</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Verified High-Performance Three.js WebGL Core Engine Link -->
-<script src="https://cloudflare.com"></script>
-<style>
-body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: linear-gradient(-45deg, #05070f, #0a081a, #140526, #05070f);
-    background-size: 400% 400%;
-    animation: gradientMove 15s ease infinite;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 95vh;
-    overflow: hidden;
-    color: #f8fafc;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b18">
+    <title>DevOps Test Platform</title>
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
 
-.container {
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(35px);
-    -webkit-backdrop-filter: blur(35px);
-    padding: 30px;
-    max-width: 460px;
-    width: 100%;
-    margin: auto;
-    border-radius: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 50px 100px -25px rgba(0, 0, 0, 0.85);
-    text-align: center;
-    position: relative;
-    z-index: 10;
-}
-h2 {
-    font-size: 32px;
-    margin: 0 0 20px 0;
-    background: linear-gradient(to right, #38bdf8, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-h3 {
-    color: #94a3b8;
-    font-size: 19px;
-    margin-bottom: 25px;
-    font-weight: 500;
-}
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 24px;
+            display: grid;
+            place-items: center;
+            overflow-x: hidden;
+            color: #f8fafc;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 15%, rgba(56, 189, 248, 0.13), transparent 38%),
+                radial-gradient(ellipse at 85% 80%, rgba(167, 139, 250, 0.14), transparent 40%),
+                linear-gradient(140deg, #05070f, #0a081a 55%, #140526);
+            background-size: 150% 150%;
+            animation: backgroundDrift 18s ease-in-out infinite alternate;
+        }
 
-input {
-    padding: 14px 18px;
-    width: 82%;
-    max-width: 320px;
-    border-radius: 14px;
-    border: 2px solid rgba(255, 255, 255, 0.06);
-    background: rgba(4, 6, 12, 0.75);
-    color: #fff;
-    font-size: 16px;
-    margin: 10px 0;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-input::placeholder { color: #475569; }
-input:focus {
-    border-color: #38bdf8;
-    background: rgba(4, 6, 12, 0.9);
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
-}
-button {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    border: none;
-    padding: 14px 32px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 14px;
-    cursor: pointer;
-    margin: 8px;
-    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-button:hover {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-}
+        @keyframes backgroundDrift {
+            to {
+                background-position: 100% 100%;
+            }
+        }
 
-.hidden { display: none !important; }
-.section { margin-top: 5px; }
+        .container {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 520px);
+            padding: clamp(24px, 5vw, 38px);
+            overflow: hidden;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            background: rgba(15, 18, 34, 0.78);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(22px);
+        }
 
-/* 🌟 REAL 3D VIEWPORT CONTAINER ABOVE THE TASKBAR */
-.canvas-3d-viewport {
-    width: 100%;
-    height: 240px;
-    margin-top: 20px;
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    background: radial-gradient(circle at center, rgba(56, 189, 248, 0.05) 0%, transparent 75%);
-}
-#threeJsCanvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
+        .eyebrow {
+            margin: 0 0 10px;
+            color: #7dd3fc;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
 
-#countdownOverlay {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(4, 6, 12, 0.99);
-    backdrop-filter: blur(35px); z-index: 99999;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-}
-#countdownOverlay.active { opacity: 1; pointer-events: auto; }
-.countdown-number { font-size: 140px; font-weight: 900; color: #38bdf8; text-shadow: 0 0 50px rgba(56, 189, 248, 0.4); }
-.wish-text { font-size: 48px; font-weight: 900; background: linear-gradient(to right, #fbbf24, #f87171, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 20px; }
-</style>
+        h1 {
+            margin: 0;
+            color: #f8fafc;
+            font-size: clamp(28px, 7vw, 38px);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .subtitle {
+            max-width: 370px;
+            margin: 12px auto 26px;
+            color: #aab5ca;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-top: 8px;
+            animation: sectionIn 350ms ease both;
+        }
+
+        @keyframes sectionIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            margin: 0 0 18px;
+            color: #e2e8f0;
+            font-size: 20px;
+        }
+
+        .form-fields {
+            display: grid;
+            gap: 12px;
+            width: min(100%, 370px);
+            margin: 0 auto 16px;
+        }
+
+        input {
+            width: 100%;
+            min-height: 52px;
+            padding: 0 16px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            outline: none;
+            color: #f8fafc;
+            background: rgba(3, 6, 16, 0.7);
+            font: inherit;
+            transition: border-color 180ms ease, box-shadow 180ms ease;
+        }
+
+        input::placeholder {
+            color: #7c879c;
+        }
+
+        input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+            width: min(100%, 390px);
+            margin: 0 auto;
+        }
+
+        button {
+            min-height: 50px;
+            padding: 12px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: #f8fafc;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.12);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:focus-visible {
+            outline: 3px solid #7dd3fc;
+            outline-offset: 3px;
+        }
+
+        .primary-button {
+            min-width: 170px;
+            margin-top: 4px;
+        }
+
+        .tool-grid button:last-child {
+            grid-column: 1 / -1;
+        }
+
+        .selected-test {
+            color: #c4b5fd;
+            line-height: 1.5;
+        }
+
+        .canvas-3d-viewport {
+            position: relative;
+            width: 100%;
+            height: 245px;
+            margin: 26px auto -18px;
+            overflow: hidden;
+            border-radius: 22px;
+            background:
+                radial-gradient(ellipse at 50% 100%, rgba(56, 189, 248, 0.16), transparent 64%),
+                linear-gradient(180deg, transparent, rgba(3, 6, 16, 0.38));
+        }
+
+        #threeJsCanvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        #threeJsCanvas canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .boy-message {
+            position: absolute;
+            z-index: 2;
+            top: 8px;
+            left: 50%;
+            max-width: calc(100% - 32px);
+            padding: 9px 15px;
+            transform: translateX(-50%);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 18px;
+            color: #172554;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+            transition: opacity 180ms ease, transform 180ms ease;
+        }
+
+        .boy-message::after {
+            position: absolute;
+            bottom: -7px;
+            left: 50%;
+            width: 12px;
+            height: 12px;
+            transform: translateX(-50%) rotate(45deg);
+            border-right: 1px solid rgba(15, 23, 42, 0.08);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+            background: #fff;
+            content: "";
+        }
+
+        .boy-message.hidden {
+            opacity: 0;
+            transform: translate(-50%, 8px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #countdownOverlay {
+            position: fixed;
+            z-index: 10;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(4, 6, 12, 0.96);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 300ms ease;
+            backdrop-filter: blur(18px);
+        }
+
+        #countdownOverlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .countdown-number {
+            color: #38bdf8;
+            font-size: clamp(100px, 22vw, 150px);
+            font-weight: 900;
+            text-shadow: 0 0 45px rgba(56, 189, 248, 0.45);
+        }
+
+        .wish-text {
+            margin-top: 16px;
+            color: #fbbf24;
+            font-size: clamp(30px, 8vw, 52px);
+            font-weight: 900;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 14px;
+            }
+
+            .container {
+                padding: 24px 18px;
+                border-radius: 24px;
+            }
+
+            .canvas-3d-viewport {
+                height: 220px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h2>DevOps Test Platform</h2>
+    <main class="container">
+        <p class="eyebrow">Learn • Practice • Grow</p>
+        <h1>DevOps Test Platform</h1>
+        <p class="subtitle">Choose a topic, test your knowledge, and see how far you’ve come.</p>
 
-    <!-- STEP 1: USER INPUT -->
-    <div id="userForm" class="section">
-        <input type="text" id="name" placeholder="Enter Name" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
-        <input type="text" id="surname" placeholder="Enter Surname" onfocus="triggerBoyExpression('look-down')" onblur="triggerBoyExpression('walk')">
-        <br>
-        <button onclick="goToSelection()">Next</button>
+        <section id="userForm" class="section" aria-label="Enter your name">
+            <div class="form-fields">
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your first name"
+                    autocomplete="given-name"
+                    aria-label="First name"
+                    onfocus="triggerBoyExpression('look-down')"
+                    onblur="triggerBoyExpression('walk')">
+                <input
+                    type="text"
+                    id="surname"
+                    name="surname"
+                    placeholder="Enter your surname"
+                    autocomplete="family-name"
+                    aria-label="Surname"
+                    onfocus="triggerBoyExpression('look-down')"
+                    onblur="triggerBoyExpression('walk')">
+            </div>
+            <button class="primary-button" type="button" onclick="goToSelection()">Next</button>
+        </section>
+
+        <section id="testSelection" class="section hidden" aria-label="Select a test">
+            <h2>Select a test</h2>
+            <div class="button-grid">
+                <button type="button" onclick="selectTest('aws')">AWS</button>
+                <button type="button" onclick="selectTest('linux')">Linux</button>
+                <button type="button" onclick="selectTest('devops')">DevOps</button>
+            </div>
+        </section>
+
+        <section id="devopsOptions" class="section hidden" aria-label="Select a DevOps tool">
+            <h2>Select a DevOps tool</h2>
+            <div class="button-grid tool-grid">
+                <button type="button" onclick="selectDevops('git')">Git</button>
+                <button type="button" onclick="selectDevops('docker')">Docker</button>
+                <button type="button" onclick="selectDevops('kubernetes')">Kubernetes</button>
+                <button type="button" onclick="selectDevops('terraform')">Terraform</button>
+                <button type="button" onclick="selectDevops('jenkins')">Jenkins</button>
+                <button type="button" onclick="selectDevops('all')">All DevOps</button>
+            </div>
+        </section>
+
+        <section id="startSection" class="section hidden" aria-label="Start the test">
+            <h2 id="selectedTestText" class="selected-test"></h2>
+            <button class="primary-button" type="button" onclick="startTest()">Start test</button>
+        </section>
+
+        <div class="canvas-3d-viewport" aria-label="Animated student character">
+            <div id="boyMessage" class="boy-message" role="status" aria-live="polite">Hii! 👋</div>
+            <div id="threeJsCanvas"></div>
+        </div>
+    </main>
+
+    <div id="countdownOverlay" aria-live="assertive">
+        <div id="countdownDisplay" class="countdown-number">3</div>
+        <div id="wishTextDisplay" class="wish-text hidden">ALL THE BEST! 🚀</div>
     </div>
 
-    <!-- STEP 2: TEST SELECTION -->
-    <div id="testSelection" class="section hidden">
-        <h3>Select Test</h3>
-        <button onclick="selectTest('aws')">AWS Test</button>
-        <button onclick="selectTest('linux')">Linux Test</button>
-        <button onclick="selectTest('devops')">DevOps Test</button>
-    </div>
-
-    <!-- STEP 3: DEVOPS OPTIONS -->
-    <div id="devopsOptions" class="section hidden">
-        <h3>Select DevOps Tool</h3>
-        <button onclick="selectDevops('git')">Git</button>
-        <button onclick="selectDevops('docker')">Docker</button>
-        <button onclick="selectDevops('kubernetes')">Kubernetes</button>
-        <button onclick="selectDevops('terraform')">Terraform</button>
-        <button onclick="selectDevops('jenkins')">Jenkins</button>
-        <button onclick="selectDevops('all')">All DevOps</button>
-    </div>
-
-    <!-- STEP 4: START -->
-    <div id="startSection" class="section hidden">
-        <h3 id="selectedTestText"></h3>
-        <button onclick="startTest()">Start Test</button>
-    </div>
-
-    <!-- 🌟 TASKBAR LOCATION VIEWPORT FOR RELIABLE 3D RENDERING -->
-    <div class="canvas-3d-viewport">
-        <div id="threeJsCanvas"></div>
-    </div>
-</div>
-
-<div id="countdownOverlay">
-    <div id="countdownDisplay" class="countdown-number">3</div>
-    <div id="wishTextDisplay" class="wish-text hidden">ALL THE BEST! 🚀</div>
-</div>
-
-<script src="script.js"></script>
-<script>
-let scene, camera, renderer, characterGroup;
-let headMesh, leftArm, rightArm, leftLeg, rightLeg;
-let currentMode = 'walk';
-let tickTimer = 0;
-
-function init3DCharacterEngine() {
-    const container = document.getElementById('threeJsCanvas');
-    if (!container) return;
-    const w = container.clientWidth || 400;
-    const h = 240;
-
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    camera.position.set(0, 0.3, 4.2);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-    const dLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    dLight.position.set(5, 10, 5);
-    scene.add(dLight);
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.6);
-    rimLight.position.set(-5, 4, -4);
-    scene.add(rimLight);
-
-    characterGroup = new THREE.Group();
-    characterGroup.position.y = -0.9;
-    scene.add(characterGroup);
-
-    const skinMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.4 });
-    const hairMat = new THREE.MeshStandardMaterial({ color: 0x1a110e, roughness: 0.6 });
-    const shirtMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
-    const pantsMat = new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.5 });
-    const tieMat = new THREE.MeshStandardMaterial({ color: 0xef4444 });
-    const eyeMat = new THREE.MeshBasicMaterial({ color: 0x1e293b });
-    const shoeMat = new THREE.MeshStandardMaterial({ color: 0x0f172a });
-
-    const headGeo = new THREE.SphereGeometry(0.38, 32, 32);
-    headGeo.scale(1, 1.06, 0.95);
-    headMesh = new THREE.Mesh(headGeo, skinMat);
-    headMesh.position.y = 1.4;
-    characterGroup.add(headMesh);
-
-    const eyeGeo = new THREE.SphereGeometry(0.05, 16, 16);
-    const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
-    leftEye.position.set(-0.12, 0.05, 0.32);
-    headMesh.add(leftEye);
-    const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
-    rightEye.position.set(0.12, 0.05, 0.32);
-    headMesh.add(rightEye);
-
-    const hairGeo = new THREE.SphereGeometry(0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
-    const hairTop = new THREE.Mesh(hairGeo, hairMat);
-    hairTop.position.y = 0.04;
-    headMesh.add(hairTop);
-
-    const torsoGeo = new THREE.CylinderGeometry(0.28, 0.24, 0.75, 32);
-    const torsoMesh = new THREE.Mesh(torsoGeo, shirtMat);
-    torsoMesh.position.y = 0.75;
-    characterGroup.add(torsoMesh);
-
-    const tieGeo = new THREE.BoxGeometry(0.06, 0.35, 0.03);
-    const tieMesh = new THREE.Mesh(tieGeo, tieMat);
-    tieMesh.position.set(0, 0.12, 0.28);
-    tieMesh.rotation.x = 0.06;
-    torsoMesh.add(tieMesh);
-
-    const pantsGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.25, 32);
-    const pantsMesh = new THREE.Mesh(pantsGeo, pantsMat);
-    pantsMesh.position.y = 0.28;
-    characterGroup.add(pantsMesh);
-    const limbGeo = new THREE.CylinderGeometry(0.08, 0.06, 0.5, 16);
-    
-    leftLeg = new THREE.Group();
-    leftLeg.position.set(-0.12, 0.18, 0);
-    characterGroup.add(leftLeg);
-    const leftLegMesh = new THREE.Mesh(limbGeo, pantsMat);
-    leftLegMesh.position.y = -0.25;
-    leftLeg.add(leftLegMesh);
-    const leftFoot = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.18), shoeMat);
-    leftFoot.position.set(0, -0.5, 0.04);
-    leftLeg.add(leftFoot);
-
-    rightLeg = new THREE.Group();
-    rightLeg.position.set(0.12, 0.18, 0);
-    characterGroup.add(rightLeg);
-    const rightLegMesh = new THREE.Mesh(limbGeo, pantsMat);
-    rightLegMesh.position.y = -0.25;
-    rightLeg.add(rightLegMesh);
-    const rightFoot = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.18), shoeMat);
-    rightFoot.position.set(0, -0.5, 0.04);
-    rightLeg.add(rightFoot);
-
-    leftArm = new THREE.Group();
-    leftArm.position.set(-0.36, 1.05, 0);
-    characterGroup.add(leftArm);
-    const leftArmMesh = new THREE.Mesh(limbGeo, shirtMat);
-    leftArmMesh.position.y = -0.25;
-    leftArm.add(leftArmMesh);
-    const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), skinMat);
-    leftHand.position.y = -0.5;
-    leftArm.add(leftHand);
-
-    rightArm = new THREE.Group();
-    rightArm.position.set(0.36, 1.05, 0);
-    characterGroup.add(rightArm);
-    const rightArmMesh = new THREE.Mesh(limbGeo, shirtMat);
-    rightArmMesh.position.y = -0.25;
-    rightArm.add(rightArmMesh);
-    const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), skinMat);
-    rightHand.position.y = -0.5;
-    rightArm.add(rightHand);
-
-    animateEngineLoop();
-}
-
-function triggerBoyExpression(poseName) {
-    currentMode = poseName;
-}
-function trigger3DExpression(p) { triggerBoyExpression(p); }
-
-function animateEngineLoop() {
-    requestAnimationFrame(animateEngineLoop);
-    tickTimer += 0.05;
-
-    if(headMesh) {
-        headMesh.rotation.y = Math.sin(tickTimer * 0.4) * 0.04;
-        headMesh.position.y = 1.4 + Math.sin(tickTimer * 0.8) * 0.01;
-    }
-
-    let lerpSpeed = 0.15;
-
-    if (currentMode === 'walk' && leftLeg && rightLeg && leftArm && rightArm) {
-        leftLeg.rotation.x = Math.sin(tickTimer * 1.6) * 0.45;
-        rightLeg.rotation.x = -Math.sin(tickTimer * 1.6) * 0.45;
-        leftArm.rotation.x = -Math.sin(tickTimer * 1.6) * 0.35;
-        rightArm.rotation.x = Math.sin(tickTimer * 1.6) * 0.35;
-        leftArm.rotation.z = THREE.MathUtils.lerp(leftArm.rotation.z, -0.05, lerpSpeed);
-        rightArm.rotation.z = THREE.MathUtils.lerp(rightArm.rotation.z, 0.05, lerpSpeed);
-        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, 0, lerpSpeed);
-        characterGroup.position.y = -0.9 + Math.abs(Math.sin(tickTimer * 1.6)) * 0.03;
-    } 
-    else if (currentMode === 'look-down' && headMesh && leftArm && rightArm) {
-        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, 0.24, lerpSpeed);
-        leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0.05, lerpSpeed);
-        rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, 0.05, lerpSpeed);
-    } 
-    else if (currentMode === 'thinking' && headMesh && leftArm && rightArm) {
-        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, -0.05, lerpSpeed);
-        headMesh.rotation.y = THREE.MathUtils.lerp(headMesh.rotation.y, -0.2, lerpSpeed);
-        leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, -0.2, lerpSpeed);
-        rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, -1.5, lerpSpeed);
-    } 
-    else if (currentMode === 'thumbs-up' && headMesh && leftArm && rightArm) {
-        leftArm.rotation.x = THREE.MathUtils.lerp(leftArm.rotation.x, 0.1, lerpSpeed);
-        rightArm.rotation.x = THREE.MathUtils.lerp(rightArm.rotation.x, -1.9, lerpSpeed);
-        rightArm.rotation.z = THREE.MathUtils.lerp(rightArm.rotation.z, -0.3, lerpSpeed);
-    }
-
-    if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-    }
-}
-
-window.addEventListener('resize', () => {
-    const container = document.getElementById('threeJsCanvas');
-    if (!container || !camera || !renderer) return;
-    const w = container.clientWidth;
-    camera.aspect = w / 240;
-    camera.updateProjectionMatrix();
-    renderer.setSize(w, 240);
-});
-
-window.addEventListener('load', init3DCharacterEngine);
-</script>
+    <script src="script.js"></script>
+    <script src="character.js"></script>
 </body>
 </html>
