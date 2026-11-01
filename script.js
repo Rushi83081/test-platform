@@ -1,295 +1,310 @@
-// ==========================================
-// 🚀 STEP 1: GO TO TEST SELECTION
-// ==========================================
-function goToSelection(){
-    let name = document.getElementById("name").value.trim();
-    let surname = document.getElementById("surname").value.trim();
+function goToSelection() {
+    const name = document.getElementById("name").value.trim();
+    const surname = document.getElementById("surname").value.trim();
 
-    if(name === "" || surname === ""){
-        alert("Please enter name and surname");
+    if (!name || !surname) {
+        alert("Please enter your name and surname.");
+        triggerBoyExpression("look-down");
         return;
     }
 
-    // SAVE USER DATA TO STORAGE
     localStorage.setItem("name", name);
     localStorage.setItem("surname", surname);
 
-    // HIDE FORM & VISUALIZE NEXT STAGE
     document.getElementById("userForm").classList.add("hidden");
     document.getElementById("testSelection").classList.remove("hidden");
-    
-    // Switch character into thinking loop timeline sequence smoothly
-    if(typeof triggerBoyExpression === 'function') {
-        triggerBoyExpression('thinking');
-    }
+
+    triggerBoyExpression("thinking");
 }
 
-// ==========================================
-// 📋 STEP 2: SELECT MAIN TEST CATEGORY
-// ==========================================
-function selectTest(type){
+function selectTest(type) {
     localStorage.setItem("testType", type);
+    localStorage.removeItem("devopsTool");
 
-    // HIDE MAIN SELECTION TRACK
     document.getElementById("testSelection").classList.add("hidden");
 
-    // IF DEVOPS ROUTE -> BURST OUT DETAILED TOOLS
-    if(type === "devops"){
+    if (type === "devops") {
         document.getElementById("devopsOptions").classList.remove("hidden");
-        if(typeof triggerBoyExpression === 'function') {
-            triggerBoyExpression('thinking');
-        }
-    } else {
-        showStart(type);
+        triggerBoyExpression("thinking");
+        return;
     }
+
+    showStart(type);
 }
 
-// ==========================================
-// 🛠️ STEP 3: SELECT DEVOPS SPECIFIC TOOL
-// ==========================================
-function selectDevops(tool){
+function selectDevops(tool) {
     localStorage.setItem("devopsTool", tool);
-
-    // HIDE THE SUBCATEGORY MENU CONTAINER
     document.getElementById("devopsOptions").classList.add("hidden");
-
-    // SHOW FINAL START PROMPT
-    showStart("devops - " + tool);
+    showStart(`DevOps - ${tool}`);
 }
 
-// ==========================================
-// 🏁 STEP 4: PREPARE AND SHOW START SELECTION
-// ==========================================
-function showStart(text){
+function showStart(testName) {
     document.getElementById("startSection").classList.remove("hidden");
-    document.getElementById("selectedTestText").innerText = "You selected: " + text.toUpperCase();
-    
-    // Return character back to natural rhythmic walk stance animation loop
-    if(typeof triggerBoyExpression === 'function') {
-        triggerBoyExpression('walk');
-    }
+    document.getElementById("selectedTestText").textContent =
+        `You selected: ${testName.toUpperCase()}`;
+
+    triggerBoyExpression("walk");
 }
 
-// ==========================================
-// ⏱️ STEP 5: START TEST (CINEMATIC COUNTDOWN)
-// ==========================================
-function startTest(){
+function startTest() {
     const overlay = document.getElementById("countdownOverlay");
     const countdownDisplay = document.getElementById("countdownDisplay");
     const wishTextDisplay = document.getElementById("wishTextDisplay");
 
-    // Activate overlay container views
-    overlay.classList.add("active");
-    
-    let count = 3;
-    countdownDisplay.innerText = count;
-    wishTextDisplay.classList.add("hidden");
-    countdownDisplay.classList.remove("hidden");
-
-    // Sequential 3.. 2.. 1.. Clock Beat Tick Interval Execution
-    let timer = setInterval(() => {
-        count--;
-        if (count > 0) {
-            countdownDisplay.innerText = count;
-        } else if (count === 0) {
-            clearInterval(timer);
-            
-            // Hide running clock, set thumbs-up animation, fire off wish text banner
-            countdownDisplay.classList.add("hidden");
-            wishTextDisplay.classList.remove("hidden");
-            
-            if(typeof triggerBoyExpression === 'function') {
-                triggerBoyExpression('thumbs-up');
-            }
-
-            // Pause frame briefly for user engagement before routing execution
-            setTimeout(() => {
-                executeRouting();
-            }, 1500);
-        }
-    }, 1000);
-}
-
-// ==========================================
-// 🧭 STEP 6: DIRECT ROUTING INTERFACES
-// ==========================================
-function executeRouting() {
-    let type = localStorage.getItem("testType");
-    let tool = localStorage.getItem("devopsTool");
-
-    // AWS PATHWAYS
-    if(type === "aws"){
-        window.location.href = "tests/aws/aws.html";
-    }
-    // LINUX PATHWAYS
-    else if(type === "linux"){
-        window.location.href = "tests/linux/linux.html";
-    }
-    // DEVOPS TOOLS PATHWAYS
-    else if(type === "devops"){
-        if(tool === "git"){
-            window.location.href = "tests/devops/git/git.html";
-        }
-        else if(tool === "docker"){
-            window.location.href = "tests/devops/docker/docker.html";
-        }
-        else if(tool === "kubernetes"){
-            window.location.href = "tests/devops/kubernetes/k8s.html";
-        }
-        else if(tool === "terraform"){
-            window.location.href = "tests/devops/terraform/terraform.html";
-        }
-        else if(tool === "jenkins"){
-            window.location.href = "tests/devops/jenkins/jenkins.html";
-        }
-        else{
-            window.location.href = "tests/devops/all/devops-all.html";
-        }
-    }
-}
-
-// ==========================================
-// 🔥 SEND AGGREGATED SCORE TO GOOGLE SHEETS
-// ==========================================
-function sendToGoogleSheet(score, testName){
-    let name = localStorage.getItem("name");
-    let surname = localStorage.getItem("surname");
-
-    if(!name || !surname){
-        alert("Name or surname missing!");
+    if (!localStorage.getItem("testType")) {
+        alert("Please select a test first.");
         return;
     }
 
-    fetch("https://google.com", {
-        method: "POST",
-        body: JSON.stringify({
-            name: name,
-            surname: surname,
-            test: testName,
-            score: score
-        })
-    });
+    overlay.classList.add("active");
+    countdownDisplay.classList.remove("hidden");
+    wishTextDisplay.classList.add("hidden");
+
+    let count = 3;
+    countdownDisplay.textContent = count;
+    triggerBoyExpression("thumbs-up");
+
+    const timer = setInterval(() => {
+        count -= 1;
+
+        if (count > 0) {
+            countdownDisplay.textContent = count;
+            return;
+        }
+
+        clearInterval(timer);
+        countdownDisplay.classList.add("hidden");
+        wishTextDisplay.classList.remove("hidden");
+        triggerBoyExpression("thumbs-up");
+
+        setTimeout(executeRouting, 1500);
+    }, 1000);
 }
 
-// ==========================================
-// 🐞 THE INTEGRATED BUG REPORT ENGINE
-// ==========================================
-function reportIssue(testName){
-    let name = localStorage.getItem("name");
-    let surname = localStorage.getItem("surname");
+function executeRouting() {
+    const type = localStorage.getItem("testType");
+    const tool = localStorage.getItem("devopsTool");
 
-    let issue = prompt("Describe the issue you found:");
-    if(!issue) return;
+    const routes = {
+        aws: "tests/aws/aws.html",
+        linux: "tests/linux/linux.html"
+    };
 
-    fetch("https://google.com", {
-        method: "POST",
-        body: JSON.stringify({
-            name: name,
-            surname: surname,
-            test: testName,
-            score: "ISSUE: " + issue
-        })
-    });
+    if (routes[type]) {
+        window.location.href = routes[type];
+        return;
+    }
 
-    alert("✅ Issue reported. Thank you!");
+    if (type === "devops") {
+        const devopsRoutes = {
+            git: "tests/devops/git/git.html",
+            docker: "tests/devops/docker/docker.html",
+            kubernetes: "tests/devops/kubernetes/k8s.html",
+            terraform: "tests/devops/terraform/terraform.html",
+            jenkins: "tests/devops/jenkins/jenkins.html",
+            all: "tests/devops/all/devops-all.html"
+        };
+
+        window.location.href =
+            devopsRoutes[tool] || devopsRoutes.all;
+        return;
+    }
+
+    alert("We couldn't find that test. Please select a test again.");
+    document.getElementById("countdownOverlay").classList.remove("active");
 }
 
-// ==========================================
-// 🎉 FINAL RESULT CELEBRATION DISPLAYS
-// ==========================================
-function showFeedback(score, total){
-    let percent = (score / total) * 100;
+function sendToGoogleSheet(score, testName) {
+    const name = localStorage.getItem("name");
+    const surname = localStorage.getItem("surname");
 
-    if(percent >= 85){
-        // Dynamic Celebrations Overlay
-        let div = document.createElement("div");
-        div.id = "celebration";
-        div.innerHTML = `
-        <div style="
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:rgba(5, 7, 15, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        z-index:9999;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        flex-direction:column;
-        color:white;
-        font-size:28px;
-        font-weight:bold;
-        font-family: 'Segoe UI', sans-serif;
-        ">
-        🎉 Congratulations! 🎉
-        <p style="font-size:18px;margin-top:10px;color:#38bdf8;">Excellent Performance 🚀</p>
-        <canvas id="fireworksCanvas" style="position:absolute;top:0;left:0;pointer-events:none;z-index:-1;"></canvas>
+    if (!name || !surname) {
+        alert("Name or surname is missing.");
+        return;
+    }
+
+    alert("Google Sheets submission is not configured yet.");
+}
+
+function reportIssue(testName) {
+    const issue = prompt("Describe the issue you found:");
+    if (!issue || !issue.trim()) {
+        return;
+    }
+
+    alert(`Thanks for reporting an issue with ${testName}. Submission storage is not configured yet.`);
+}
+
+function showFeedback(score, total) {
+    if (!Number.isFinite(score) || !Number.isFinite(total) || total <= 0) {
+        alert("We couldn't calculate your result.");
+        return;
+    }
+
+    const percent = (score / total) * 100;
+
+    if (percent >= 85) {
+        showCelebration();
+        triggerBoyExpression("thumbs-up");
+    } else if (percent >= 70) {
+        alert("Good job! Review a few topics and keep improving.");
+    } else {
+        alert("Keep practicing. Review the concepts and try again.");
+    }
+}
+
+function showCelebration() {
+    const existing = document.getElementById("celebration");
+    if (existing) {
+        existing.remove();
+    }
+
+    const celebration = document.createElement("div");
+    celebration.id = "celebration";
+    celebration.setAttribute("role", "status");
+    celebration.innerHTML = `
+        <div class="celebration-content">
+            <div class="celebration-title">🎉 Congratulations! 🎉</div>
+            <p>Excellent performance 🚀</p>
+            <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
+            <button type="button" id="closeCelebration">Continue</button>
         </div>
-        `;
+    `;
 
-        document.body.appendChild(div);
+    const style = document.createElement("style");
+    style.textContent = `
+        #celebration {
+            position: fixed;
+            z-index: 100000;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            color: white;
+            background: rgba(5, 7, 15, 0.82);
+            backdrop-filter: blur(12px);
+        }
+        .celebration-content {
+            position: relative;
+            text-align: center;
+        }
+        .celebration-title {
+            font-size: clamp(28px, 7vw, 48px);
+            font-weight: 900;
+        }
+        .celebration-content p {
+            color: #7dd3fc;
+            font-size: 20px;
+        }
+        #fireworksCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        #closeCelebration {
+            position: relative;
+            z-index: 1;
+            margin-top: 12px;
+        }
+    `;
 
-        // Canvas Particles Initialization Loops
-        let canvas = document.getElementById("fireworksCanvas");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    document.head.appendChild(style);
+    document.body.appendChild(celebration);
 
-        let ctx = canvas.getContext("2d");
-        let particles = [];
+    const closeButton = document.getElementById("closeCelebration");
+    closeButton.addEventListener("click", () => {
+        celebration.remove();
+        style.remove();
+    });
 
-        function createFirework(){
-            let x = Math.random() * canvas.width;
-            let y = Math.random() * (canvas.height / 2);
+    const canvas = document.getElementById("fireworksCanvas");
+    const context = canvas.getContext("2d");
+    const particles = [];
 
-            for(let i=0;i<80;i++){
-                particles.push({
-                    x: x,
-                    y: y,
-                    angle: Math.random() * 2 * Math.PI,
-                    speed: Math.random() * 5 + 2,
-                    radius: 2,
-                    life: 100,
-                    color: `hsl(${Math.random()*360},100%,60%)`
-                });
+    function resizeCanvas() {
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = window.innerWidth * ratio;
+        canvas.height = window.innerHeight * ratio;
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function createFirework() {
+        const originX = Math.random() * window.innerWidth;
+        const originY = Math.random() * window.innerHeight * 0.55;
+
+        for (let index = 0; index < 45; index += 1) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = Math.random() * 3 + 1;
+
+            particles.push({
+                x: originX,
+                y: originY,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                life: 70,
+                color: `hsl(${Math.random() * 360}, 100%, 65%)`
+            });
+        }
+    }
+
+    let animationFrame;
+    let fireworkTimer;
+    let startTime;
+
+    function drawFireworks(time) {
+        if (!startTime) {
+            startTime = time;
+        }
+
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.vy += 0.025;
+            particle.life -= 1;
+
+            context.globalAlpha = Math.max(particle.life / 70, 0);
+            context.fillStyle = particle.color;
+            context.beginPath();
+            context.arc(particle.x, particle.y, 2.5, 0, Math.PI * 2);
+            context.fill();
+        });
+
+        context.globalAlpha = 1;
+
+        for (let index = particles.length - 1; index >= 0; index -= 1) {
+            if (particles[index].life <= 0) {
+                particles.splice(index, 1);
             }
         }
 
-        function draw(){
-            ctx.fillStyle = "rgba(5, 7, 15, 0.2)";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-
-            particles.forEach((p, index)=>{
-                p.x += Math.cos(p.angle) * p.speed;
-                p.y += Math.sin(p.angle) * p.speed;
-                p.life--;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
-                ctx.fillStyle = p.color;
-                ctx.fill();
-
-                if(p.life <= 0){
-                    particles.splice(index,1);
-                }
-            });
+        if (time - startTime < 4500 && document.body.contains(celebration)) {
+            animationFrame = requestAnimationFrame(drawFireworks);
+        } else {
+            cancelAnimationFrame(animationFrame);
+            clearInterval(fireworkTimer);
         }
-
-        let fireInterval = setInterval(createFirework, 600);
-        let animation = setInterval(draw, 20);
-
-        // Self-destruct frame component overlay tracking loops after completion
-        setTimeout(()=>{
-            clearInterval(animation);
-            clearInterval(fireInterval);
-            document.getElementById("celebration").remove();
-        },4000);
-
-    } else if(percent >= 70){
-        alert("👍 Good job! Review a few topics and improve.");
-    } else {
-        alert("⚠️ You need more practice. Go through the concepts again.");
     }
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    fireworkTimer = setInterval(createFirework, 550);
+    animationFrame = requestAnimationFrame(drawFireworks);
+
+    setTimeout(() => {
+        clearInterval(fireworkTimer);
+        cancelAnimationFrame(animationFrame);
+        window.removeEventListener("resize", resizeCanvas);
+    }, 5000);
 }
+
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        if (typeof triggerBoyExpression === "function") {
+            triggerBoyExpression("wave");
+        }
+    }, 500);
+});
