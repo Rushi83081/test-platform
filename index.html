@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#080b18">
     <title>DevOps Test Platform</title>
-    
+
     <script type="importmap">
     {
         "imports": {
@@ -48,7 +48,6 @@
             z-index: 1;
             width: min(100%, 520px);
             padding: clamp(24px, 5vw, 38px);
-            overflow: hidden;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 30px;
@@ -184,16 +183,14 @@
             line-height: 1.5;
         }
 
-        .canvas-3d-viewport {
-            position: relative;
-            width: 100%;
-            height: 245px;
-            margin: 26px auto -18px;
-            overflow: hidden;
-            border-radius: 22px;
-            background:
-                radial-gradient(ellipse at 50% 100%, rgba(56, 189, 248, 0.16), transparent 64%),
-                linear-gradient(180deg, transparent, rgba(3, 6, 16, 0.38));
+        .character-stage {
+            position: fixed;
+            z-index: 2;
+            right: max(24px, calc((100vw - 1180px) / 2));
+            bottom: 0;
+            width: min(34vw, 390px);
+            height: 340px;
+            pointer-events: none;
         }
 
         #threeJsCanvas {
@@ -212,7 +209,7 @@
             z-index: 2;
             top: 8px;
             left: 50%;
-            max-width: calc(100% - 32px);
+            max-width: calc(100% - 24px);
             padding: 9px 15px;
             transform: translateX(-50%);
             border: 1px solid rgba(15, 23, 42, 0.08);
@@ -283,9 +280,14 @@
             text-align: center;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 760px) {
             body {
-                padding: 14px;
+                min-height: 100vh;
+                padding: 20px 14px 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 12px;
             }
 
             .container {
@@ -293,8 +295,14 @@
                 border-radius: 24px;
             }
 
-            .canvas-3d-viewport {
-                height: 220px;
+            .character-stage {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                width: min(100%, 340px);
+                height: 250px;
+                margin: 0 auto -20px;
+                flex: 0 0 auto;
             }
         }
 
@@ -367,12 +375,12 @@
             <h2 id="selectedTestText" class="selected-test"></h2>
             <button class="primary-button" type="button" onclick="startTest()">Start test</button>
         </section>
-
-        <div class="canvas-3d-viewport" aria-label="Animated student character">
-            <div id="boyMessage" class="boy-message" role="status" aria-live="polite">Hii! 👋</div>
-            <div id="threeJsCanvas"></div>
-        </div>
     </main>
+
+    <div class="character-stage" aria-label="Animated student character">
+        <div id="boyMessage" class="boy-message" role="status" aria-live="polite">Hii! 👋</div>
+        <div id="threeJsCanvas"></div>
+    </div>
 
     <div id="countdownOverlay" aria-live="assertive">
         <div id="countdownDisplay" class="countdown-number">3</div>
