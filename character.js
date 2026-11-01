@@ -52,8 +52,9 @@ function initBoy() {
     const height = viewport.clientHeight || 245;
 
     boyScene = new THREE.Scene();
-    boyCamera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
-    boyCamera.position.set(0, 1.5, 3);
+    boyCamera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+    boyCamera.position.set(0, 1.1, 4.5);
+    boyCamera.lookAt(0, 0.1, 0);
 
     boyRenderer = new THREE.WebGLRenderer({
         alpha: true,
@@ -69,6 +70,10 @@ function initBoy() {
     keyLight.position.set(3, 5, 4);
     boyScene.add(keyLight);
 
+    const fillLight = new THREE.DirectionalLight(0x9cc7ff, 0.8);
+    fillLight.position.set(-3, 2, 3);
+    boyScene.add(fillLight);
+
     boyClock = new THREE.Clock();
 
     const loader = new GLTFLoader();
@@ -77,17 +82,23 @@ function initBoy() {
         "./character.glb",
         (gltf) => {
             boyModel = gltf.scene;
-            boyScene.add(boyModel);
+            boyModel.updateMatrixWorld(true);
 
             const bounds = new THREE.Box3().setFromObject(boyModel);
             const size = bounds.getSize(new THREE.Vector3());
             const center = bounds.getCenter(new THREE.Vector3());
 
-            boyModel.position.sub(center);
-
             const largestDimension = Math.max(size.x, size.y, size.z) || 1;
-                boyModel.scale.setScalar(2.1 / largestDimension);
-                boyModel.position.y = 0.2;
+            const scale = 2.1 / largestDimension;
+
+            boyModel.scale.setScalar(scale);
+            boyModel.position.set(
+                -center.x * scale,
+                -bounds.min.y * scale - 0.8,
+                -center.z * scale
+            );
+
+            boyScene.add(boyModel);
 
             boyMixer = new THREE.AnimationMixer(boyModel);
 
@@ -95,24 +106,28 @@ function initBoy() {
                 const clipName = clip.name.toLowerCase();
                 const action = boyMixer.clipAction(clip);
 
-                if (clipName.includes("walk")) boyActions.walk = action;
-                if (clipName.includes("wave")) boyActions.wave = action;
-                if (clipName.includes("think")) boyActions.thinking = action;
-                if (clipName.includes("thumb")) boyActions["thumbs-up"] = action;
+                if (clipName.includes("walk")) {
+                    boyActions.walk = action;
+                } else if (clipName.includes("wave")) {
+                    boyActions.wave = action;
+                } else if (clipName.includes("think")) {
+                    boyActions.thinking = action;
+                } else if (clipName.includes("thumb")) {
+                    boyActions["thumbs-up"] = action;
+                } else if (clipName.includes("idle")) {
+                    boyActions.walk = action;
+                }
             });
+
+            console.info("Character loaded. Model size:", size);
+            console.info("Animation clips:", gltf.animations.map((clip) => clip.name));
 
             if (boyActions.wave) {
                 triggerBoyExpression("wave");
                 setTimeout(() => triggerBoyExpression("walk"), 2200);
             } else {
                 triggerBoyExpression("walk");
-                console.info("Model loaded, but no wave animation clip was found.");
             }
-
-            console.info(
-                "Character loaded. Animation clips:",
-                gltf.animations.map((clip) => clip.name)
-            );
         },
         undefined,
         (error) => {
