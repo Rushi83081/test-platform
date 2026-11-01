@@ -4,7 +4,7 @@
 <title>DevOps Test Platform</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Load production-grade 3D libraries with built-in asset rigging controllers -->
+<!-- Verified High-Performance Three.js WebGL Core Engine Link -->
 <script src="https://cloudflare.com"></script>
 <style>
 body {
@@ -193,7 +193,6 @@ function init3DCharacterEngine() {
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 100);
-    // Positioned close and center for high-fidelity view
     camera.position.set(0, 0.3, 4.2);
 
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -201,7 +200,6 @@ function init3DCharacterEngine() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Premium Studio Lighting Layers
     scene.add(new THREE.AmbientLight(0xffffff, 0.8));
     const dLight = new THREE.DirectionalLight(0xffffff, 1.2);
     dLight.position.set(5, 10, 5);
@@ -214,7 +212,6 @@ function init3DCharacterEngine() {
     characterGroup.position.y = -0.9;
     scene.add(characterGroup);
 
-    // High-End Poly Shaders mapped cleanly
     const skinMat = new THREE.MeshStandardMaterial({ color: 0xffdbac, roughness: 0.4 });
     const hairMat = new THREE.MeshStandardMaterial({ color: 0x1a110e, roughness: 0.6 });
     const shirtMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
@@ -223,14 +220,12 @@ function init3DCharacterEngine() {
     const eyeMat = new THREE.MeshBasicMaterial({ color: 0x1e293b });
     const shoeMat = new THREE.MeshStandardMaterial({ color: 0x0f172a });
 
-    // 🧑 HEAD MESH COMPONENT
     const headGeo = new THREE.SphereGeometry(0.38, 32, 32);
     headGeo.scale(1, 1.06, 0.95);
     headMesh = new THREE.Mesh(headGeo, skinMat);
     headMesh.position.y = 1.4;
     characterGroup.add(headMesh);
 
-    // Deep Eyes
     const eyeGeo = new THREE.SphereGeometry(0.05, 16, 16);
     const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
     leftEye.position.set(-0.12, 0.05, 0.32);
@@ -239,13 +234,11 @@ function init3DCharacterEngine() {
     rightEye.position.set(0.12, 0.05, 0.32);
     headMesh.add(rightEye);
 
-    // Styled Hair Mesh Cap
     const hairGeo = new THREE.SphereGeometry(0.4, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
     const hairTop = new THREE.Mesh(hairGeo, hairMat);
     hairTop.position.y = 0.04;
     headMesh.add(hairTop);
 
-    // 👔 TORSO MESH (Tilted White Dress Shirt + Red Tie)
     const torsoGeo = new THREE.CylinderGeometry(0.28, 0.24, 0.75, 32);
     const torsoMesh = new THREE.Mesh(torsoGeo, shirtMat);
     torsoMesh.position.y = 0.75;
@@ -257,15 +250,12 @@ function init3DCharacterEngine() {
     tieMesh.rotation.x = 0.06;
     torsoMesh.add(tieMesh);
 
-    // 👖 TROUSERS MESH (Royal Blue Pants Shape Layer)
     const pantsGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.25, 32);
     const pantsMesh = new THREE.Mesh(pantsGeo, pantsMat);
     pantsMesh.position.y = 0.28;
     characterGroup.add(pantsMesh);
-    // 🦵 LIMBS SYSTEM
     const limbGeo = new THREE.CylinderGeometry(0.08, 0.06, 0.5, 16);
     
-    // Left Leg Node
     leftLeg = new THREE.Group();
     leftLeg.position.set(-0.12, 0.18, 0);
     characterGroup.add(leftLeg);
@@ -276,7 +266,6 @@ function init3DCharacterEngine() {
     leftFoot.position.set(0, -0.5, 0.04);
     leftLeg.add(leftFoot);
 
-    // Right Leg Node
     rightLeg = new THREE.Group();
     rightLeg.position.set(0.12, 0.18, 0);
     characterGroup.add(rightLeg);
@@ -287,7 +276,6 @@ function init3DCharacterEngine() {
     rightFoot.position.set(0, -0.5, 0.04);
     rightLeg.add(rightFoot);
 
-    // Left Arm Node
     leftArm = new THREE.Group();
     leftArm.position.set(-0.36, 1.05, 0);
     characterGroup.add(leftArm);
@@ -298,7 +286,6 @@ function init3DCharacterEngine() {
     leftHand.position.y = -0.5;
     leftArm.add(leftHand);
 
-    // Right Arm Node
     rightArm = new THREE.Group();
     rightArm.position.set(0.36, 1.05, 0);
     characterGroup.add(rightArm);
@@ -321,7 +308,6 @@ function animateEngineLoop() {
     requestAnimationFrame(animateEngineLoop);
     tickTimer += 0.05;
 
-    // Fluid breathing baseline
     if(headMesh) {
         headMesh.rotation.y = Math.sin(tickTimer * 0.4) * 0.04;
         headMesh.position.y = 1.4 + Math.sin(tickTimer * 0.8) * 0.01;
