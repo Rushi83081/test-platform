@@ -1,20 +1,4 @@
 // ==========================================
-// 🎨 AVATAR STATE ENGINE CONTROL
-// ==========================================
-function setAvatarState(stateClassName) {
-    const avatar = document.getElementById("avatarSvg");
-    if (!avatar) return;
-    
-    // Clear out previous active animation/position classes
-    avatar.classList.remove('look-down', 'thinking', 'thumbs-up');
-    
-    // Add the new active status if one is passed
-    if (stateClassName) {
-        avatar.classList.add(stateClassName);
-    }
-}
-
-// ==========================================
 // 🚀 STEP 1: GO TO TEST SELECTION
 // ==========================================
 function goToSelection(){
@@ -34,8 +18,10 @@ function goToSelection(){
     document.getElementById("userForm").classList.add("hidden");
     document.getElementById("testSelection").classList.remove("hidden");
     
-    // Switch character into thinking loop mode
-    setAvatarState('thinking');
+    // Switch character into thinking loop timeline sequence smoothly
+    if(typeof triggerBoyExpression === 'function') {
+        triggerBoyExpression('thinking');
+    }
 }
 
 // ==========================================
@@ -50,7 +36,9 @@ function selectTest(type){
     // IF DEVOPS ROUTE -> BURST OUT DETAILED TOOLS
     if(type === "devops"){
         document.getElementById("devopsOptions").classList.remove("hidden");
-        setAvatarState('thinking'); // Keep the character thinking during submenu
+        if(typeof triggerBoyExpression === 'function') {
+            triggerBoyExpression('thinking');
+        }
     } else {
         showStart(type);
     }
@@ -73,9 +61,13 @@ function selectDevops(tool){
 // 🏁 STEP 4: PREPARE AND SHOW START SELECTION
 // ==========================================
 function showStart(text){
-    setAvatarState(''); // Return the character to clean neutral stance
     document.getElementById("startSection").classList.remove("hidden");
     document.getElementById("selectedTestText").innerText = "You selected: " + text.toUpperCase();
+    
+    // Return character back to natural rhythmic walk stance animation loop
+    if(typeof triggerBoyExpression === 'function') {
+        triggerBoyExpression('walk');
+    }
 }
 
 // ==========================================
@@ -85,14 +77,6 @@ function startTest(){
     const overlay = document.getElementById("countdownOverlay");
     const countdownDisplay = document.getElementById("countdownDisplay");
     const wishTextDisplay = document.getElementById("wishTextDisplay");
-    const overlayAvatarBox = document.getElementById("overlayAvatarBox");
-    const originalAvatar = document.getElementById("avatarSvg");
-
-    // Clone the character block cleanly to render inside overlay space
-    overlayAvatarBox.innerHTML = "";
-    const clonedAvatar = originalAvatar.cloneNode(true);
-    clonedAvatar.id = "overlayAvatar";
-    overlayAvatarBox.appendChild(clonedAvatar);
 
     // Activate overlay container views
     overlay.classList.add("active");
@@ -112,9 +96,11 @@ function startTest(){
             
             // Hide running clock, set thumbs-up animation, fire off wish text banner
             countdownDisplay.classList.add("hidden");
-            clonedAvatar.classList.remove('look-down', 'thinking');
-            clonedAvatar.classList.add('thumbs-up');
             wishTextDisplay.classList.remove("hidden");
+            
+            if(typeof triggerBoyExpression === 'function') {
+                triggerBoyExpression('thumbs-up');
+            }
 
             // Pause frame briefly for user engagement before routing execution
             setTimeout(() => {
@@ -225,7 +211,7 @@ function showFeedback(score, total){
         left:0;
         width:100%;
         height:100%;
-        background:rgba(15, 23, 42, 0.6);
+        background:rgba(5, 7, 15, 0.7);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         z-index:9999;
@@ -272,7 +258,7 @@ function showFeedback(score, total){
         }
 
         function draw(){
-            ctx.fillStyle = "rgba(15, 23, 42, 0.2)";
+            ctx.fillStyle = "rgba(5, 7, 15, 0.2)";
             ctx.fillRect(0,0,canvas.width,canvas.height);
 
             particles.forEach((p, index)=>{
@@ -297,3 +283,13 @@ function showFeedback(score, total){
         // Self-destruct frame component overlay tracking loops after completion
         setTimeout(()=>{
             clearInterval(animation);
+            clearInterval(fireInterval);
+            document.getElementById("celebration").remove();
+        },4000);
+
+    } else if(percent >= 70){
+        alert("👍 Good job! Review a few topics and improve.");
+    } else {
+        alert("⚠️ You need more practice. Go through the concepts again.");
+    }
+}
