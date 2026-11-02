@@ -23,6 +23,11 @@ let clock;
 let mixer;
 let currentModel;
 let currentStage = "name";
+
+const savedStage = localStorage.getItem("characterStage");
+if (savedStage === "selection" || savedStage === "results") {
+    currentStage = savedStage;
+}
 let loadToken = 0;
 let resizeObserver;
 
