@@ -1,4 +1,6 @@
 function showCharacterStage(stage) {
+    localStorage.setItem("characterStage", stage);
+
     if (typeof window.setCharacterStage === "function") {
         window.setCharacterStage(stage);
     } else {
