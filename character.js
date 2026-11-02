@@ -7,13 +7,10 @@ const MODEL_FILES = {
     results: "./samba-dancing.glb"
 };
 
-const MESSAGES = {
-    wave: "Hii! 👋",
-    walk: "Let's get started!",
-    "look-down": "Add your name here",
-    thinking: "Hmm... which test? 🤔",
-    "thumbs-up": "All the best! 👍",
-    dance: "You did it! 🎉"
+const STAGE_MESSAGES = {
+    name: "Hii! 👋",
+    selection: "Hmm... which test? 🤔",
+    results: "You did it! 🎉"
 };
 
 let scene;
@@ -22,40 +19,41 @@ let renderer;
 let clock;
 let mixer;
 let currentModel;
-let currentStage = localStorage.getItem("characterStage") || "name";
+let currentStage = "name";
 let loadToken = 0;
+const loadedModels = new Map();
 
 function setBoyMessage(message) {
     const bubble = document.getElementById("boyMessage");
-    if (!bubble) return;
-
-    bubble.textContent = message;
-    bubble.classList.remove("hidden");
+    if (bubble) {
+        bubble.textContent = message;
+        bubble.classList.remove("hidden");
+    }
 }
 
 function triggerBoyExpression(expression) {
-    setBoyMessage(MESSAGES[expression] || MESSAGES.wave);
+    const messages = {
+        wave: "Hii! 👋",
+        walk: "Let's get started!",
+        "look-down": "Add your name here",
+        thinking: "Hmm... which test? 🤔",
+        "thumbs-up": "All the best! 👍",
+        dance: "You did it! 🎉"
+    };
 
-    if (expression === "dance") {
-        setCharacterStage("results");
-    } else if (expression === "thinking" || expression === "look-down") {
+    setBoyMessage(messages[expression] || STAGE_MESSAGES[currentStage]);
+
+    if (expression === "thinking" || expression === "look-down") {
         setCharacterStage("selection");
+    } else if (expression === "dance") {
+        setCharacterStage("results");
     }
 }
 
 window.triggerBoyExpression = triggerBoyExpression;
 
-function disposeCurrentModel() {
-    if (!currentModel) return;
-
-    scene.remove(currentModel);
-
-    if (mixer) {
-        mixer.stopAllAction();
-        mixer = null;
-    }
-
-    currentModel.traverse((object) => {
+function disposeModel(model) {
+    model.traverse((object) => {
         if (!object.isMesh) return;
 
         object.geometry?.dispose();
@@ -74,8 +72,6 @@ function disposeCurrentModel() {
             material.dispose();
         });
     });
-
-    currentModel = null;
 }
 
 function frameModel(model) {
@@ -98,46 +94,71 @@ function frameModel(model) {
     camera.lookAt(0, 0.1, 0);
 }
 
+function displayModel(stage, gltf) {
+    if (mixer) {
+        mixer.stopAllAction();
+        mixer = null;
+    }
+
+    if (currentModel) {
+        scene.remove(currentModel);
+    }
+
+    currentModel = gltf.scene;
+    frameModel(currentModel);
+    scene.add(currentModel);
+
+    if (gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(currentModel);
+
+        const clip = gltf.animations[0];
+        const action = mixer.clipAction(clip);
+        action.reset();
+        action.setLoop(THREE.LoopRepeat);
+        action.play();
+
+        console.info(
+            `${stage} animation clips:`,
+            gltf.animations.map((animation) => animation.name)
+        );
+    } else {
+        console.info(`${stage} model has no animation clips.`);
+    }
+
+    setBoyMessage(STAGE_MESSAGES[stage]);
+}
+
 function loadStageModel(stage) {
     const modelUrl = MODEL_FILES[stage];
     if (!modelUrl || !scene) return;
 
     const token = ++loadToken;
-    const loader = new GLTFLoader();
 
-    loader.load(
+    setBoyMessage(`Loading ${stage === "results" ? "celebration" : "character"}…`);
+
+    const cachedModel = loadedModels.get(stage);
+    if (cachedModel) {
+        if (token === loadToken) {
+            displayModel(stage, cachedModel);
+        }
+        return;
+    }
+
+    new GLTFLoader().load(
         modelUrl,
         (gltf) => {
+            loadedModels.set(stage, gltf);
+
             if (token !== loadToken) return;
 
-            disposeCurrentModel();
-
-            currentModel = gltf.scene;
-            frameModel(currentModel);
-            scene.add(currentModel);
-
-            if (gltf.animations.length > 0) {
-                mixer = new THREE.AnimationMixer(currentModel);
-
-                const clip = gltf.animations[0];
-                const action = mixer.clipAction(clip);
-
-                action.reset();
-                action.setLoop(THREE.LoopRepeat);
-                action.play();
-
-                console.info(
-                    `${stage} model animation clips:`,
-                    gltf.animations.map((animation) => animation.name)
-                );
-            } else {
-                console.info(`${stage} model has no animation clips.`);
-            }
+            displayModel(stage, gltf);
         },
         undefined,
         (error) => {
+            if (token !== loadToken) return;
+
             console.error(`Could not load ${modelUrl}:`, error);
-            setBoyMessage("I couldn't load my 3D model");
+            setBoyMessage("Character unavailable — you can continue.");
         }
     );
 }
@@ -147,14 +168,7 @@ function setCharacterStage(stage) {
 
     currentStage = stage;
     localStorage.setItem("characterStage", stage);
-
-    const stageMessages = {
-        name: MESSAGES.wave,
-        selection: MESSAGES.thinking,
-        results: MESSAGES.dance
-    };
-
-    setBoyMessage(stageMessages[stage]);
+    setBoyMessage(STAGE_MESSAGES[stage]);
     loadStageModel(stage);
 }
 
@@ -200,11 +214,7 @@ function initCharacter() {
 
     function animate() {
         requestAnimationFrame(animate);
-
-        if (mixer) {
-            mixer.update(clock.getDelta());
-        }
-
+        if (mixer) mixer.update(clock.getDelta());
         renderer.render(scene, camera);
     }
 
@@ -220,13 +230,12 @@ function initCharacter() {
     }
 
     if ("ResizeObserver" in window) {
-        const observer = new ResizeObserver(resize);
-        observer.observe(viewport);
+        new ResizeObserver(resize).observe(viewport);
     } else {
         window.addEventListener("resize", resize);
     }
 
-    loadStageModel(currentStage);
+    setCharacterStage(currentStage);
 }
 
 initCharacter();
