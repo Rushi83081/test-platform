@@ -131,12 +131,7 @@ function loadStageModel(stage) {
                 mixer = new THREE.AnimationMixer(currentModel);
 
                 const clips = gltf.animations;
-                const chosenClip =
-                    stage === "name"
-                        ? clips[0]
-                        : stage === "selection"
-                            ? clips[0]
-                            : clips[0];
+                const chosenClip = clips[clips.length - 1];
 
                 const action = mixer.clipAction(chosenClip);
                 action.reset();
