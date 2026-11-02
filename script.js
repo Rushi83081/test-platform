@@ -1,10 +1,20 @@
+function showCharacterStage(stage) {
+    if (typeof window.setCharacterStage === "function") {
+        window.setCharacterStage(stage);
+    } else {
+        window.dispatchEvent(new CustomEvent("character-stage-change", {
+            detail: { stage }
+        }));
+    }
+}
+
 function goToSelection() {
     const name = document.getElementById("name").value.trim();
     const surname = document.getElementById("surname").value.trim();
 
     if (!name || !surname) {
         alert("Please enter your name and surname.");
-        triggerBoyExpression("look-down");
+        window.triggerBoyExpression?.("look-down");
         return;
     }
 
@@ -14,7 +24,8 @@ function goToSelection() {
     document.getElementById("userForm").classList.add("hidden");
     document.getElementById("testSelection").classList.remove("hidden");
 
-    triggerBoyExpression("thinking");
+    showCharacterStage("selection");
+    window.triggerBoyExpression?.("thinking");
 }
 
 function selectTest(type) {
@@ -25,7 +36,8 @@ function selectTest(type) {
 
     if (type === "devops") {
         document.getElementById("devopsOptions").classList.remove("hidden");
-        triggerBoyExpression("thinking");
+        showCharacterStage("selection");
+        window.triggerBoyExpression?.("thinking");
         return;
     }
 
@@ -43,18 +55,19 @@ function showStart(testName) {
     document.getElementById("selectedTestText").textContent =
         `You selected: ${testName.toUpperCase()}`;
 
-    triggerBoyExpression("walk");
+    showCharacterStage("selection");
+    window.triggerBoyExpression?.("walk");
 }
 
 function startTest() {
-    const overlay = document.getElementById("countdownOverlay");
-    const countdownDisplay = document.getElementById("countdownDisplay");
-    const wishTextDisplay = document.getElementById("wishTextDisplay");
-
     if (!localStorage.getItem("testType")) {
         alert("Please select a test first.");
         return;
     }
+
+    const overlay = document.getElementById("countdownOverlay");
+    const countdownDisplay = document.getElementById("countdownDisplay");
+    const wishTextDisplay = document.getElementById("wishTextDisplay");
 
     overlay.classList.add("active");
     countdownDisplay.classList.remove("hidden");
@@ -62,7 +75,7 @@ function startTest() {
 
     let count = 3;
     countdownDisplay.textContent = count;
-    triggerBoyExpression("thumbs-up");
+    window.triggerBoyExpression?.("thumbs-up");
 
     const timer = setInterval(() => {
         count -= 1;
@@ -75,7 +88,7 @@ function startTest() {
         clearInterval(timer);
         countdownDisplay.classList.add("hidden");
         wishTextDisplay.classList.remove("hidden");
-        triggerBoyExpression("thumbs-up");
+        window.triggerBoyExpression?.("thumbs-up");
 
         setTimeout(executeRouting, 1500);
     }, 1000);
@@ -105,8 +118,7 @@ function executeRouting() {
             all: "tests/devops/all/devops-all.html"
         };
 
-        window.location.href =
-            devopsRoutes[tool] || devopsRoutes.all;
+        window.location.href = devopsRoutes[tool] || devopsRoutes.all;
         return;
     }
 
@@ -128,11 +140,12 @@ function sendToGoogleSheet(score, testName) {
 
 function reportIssue(testName) {
     const issue = prompt("Describe the issue you found:");
-    if (!issue || !issue.trim()) {
-        return;
-    }
+    if (!issue || !issue.trim()) return;
 
-    alert(`Thanks for reporting an issue with ${testName}. Submission storage is not configured yet.`);
+    alert(
+        `Thanks for reporting an issue with ${testName}. ` +
+        "Submission storage is not configured yet."
+    );
 }
 
 function showFeedback(score, total) {
@@ -144,8 +157,9 @@ function showFeedback(score, total) {
     const percent = (score / total) * 100;
 
     if (percent >= 85) {
+        showCharacterStage("results");
+        window.triggerBoyExpression?.("dance");
         showCelebration();
-        triggerBoyExpression("thumbs-up");
     } else if (percent >= 70) {
         alert("Good job! Review a few topics and keep improving.");
     } else {
@@ -154,24 +168,10 @@ function showFeedback(score, total) {
 }
 
 function showCelebration() {
-    const existing = document.getElementById("celebration");
-    if (existing) {
-        existing.remove();
-    }
-
-    const celebration = document.createElement("div");
-    celebration.id = "celebration";
-    celebration.setAttribute("role", "status");
-    celebration.innerHTML = `
-        <div class="celebration-content">
-            <div class="celebration-title">🎉 Congratulations! 🎉</div>
-            <p>Excellent performance 🚀</p>
-            <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
-            <button type="button" id="closeCelebration">Continue</button>
-        </div>
-    `;
+    document.getElementById("celebration")?.remove();
 
     const style = document.createElement("style");
+    style.id = "celebrationStyles";
     style.textContent = `
         #celebration {
             position: fixed;
@@ -211,10 +211,23 @@ function showCelebration() {
     `;
 
     document.head.appendChild(style);
+
+    const celebration = document.createElement("div");
+    celebration.id = "celebration";
+    celebration.setAttribute("role", "dialog");
+    celebration.setAttribute("aria-modal", "true");
+    celebration.innerHTML = `
+        <div class="celebration-content">
+            <div class="celebration-title">🎉 Congratulations! 🎉</div>
+            <p>Excellent performance 🚀</p>
+            <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
+            <button type="button" id="closeCelebration">Continue</button>
+        </div>
+    `;
+
     document.body.appendChild(celebration);
 
-    const closeButton = document.getElementById("closeCelebration");
-    closeButton.addEventListener("click", () => {
+    document.getElementById("closeCelebration").addEventListener("click", () => {
         celebration.remove();
         style.remove();
     });
@@ -250,13 +263,10 @@ function showCelebration() {
     }
 
     let animationFrame;
-    let fireworkTimer;
-    let startTime;
+    let startTime = 0;
 
     function drawFireworks(time) {
-        if (!startTime) {
-            startTime = time;
-        }
+        if (!startTime) startTime = time;
 
         context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -276,22 +286,17 @@ function showCelebration() {
         context.globalAlpha = 1;
 
         for (let index = particles.length - 1; index >= 0; index -= 1) {
-            if (particles[index].life <= 0) {
-                particles.splice(index, 1);
-            }
+            if (particles[index].life <= 0) particles.splice(index, 1);
         }
 
         if (time - startTime < 4500 && document.body.contains(celebration)) {
             animationFrame = requestAnimationFrame(drawFireworks);
-        } else {
-            cancelAnimationFrame(animationFrame);
-            clearInterval(fireworkTimer);
         }
     }
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
-    fireworkTimer = setInterval(createFirework, 550);
+    const fireworkTimer = setInterval(createFirework, 550);
     animationFrame = requestAnimationFrame(drawFireworks);
 
     setTimeout(() => {
@@ -303,8 +308,6 @@ function showCelebration() {
 
 window.addEventListener("load", () => {
     setTimeout(() => {
-        if (typeof triggerBoyExpression === "function") {
-            triggerBoyExpression("wave");
-        }
+        window.triggerBoyExpression?.("wave");
     }, 500);
 });
