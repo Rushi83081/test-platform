@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#080b18">
     <title>DevOps Test Platform</title>
-    
+
     <script type="importmap">
     {
         "imports": {
@@ -86,14 +86,8 @@
         }
 
         @keyframes sectionIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section h2 {
@@ -122,9 +116,7 @@
             transition: border-color 180ms ease, box-shadow 180ms ease;
         }
 
-        input::placeholder {
-            color: #7c879c;
-        }
+        input::placeholder { color: #7c879c; }
 
         input:focus {
             border-color: #38bdf8;
@@ -159,9 +151,7 @@
             box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
+        button:active { transform: translateY(0); }
 
         button:focus-visible {
             outline: 3px solid #7dd3fc;
@@ -173,9 +163,7 @@
             margin-top: 4px;
         }
 
-        .tool-grid button:last-child {
-            grid-column: 1 / -1;
-        }
+        .tool-grid button:last-child { grid-column: 1 / -1; }
 
         .selected-test {
             color: #c4b5fd;
@@ -185,10 +173,10 @@
         .character-stage {
             position: fixed;
             z-index: 2;
-            right: max(24px, calc((100vw - 1180px) / 2));
+            right: max(90px, calc((100vw - 1180px) / 2 + 70px));
             bottom: 0;
-            width: min(34vw, 390px);
-            height: 340px;
+            width: min(28vw, 320px);
+            height: 290px;
             pointer-events: none;
         }
 
@@ -235,9 +223,7 @@
             content: "";
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         #countdownOverlay {
             position: fixed;
@@ -293,8 +279,8 @@
                 position: relative;
                 right: auto;
                 bottom: auto;
-                width: min(100%, 340px);
-                height: 250px;
+                width: min(100%, 300px);
+                height: 230px;
                 margin: 0 auto -20px;
                 flex: 0 0 auto;
             }
