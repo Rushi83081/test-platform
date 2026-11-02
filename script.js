@@ -157,10 +157,10 @@ function showFeedback(score, total) {
     }
 
     const percent = (score / total) * 100;
+    showCharacterStage("results");
+    window.triggerBoyExpression?.("dance");
 
     if (percent >= 85) {
-        showCharacterStage("results");
-        window.triggerBoyExpression?.("dance");
         showCelebration();
     } else if (percent >= 70) {
         alert("Good job! Review a few topics and keep improving.");
@@ -171,6 +171,7 @@ function showFeedback(score, total) {
 
 function showCelebration() {
     document.getElementById("celebration")?.remove();
+    document.getElementById("celebrationStyles")?.remove();
 
     const style = document.createElement("style");
     style.id = "celebrationStyles";
@@ -296,16 +297,21 @@ function showCelebration() {
         }
     }
 
+    function closeCelebration() {
+        cancelAnimationFrame(animationFrame);
+        window.removeEventListener("resize", resizeCanvas);
+        celebration.remove();
+        style.remove();
+    }
+
+    document.getElementById("closeCelebration").addEventListener("click", closeCelebration);
+
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
     const fireworkTimer = setInterval(createFirework, 550);
     animationFrame = requestAnimationFrame(drawFireworks);
 
-    setTimeout(() => {
-        clearInterval(fireworkTimer);
-        cancelAnimationFrame(animationFrame);
-        window.removeEventListener("resize", resizeCanvas);
-    }, 5000);
+    setTimeout(() => clearInterval(fireworkTimer), 5000);
 }
 
 window.addEventListener("load", () => {
