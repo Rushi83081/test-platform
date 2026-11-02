@@ -22,9 +22,8 @@ let renderer;
 let clock;
 let mixer;
 let currentModel;
-let currentStage = "name";
+let currentStage = localStorage.getItem("characterStage") || "name";
 let loadToken = 0;
-let resizeObserver;
 
 function setBoyMessage(message) {
     const bubble = document.getElementById("boyMessage");
@@ -69,7 +68,7 @@ function disposeCurrentModel() {
             if (!material) return;
 
             for (const value of Object.values(material)) {
-                if (value && value.isTexture) value.dispose();
+                if (value?.isTexture) value.dispose();
             }
 
             material.dispose();
@@ -85,19 +84,18 @@ function frameModel(model) {
     const bounds = new THREE.Box3().setFromObject(model);
     const size = bounds.getSize(new THREE.Vector3());
     const center = bounds.getCenter(new THREE.Vector3());
-
     const height = size.y || 1;
-    const scale = 2.35 / height;
+    const scale = 1.8 / height;
 
     model.scale.setScalar(scale);
     model.position.set(
         -center.x * scale,
-        -bounds.min.y * scale - 0.85,
+        -bounds.min.y * scale - 0.75,
         -center.z * scale
     );
 
-    camera.position.set(0, 1.15, 4.7);
-    camera.lookAt(0, 0.15, 0);
+    camera.position.set(0, 1.05, 5.1);
+    camera.lookAt(0, 0.1, 0);
 }
 
 function loadStageModel(stage) {
@@ -110,37 +108,27 @@ function loadStageModel(stage) {
     loader.load(
         modelUrl,
         (gltf) => {
-            if (token !== loadToken) {
-                gltf.scene.traverse((object) => {
-                    if (!object.isMesh) return;
-                    object.geometry?.dispose();
-                    const materials = Array.isArray(object.material)
-                        ? object.material
-                        : [object.material];
-                    materials.forEach((material) => material?.dispose());
-                });
-                return;
-            }
+            if (token !== loadToken) return;
 
             disposeCurrentModel();
+
             currentModel = gltf.scene;
             frameModel(currentModel);
             scene.add(currentModel);
 
-            if (gltf.animations.length) {
+            if (gltf.animations.length > 0) {
                 mixer = new THREE.AnimationMixer(currentModel);
 
-                const clips = gltf.animations;
-                const chosenClip = clips[clips.length - 1];
+                const clip = gltf.animations[0];
+                const action = mixer.clipAction(clip);
 
-                const action = mixer.clipAction(chosenClip);
                 action.reset();
                 action.setLoop(THREE.LoopRepeat);
                 action.play();
 
                 console.info(
                     `${stage} model animation clips:`,
-                    clips.map((clip) => clip.name)
+                    gltf.animations.map((animation) => animation.name)
                 );
             } else {
                 console.info(`${stage} model has no animation clips.`);
@@ -158,6 +146,7 @@ function setCharacterStage(stage) {
     if (!MODEL_FILES[stage]) return;
 
     currentStage = stage;
+    localStorage.setItem("characterStage", stage);
 
     const stageMessages = {
         name: MESSAGES.wave,
@@ -170,8 +159,11 @@ function setCharacterStage(stage) {
 }
 
 window.setCharacterStage = setCharacterStage;
+
 window.addEventListener("character-stage-change", (event) => {
-    setCharacterStage(event.detail?.stage);
+    if (event.detail?.stage) {
+        setCharacterStage(event.detail.stage);
+    }
 });
 
 function initCharacter() {
@@ -181,13 +173,13 @@ function initCharacter() {
         return;
     }
 
-    const width = viewport.clientWidth || 360;
-    const height = viewport.clientHeight || 300;
+    const width = viewport.clientWidth || 300;
+    const height = viewport.clientHeight || 290;
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    camera.position.set(0, 1.15, 4.7);
-    camera.lookAt(0, 0.15, 0);
+    camera.position.set(0, 1.05, 5.1);
+    camera.lookAt(0, 0.1, 0);
 
     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
@@ -208,15 +200,19 @@ function initCharacter() {
 
     function animate() {
         requestAnimationFrame(animate);
-        if (mixer) mixer.update(clock.getDelta());
+
+        if (mixer) {
+            mixer.update(clock.getDelta());
+        }
+
         renderer.render(scene, camera);
     }
 
     animate();
 
     function resize() {
-        const newWidth = viewport.clientWidth || 360;
-        const newHeight = viewport.clientHeight || 300;
+        const newWidth = viewport.clientWidth || 300;
+        const newHeight = viewport.clientHeight || 290;
 
         camera.aspect = newWidth / newHeight;
         camera.updateProjectionMatrix();
@@ -224,8 +220,8 @@ function initCharacter() {
     }
 
     if ("ResizeObserver" in window) {
-        resizeObserver = new ResizeObserver(resize);
-        resizeObserver.observe(viewport);
+        const observer = new ResizeObserver(resize);
+        observer.observe(viewport);
     } else {
         window.addEventListener("resize", resize);
     }
