@@ -1,11 +1,15 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 const MODEL_FILES = {
     name: "./breakdance-ending.glb",
     selection: "./hip-hop-dance.glb",
     results: "./samba-dancing.glb"
 };
+
+const DRACO_DECODER_PATH =
+    "https://www.gstatic.com/draco/versioned/decoders/1.5.7/";
 
 const STAGE_MESSAGES = {
     name: "Hii! 👋",
@@ -21,14 +25,23 @@ let mixer;
 let currentModel;
 let currentStage = "name";
 let loadToken = 0;
+
 const loadedModels = new Map();
+
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath(DRACO_DECODER_PATH);
+dracoLoader.setDecoderConfig({ type: "wasm" });
+dracoLoader.preload();
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
 
 function setBoyMessage(message) {
     const bubble = document.getElementById("boyMessage");
-    if (bubble) {
-        bubble.textContent = message;
-        bubble.classList.remove("hidden");
-    }
+    if (!bubble) return;
+
+    bubble.textContent = message;
+    bubble.classList.remove("hidden");
 }
 
 function triggerBoyExpression(expression) {
@@ -52,28 +65,6 @@ function triggerBoyExpression(expression) {
 
 window.triggerBoyExpression = triggerBoyExpression;
 
-function disposeModel(model) {
-    model.traverse((object) => {
-        if (!object.isMesh) return;
-
-        object.geometry?.dispose();
-
-        const materials = Array.isArray(object.material)
-            ? object.material
-            : [object.material];
-
-        materials.forEach((material) => {
-            if (!material) return;
-
-            for (const value of Object.values(material)) {
-                if (value?.isTexture) value.dispose();
-            }
-
-            material.dispose();
-        });
-    });
-}
-
 function frameModel(model) {
     model.updateMatrixWorld(true);
 
@@ -94,7 +85,7 @@ function frameModel(model) {
     camera.lookAt(0, 0.1, 0);
 }
 
-function displayModel(stage, gltf) {
+function showLoadedModel(stage, gltf) {
     if (mixer) {
         mixer.stopAllAction();
         mixer = null;
@@ -111,15 +102,14 @@ function displayModel(stage, gltf) {
     if (gltf.animations.length > 0) {
         mixer = new THREE.AnimationMixer(currentModel);
 
-        const clip = gltf.animations[0];
-        const action = mixer.clipAction(clip);
+        const action = mixer.clipAction(gltf.animations[0]);
         action.reset();
         action.setLoop(THREE.LoopRepeat);
         action.play();
 
         console.info(
             `${stage} animation clips:`,
-            gltf.animations.map((animation) => animation.name)
+            gltf.animations.map((clip) => clip.name)
         );
     } else {
         console.info(`${stage} model has no animation clips.`);
@@ -133,25 +123,22 @@ function loadStageModel(stage) {
     if (!modelUrl || !scene) return;
 
     const token = ++loadToken;
-
     setBoyMessage(`Loading ${stage === "results" ? "celebration" : "character"}…`);
 
     const cachedModel = loadedModels.get(stage);
     if (cachedModel) {
         if (token === loadToken) {
-            displayModel(stage, cachedModel);
+            showLoadedModel(stage, cachedModel);
         }
         return;
     }
 
-    new GLTFLoader().load(
+    gltfLoader.load(
         modelUrl,
         (gltf) => {
             loadedModels.set(stage, gltf);
-
             if (token !== loadToken) return;
-
-            displayModel(stage, gltf);
+            showLoadedModel(stage, gltf);
         },
         undefined,
         (error) => {
