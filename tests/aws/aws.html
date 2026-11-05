@@ -1,39 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>AWS Test</title>
-<meta charset="UTF-8">
-
-<link rel="stylesheet" href="../../style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b18">
+    <title>AWS Knowledge Test</title>
+    <link rel="stylesheet" href="../../style.css">
 </head>
+<body class="test-page">
+    <main class="container">
+        <header class="test-header">
+            <p class="eyebrow">Knowledge assessment</p>
+            <h1>AWS Test</h1>
+            <p class="test-intro">Answer the questions you know. You can leave questions blank and return to them before submitting.</p>
+        </header>
 
-<body>
+        <section id="quizSection" aria-label="AWS quiz">
+            <div class="quiz-toolbar">
+                <div class="quiz-instructions">
+                    <strong>All questions are shown below</strong>
+                    <span>Select a question number to jump to it.</span>
+                </div>
 
-<div class="container">
+                <div id="timerBox" role="timer" aria-live="off">
+                    <span class="timer-label">TIME REMAINING</span>
+                    <span id="timer">30:00</span>
+                </div>
+            </div>
 
-<h2>AWS Test</h2>
+            <div class="question-status" aria-label="Question navigation">
+                <div class="status-legend">
+                    <span><i class="legend-dot answered-dot"></i> Answered</span>
+                    <span><i class="legend-dot unanswered-dot"></i> Unanswered</span>
+                </div>
+                <div id="navigator"></div>
+            </div>
 
-<!-- QUIZ -->
-<div id="quizSection">
-<div id="timerBox">
-⏱️ <span id="timer">60:00</span>
-</div>
-  
-<div id="navigator"></div>
-<div id="quiz"></div>
+            <div id="quiz"></div>
 
-<button onclick="submitQuiz()">Submit</button>
-</div>
+            <div class="submit-area">
+                <p id="answerSummary" class="answer-summary" aria-live="polite"></p>
+                <button class="submit-button" id="submitButton" type="button" onclick="submitQuiz()">
+                    Review and submit
+                </button>
+            </div>
+        </section>
 
-<!-- RESULT -->
-<div class="result" id="result"></div>
+        <section class="result" id="result" aria-live="polite"></section>
+    </main>
 
-</div>
+    <div id="minuteNotice" class="minute-notice" role="status" aria-live="polite">
+        <span class="notice-icon" aria-hidden="true">⏱</span>
+        <span>One minute remaining. Review unanswered questions.</span>
+    </div>
 
-<script src="../../script.js"></script>
-<script src="aws-questions.js"></script>
-<script src="aws.js"></script>
+    <div id="submitDialog" class="dialog-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="submitDialogTitle">
+        <div class="submit-dialog">
+            <div class="dialog-icon" aria-hidden="true">?</div>
+            <h2 id="submitDialogTitle">Ready to submit?</h2>
+            <p id="submitDialogMessage"></p>
+            <div class="dialog-actions">
+                <button class="secondary-button" type="button" onclick="closeSubmitDialog()">
+                    Go back
+                </button>
+                <button class="submit-button" type="button" onclick="confirmSubmit()">
+                    Submit test
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <script src="../../script.js"></script>
+    <script src="aws-questions.js"></script>
+    <script src="aws.js"></script>
 </body>
 </html>
