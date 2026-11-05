@@ -85,9 +85,9 @@ function createNavigator() {
         button.textContent = String(index + 1);
         button.className = "nav-btn unanswered";
         button.setAttribute("aria-label", `Question ${index + 1}, unanswered`);
+
         button.addEventListener("click", () => {
-            const questionBlock = document.getElementById(`question-${index}`);
-            questionBlock?.scrollIntoView({
+            document.getElementById(`question-${index}`)?.scrollIntoView({
                 behavior: "smooth",
                 block: "center"
             });
@@ -126,9 +126,7 @@ function loadQuiz() {
             input.type = "radio";
             input.name = `q${questionIndex}`;
             input.value = String(optionIndex);
-            input.addEventListener("change", () => {
-                updateAnswerStatus();
-            });
+            input.addEventListener("change", updateAnswerStatus);
 
             const marker = document.createElement("span");
             marker.className = "option-marker";
@@ -196,6 +194,13 @@ function openSubmitDialog(unansweredCount) {
     const dialog = document.getElementById("submitDialog");
     const message = document.getElementById("submitDialogMessage");
 
+    if (!dialog || !message) {
+        if (confirm(`You have ${unansweredCount} unanswered questions. Submit anyway?`)) {
+            finishQuiz();
+        }
+        return;
+    }
+
     message.textContent =
         `You have ${unansweredCount} unanswered ` +
         `${unansweredCount === 1 ? "question" : "questions"}. ` +
@@ -206,35 +211,47 @@ function openSubmitDialog(unansweredCount) {
 }
 
 function closeSubmitDialog() {
-    document.getElementById("submitDialog").classList.add("hidden");
+    document.getElementById("submitDialog")?.classList.add("hidden");
     document.getElementById("submitButton")?.focus();
 }
 
 function confirmSubmit() {
-    document.getElementById("submitDialog").classList.add("hidden");
+    document.getElementById("submitDialog")?.classList.add("hidden");
     finishQuiz();
 }
 
 function finishQuiz() {
     if (quizSubmitted) return;
+
     quizSubmitted = true;
     clearInterval(timer);
     clearTimeout(minuteNoticeTimer);
 
     const score = questions.reduce((total, question, index) => {
         const selected = document.querySelector(`input[name="q${index}"]:checked`);
-        return total + (selected && Number(selected.value) === question.answer ? 1 : 0);
+        return total + (
+            selected && Number(selected.value) === question.answer ? 1 : 0
+        );
     }, 0);
 
-    const name = escapeHTML(localStorage.getItem("name") || "Student");
-    const surname = escapeHTML(localStorage.getItem("surname") || "");
     const wrongAnswers = [];
+    const correctAnswers = [];
 
     questions.forEach((question, index) => {
         const selected = document.querySelector(`input[name="q${index}"]:checked`);
         const selectedAnswer = selected ? Number(selected.value) : null;
 
-        if (selectedAnswer !== question.answer) {
+        if (selectedAnswer === question.answer) {
+            correctAnswers.push(`
+                <article class="correct-review-block">
+                    <h3>Question ${index + 1}</h3>
+                    <p class="review-question">${escapeHTML(question.question)}</p>
+                    <p class="correct-answer">
+                        Your correct answer: ${escapeHTML(question.options[selectedAnswer])}
+                    </p>
+                </article>
+            `);
+        } else {
             const givenAnswer = selectedAnswer === null
                 ? "Not answered"
                 : question.options[selectedAnswer];
@@ -244,13 +261,19 @@ function finishQuiz() {
                     <h3>Question ${index + 1}</h3>
                     <p class="review-question">${escapeHTML(question.question)}</p>
                     <p class="your-answer">Your answer: ${escapeHTML(givenAnswer)}</p>
-                    <p class="correct-answer">Correct answer: ${escapeHTML(question.options[question.answer])}</p>
+                    <p class="correct-answer">
+                        Correct answer: ${escapeHTML(question.options[question.answer])}
+                    </p>
                 </article>
             `);
         }
     });
 
-    document.getElementById("quizSection").classList.add("hidden");
+    const name = escapeHTML(localStorage.getItem("name") || "Student");
+    const surname = escapeHTML(localStorage.getItem("surname") || "");
+    const incorrectCount = questions.length - score;
+
+    document.getElementById("quizSection")?.classList.add("hidden");
 
     resultDiv.innerHTML = `
         <div class="result-card">
@@ -262,14 +285,39 @@ function finishQuiz() {
                 Report an issue
             </button>
         </div>
-        ${wrongAnswers.length ? `
-            <section class="review-section">
-                <h2>Review unanswered and incorrect questions</h2>
-                ${wrongAnswers.join("")}
-            </section>
-        ` : `
-            <p class="all-correct">Excellent work — every answer is correct.</p>
-        `}
+
+        <div class="review-controls">
+            <button
+                class="review-toggle active"
+                type="button"
+                data-review="incorrect"
+                onclick="showReview('incorrect')">
+                Incorrect / skipped (${incorrectCount})
+            </button>
+            <button
+                class="review-toggle"
+                type="button"
+                data-review="correct"
+                onclick="showReview('correct')">
+                Correct answers (${score})
+            </button>
+        </div>
+
+        <section id="incorrectReview" class="review-section">
+            <h2>Incorrect and unanswered questions</h2>
+            ${wrongAnswers.length
+                ? wrongAnswers.join("")
+                : `<p class="all-correct">No incorrect or unanswered questions.</p>`
+            }
+        </section>
+
+        <section id="correctReview" class="review-section hidden">
+            <h2>Questions you answered correctly</h2>
+            ${correctAnswers.length
+                ? correctAnswers.join("")
+                : `<p class="review-empty">There are no correctly answered questions to show.</p>`
+            }
+        </section>
     `;
 
     if (typeof sendToGoogleSheet === "function") {
@@ -281,6 +329,22 @@ function finishQuiz() {
     }
 
     resultDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function showReview(type) {
+    const showCorrect = type === "correct";
+
+    document.getElementById("incorrectReview")
+        ?.classList.toggle("hidden", showCorrect);
+    document.getElementById("correctReview")
+        ?.classList.toggle("hidden", !showCorrect);
+
+    document.querySelectorAll(".review-toggle").forEach((button) => {
+        button.classList.toggle(
+            "active",
+            button.dataset.review === type
+        );
+    });
 }
 
 function escapeHTML(value) {
