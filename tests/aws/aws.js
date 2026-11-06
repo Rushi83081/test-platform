@@ -100,18 +100,15 @@ function createNavigator() {
 }
 function setupNavigatorPosition() {
     const navigatorPanel = document.getElementById("questionNavigator");
-    const fourthQuestion = document.getElementById("question-3");
+    const secondQuestion = document.getElementById("question-1");
 
-    if (!navigatorPanel || !fourthQuestion) return;
+    if (!navigatorPanel || !secondQuestion) return;
 
     function updatePosition() {
-        if (window.innerWidth <= 760) {
-            navigatorPanel.classList.remove("rail-mode");
-            return;
-        }
+        const showRail = window.innerWidth > 760 &&
+            secondQuestion.getBoundingClientRect().top <= 120;
 
-        const fourthQuestionTop = fourthQuestion.getBoundingClientRect().top;
-        navigatorPanel.classList.toggle("rail-mode", fourthQuestionTop <= 120);
+        navigatorPanel.classList.toggle("rail-mode", showRail);
     }
 
     window.addEventListener("scroll", updatePosition, { passive: true });
