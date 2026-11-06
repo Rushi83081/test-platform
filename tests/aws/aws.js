@@ -365,4 +365,5 @@ shuffleQuestions();
 loadQuiz();
 createNavigator();
 updateAnswerStatus();
+setupNavigatorPosition();
 startTimer();
