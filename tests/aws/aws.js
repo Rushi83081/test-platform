@@ -128,15 +128,11 @@ function loadQuiz() {
             input.value = String(optionIndex);
             input.addEventListener("change", updateAnswerStatus);
 
-            const marker = document.createElement("span");
-            marker.className = "option-marker";
-            marker.setAttribute("aria-hidden", "true");
-
             const text = document.createElement("span");
             text.className = "option-text";
             text.textContent = option;
 
-            label.append(input, marker, text);
+            label.append(input, text);
             options.appendChild(label);
         });
 
@@ -227,13 +223,7 @@ function finishQuiz() {
     clearInterval(timer);
     clearTimeout(minuteNoticeTimer);
 
-    const score = questions.reduce((total, question, index) => {
-        const selected = document.querySelector(`input[name="q${index}"]:checked`);
-        return total + (
-            selected && Number(selected.value) === question.answer ? 1 : 0
-        );
-    }, 0);
-
+    let score = 0;
     const wrongAnswers = [];
     const correctAnswers = [];
 
@@ -242,6 +232,7 @@ function finishQuiz() {
         const selectedAnswer = selected ? Number(selected.value) : null;
 
         if (selectedAnswer === question.answer) {
+            score += 1;
             correctAnswers.push(`
                 <article class="correct-review-block">
                     <h3>Question ${index + 1}</h3>
@@ -320,14 +311,6 @@ function finishQuiz() {
         </section>
     `;
 
-    if (typeof sendToGoogleSheet === "function") {
-        sendToGoogleSheet(score, "AWS");
-    }
-
-    if (typeof showFeedback === "function") {
-        showFeedback(score, questions.length);
-    }
-
     resultDiv.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -340,10 +323,7 @@ function showReview(type) {
         ?.classList.toggle("hidden", !showCorrect);
 
     document.querySelectorAll(".review-toggle").forEach((button) => {
-        button.classList.toggle(
-            "active",
-            button.dataset.review === type
-        );
+        button.classList.toggle("active", button.dataset.review === type);
     });
 }
 
