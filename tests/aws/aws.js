@@ -98,6 +98,26 @@ function createNavigator() {
 
     updateAnswerStatus();
 }
+function setupNavigatorPosition() {
+    const navigatorPanel = document.getElementById("questionNavigator");
+    const fourthQuestion = document.getElementById("question-3");
+
+    if (!navigatorPanel || !fourthQuestion) return;
+
+    function updatePosition() {
+        if (window.innerWidth <= 760) {
+            navigatorPanel.classList.remove("rail-mode");
+            return;
+        }
+
+        const fourthQuestionTop = fourthQuestion.getBoundingClientRect().top;
+        navigatorPanel.classList.toggle("rail-mode", fourthQuestionTop <= 120);
+    }
+
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition);
+    updatePosition();
+}
 
 function loadQuiz() {
     quiz.replaceChildren();
