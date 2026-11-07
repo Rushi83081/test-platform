@@ -128,16 +128,59 @@ function executeRouting() {
     document.getElementById("countdownOverlay").classList.remove("active");
 }
 
-function sendToGoogleSheet(score, testName) {
+async function sendToGoogleSheet(score, testName) {
     const name = localStorage.getItem("name");
     const surname = localStorage.getItem("surname");
 
     if (!name || !surname) {
-        alert("Name or surname is missing.");
+        console.error("Score not saved: student name or surname is missing.");
         return;
     }
 
-    alert("Google Sheets submission is not configured yet.");
+    const testKey = String(testName).trim().toLowerCase();
+    const payload = {
+        name,
+        surname,
+        score: Number(score)
+    };
+
+    const columnByTest = {
+        linux: "linux",
+        aws: "aws",
+        git: "git",
+        docker: "docker",
+        kubernetes: "kubernetes",
+        terraform: "terraform",
+        jenkins: "jenkins",
+        devops: "devops",
+        "devops all": "devops"
+    };
+
+    const field = columnByTest[testKey];
+    if (!field) {
+        console.error("Score not saved: unknown test name.", testName);
+        return;
+    }
+
+    payload[field] = Number(score);
+
+    try {
+        await fetch(
+            "https://script.google.com/macros/s/AKfycbx2JJwjZMROBznRcegXYyJT2JiDfevnG1AbVwyYibGwrxgCnxPO9YO1K2LBmCQOZhfe/exec",
+            {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: new URLSearchParams(payload)
+            }
+        );
+
+        console.info(`Score submitted for ${testName}.`);
+    } catch (error) {
+        console.error("Could not submit score:", error);
+    }
 }
 
 function reportIssue(testName) {
