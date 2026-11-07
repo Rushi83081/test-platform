@@ -133,26 +133,25 @@ function sendToGoogleSheet(score, testName) {
     const surname = localStorage.getItem("surname");
 
     if (!name || !surname) {
-        console.error("Score not saved: name or surname is missing.");
+        console.error("Score not saved: student name or surname is missing.");
         return;
     }
 
-    const payload = new URLSearchParams({
-        name,
-        surname,
-        test: String(testName).trim(),
-        score: String(Number(score))
-    });
+    const formData = new URLSearchParams();
+    formData.append("name", name);
+    formData.append("surname", surname);
+    formData.append("test", testName);
+    formData.append("score", String(score));
 
     fetch(
         "https://script.google.com/macros/s/AKfycbx2JJwjZMROBznRcegXYyJT2JiDfevnG1AbVwyYibGwrxgCnxPO9YO1K2LBmCQOZhfe/exec",
         {
             method: "POST",
             mode: "no-cors",
-            body: payload
+            body: formData
         }
     ).catch((error) => {
-        console.error("Could not send score to Google Sheets:", error);
+        console.error("Score submission failed:", error);
     });
 }
 
