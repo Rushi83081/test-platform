@@ -250,6 +250,7 @@ function finishQuiz() {
 
         if (selectedAnswer === question.answer) {
             score += 1;
+
             correctAnswers.push(`
                 <article class="correct-review-block">
                     <h3>Question ${index + 1}</h3>
@@ -276,6 +277,8 @@ function finishQuiz() {
             `);
         }
     });
+
+    sendToGoogleSheet(score, "AWS");
 
     const name = escapeHTML(localStorage.getItem("name") || "Student");
     const surname = escapeHTML(localStorage.getItem("surname") || "");
