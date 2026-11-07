@@ -327,9 +327,28 @@ function escapeHTML(value) {
         return entities[character];
     });
 }
+function setupNavigatorPosition() {
+    const navigatorPanel = document.getElementById("questionNavigator");
+    const secondQuestion = document.getElementById("question-1");
+
+    if (!navigatorPanel || !secondQuestion) return;
+
+    function updatePosition() {
+        const showRail =
+            window.innerWidth > 760 &&
+            secondQuestion.getBoundingClientRect().top <= 120;
+
+        navigatorPanel.classList.toggle("rail-mode", showRail);
+    }
+
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    window.addEventListener("resize", updatePosition);
+    updatePosition();
+}
 
 shuffleQuestions();
 loadQuiz();
 createNavigator();
 updateAnswerStatus();
 startTimer();
+setupNavigatorPosition();
