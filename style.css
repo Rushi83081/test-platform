@@ -630,3 +630,41 @@ body.test-page {
         width: 100%;
     }
 }
+@media (min-width: 761px) {
+    .question-status.rail-mode {
+        position: fixed;
+        z-index: 20;
+        top: 50%;
+        left: 12px;
+        width: 150px;
+        max-height: 56vh;
+        overflow-y: auto;
+        margin: 0;
+        padding: 8px;
+        transform: translateY(-50%);
+        background: #0f172a;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 14px;
+        box-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .question-status.rail-mode .status-legend {
+        display: grid;
+        gap: 5px;
+        margin-bottom: 7px;
+        font-size: 9px;
+    }
+
+    .question-status.rail-mode #navigator {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        justify-items: center;
+        gap: 4px;
+    }
+
+    .question-status.rail-mode .nav-btn {
+        width: 27px;
+        height: 27px;
+        font-size: 10px;
+    }
+}
